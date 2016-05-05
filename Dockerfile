@@ -25,5 +25,5 @@ RUN cd /root && \
     cd openlmis-template-service && \
     gradle build
 
-WORKDIR /root
+WORKDIR /root/openlmis-template-service
 CMD ["java", "-jar", "/root/openlmis-template-service/build/libs/openlmis-template-service-0.0.1.jar"]
