@@ -84,7 +84,7 @@ $ gradle bootRun
 ### Build Deployment Image
 ```shell
 > docker-compose -f docker-compose.builder.yml run builder
-> docker-compose -f docker-compose.image.yml build image
+> docker-compose -f docker-compose.builder.yml build image
 ```
 
 ### Publish to Docker Repository
