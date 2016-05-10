@@ -1,14 +1,11 @@
 version: "2"
 services:
-  template:
-    image: openlmis/dev
+  template-service:
+    image: template-service
     links:
       - db
-    volumes:
-      - '.:/app'
     ports:
       - "8080:8080"
-    command: 'clean build bootRun'
   db:
     image: openlmis/postgres
     ports:
