@@ -76,7 +76,7 @@ Service.  PostgreSQL connected suitable for testing. If you run the
 Service, it should be available on port 8080.
 
 ```shell
-> docker-compose run <serviceName>
+> docker-compose run --service-ports <serviceName>
 $ gradle clean build
 $ gradle bootRun
 ```
