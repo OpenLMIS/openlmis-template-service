@@ -1,0 +1,16 @@
+version: "2"
+services:
+  builder:
+    image: openlmis/dev
+    volumes:
+      - '.:/app'
+    entrypoint:
+      - 'gradle'
+    command:
+      - 'clean'
+      - 'build'
+    environment:
+      GRADLE_OPTS: '-Dorg.gradle.daemon=false'
+  image:
+    build: .
+    image: openlmis/template-service
