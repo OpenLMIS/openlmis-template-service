@@ -11,21 +11,21 @@ OpenLMIS 3.x Independent Service.
 
  ```shell
  git clone https://github.com/OpenLMIS/openlmis-template-service.git 
- <openlmis-yourServiceName>
+ <openlmis-your-service-name>
  ```
-2. Change all instances of `openlmis-template-service` and 
-`template-service` in the project to `openlmis-yourServiceName` or 
-`serviceName`.
-3. Change all instances of the version number in the project to your 
+2. Respectively change all instances of `openlmis-template-service` and
+`template-service` within the project to `openlmis-your-service-name` and
+`your-service-name`.
+3. Change all instances of the default version number ("O.0.1") in the project to your
 version number.
 4. Change the gradle build file to add any dependencies 
 (e.g. JPA, PostgreSQL).
 5. Add Java code to the template.
-6. Develop w/ Docker by running `docker-compose run <serviceName>`.  
+6. Develop w/ Docker by running `docker-compose run <your-service-name>`.
 See [Developing w/ Docker](#devdocker).
 7. From the development environment, run with: `gradle bootRun`
 8. Go to `http://<yourDockerIPAddress>:8080/` to see the service name 
-and version.
+and version. Note that you can determine yourDockerIPAddress by running `docker-machine ip`.
 9. Go to `http://<yourDockerIPAddress>:8080/api/` to see the APIs.
 
 
@@ -37,9 +37,9 @@ that most Services will find useful:
 - `clean` to remove build artifacts
 - `build` to build all source
 - `generateMigration -PmigrationName=<yourMigrationName>` to create a 
-"blank" database migration script. A file 
+"blank" database migration file. The file
 will be generated under `src/main/resources/db/migration`. Put your 
-migration SQL into that file.
+migration SQL into it.
 
 While Gradle is our usual build tool, OpenLMIS v3+ is a collection of 
 Independent Services where each Gradle build produces 1 Service. 
@@ -76,7 +76,7 @@ Service.  PostgreSQL connected suitable for testing. If you run the
 Service, it should be available on port 8080.
 
 ```shell
-> docker-compose run --service-ports <serviceName>
+> docker-compose run --service-ports <your-service-name>
 $ gradle clean build
 $ gradle bootRun
 ```
