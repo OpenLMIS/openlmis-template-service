@@ -1,0 +1,12 @@
+version: "2"
+services:
+  template-service:
+    image: template-service
+    links:
+      - db
+    ports:
+      - "8080:8080"
+  db:
+    image: openlmis/postgres
+    ports:
+      - "5432"
