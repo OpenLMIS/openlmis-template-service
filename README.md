@@ -23,7 +23,8 @@ version number.
 5. Add Java code to the template.
 6. Develop w/ Docker by running `docker-compose run --service-ports <your-service-name>`.
 See [Developing w/ Docker](#devdocker).
-7. From the development environment, run with: `gradle bootRun`
+7. You should now be in an interactive shell inside the newly created development 
+environment, start the Service with: `gradle bootRun`
 8. Go to `http://<yourDockerIPAddress>:8080/` to see the service name 
 and version. Note that you can determine yourDockerIPAddress by running `docker-machine ip`.
 9. Go to `http://<yourDockerIPAddress>:8080/api/` to see the APIs.
