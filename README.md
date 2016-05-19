@@ -4,6 +4,7 @@ OpenLMIS 3.x Independent Service.
 
 ## Prerequisites
 * Docker 1.11+
+* Docker Compose 1.6+
 
 ## Quick Start
 
