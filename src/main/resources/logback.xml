@@ -1,0 +1,14 @@
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/base.xml" />
+
+    <appender name="SYSLOG" class="ch.qos.logback.classic.net.SyslogAppender">
+        <syslogHost>localhost</syslogHost>
+        <facility>LOCAL0</facility>
+        <suffixPattern>[%thread] %logger %msg</suffixPattern>
+    </appender>
+
+    <!-- Define the root logger log level -->
+    <root level="INFO">
+        <appender-ref ref="SYSLOG"/>
+    </root>
+</configuration>
