@@ -4,9 +4,14 @@ services:
     image: template-service
     links:
       - db
+      - log
     ports:
       - "8080:8080"
   db:
     image: openlmis/postgres
     ports:
       - "5432"
+  log:
+    image: openlmis/rsyslog
+    volumes:
+      - '../logs/template-service:/var/log'
