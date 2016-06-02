@@ -33,6 +33,7 @@ dependencies {
     compile "org.projectlombok:lombok:1.16.8"
     compile "org.springframework.boot:spring-boot-starter-data-jpa"
     compile "org.postgresql:postgresql:9.4.1208"
+    compile group: 'com.github.tomakehurst', name: 'wiremock', version: '1.18'
 
     testCompile "junit:junit"
 }
