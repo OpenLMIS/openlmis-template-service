@@ -19,14 +19,14 @@ public class ServiceNameController {
 
     @RequestMapping("/")
     public ServiceSignature index() {
-        logger.info("Returning service name and version");
+        logger.debug("Returning service name and version");
         return new ServiceSignature(ServiceSignature.SERVICE_NAME, ServiceSignature.SERVICE_VERSION);
     }
 
     @RequestMapping("/hello")
     public String hello() {
         String[] msgArgs = {"world"};
-        logger.info("Returning hello world message");
+        logger.debug("Returning hello world message");
         return messageSource.getMessage("msg.hello", msgArgs, LocaleContextHolder.getLocale());
     }
 }
