@@ -14,6 +14,7 @@ plugins {
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
+apply plugin: 'checkstyle'
 
 jar {
     baseName = 'openlmis-template-service'
@@ -61,3 +62,10 @@ task generateMigration << {
     def migrationFile = new File(sourceSets.main.resources.srcDirs.first(),'db/migration/'+fullFileName)
     migrationFile.createNewFile()
 }
+
+checkstyle {
+    toolVersion = "6.19"
+}
+
+// Makes sure checkstyle is run before build completes
+build.dependsOn check

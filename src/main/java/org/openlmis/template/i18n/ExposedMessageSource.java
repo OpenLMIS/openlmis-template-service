@@ -7,5 +7,5 @@ import java.util.Map;
 
 public interface ExposedMessageSource extends MessageSource {
 
-    Map<String, String> getAllMessages(Locale locale);
+  Map<String, String> getAllMessages(Locale locale);
 }

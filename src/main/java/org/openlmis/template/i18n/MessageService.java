@@ -12,20 +12,20 @@ import java.util.Map;
 @Service
 public class MessageService {
 
-    @Autowired
-    private ExposedMessageSource messageSource;
+  @Autowired
+  private ExposedMessageSource messageSource;
 
-    @Setter
-    @Getter
-    private Locale currentLocale;
+  @Setter
+  @Getter
+  private Locale currentLocale;
 
-    @Autowired
-    public MessageService(ExposedMessageSource messageSource) {
-        this.messageSource = messageSource;
-        this.currentLocale = Locale.ENGLISH;
-    }
+  @Autowired
+  public MessageService(ExposedMessageSource messageSource) {
+    this.messageSource = messageSource;
+    this.currentLocale = Locale.ENGLISH;
+  }
 
-    public Map<String, String> getAllMessages() {
-        return messageSource.getAllMessages(currentLocale);
-    }
+  public Map<String, String> getAllMessages() {
+    return messageSource.getAllMessages(currentLocale);
+  }
 }

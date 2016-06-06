@@ -10,22 +10,24 @@ import java.util.Map;
 import java.util.Properties;
 
 @Component
-public class ExposedMessageSourceImpl extends ReloadableResourceBundleMessageSource implements ExposedMessageSource {
+public class ExposedMessageSourceImpl extends ReloadableResourceBundleMessageSource implements 
+    ExposedMessageSource {
 
-    protected Properties getAllProperties(Locale locale) {
-        clearCacheIncludingAncestors();
-        ReloadableResourceBundleMessageSource.PropertiesHolder propertiesHolder = getMergedProperties(locale);
-        return propertiesHolder.getProperties();
-    }
+  protected Properties getAllProperties(Locale locale) {
+    clearCacheIncludingAncestors();
+    ReloadableResourceBundleMessageSource.PropertiesHolder propertiesHolder = getMergedProperties(
+        locale);
+    return propertiesHolder.getProperties();
+  }
 
-    public Map<String, String> getAllMessages(Locale locale) {
-        Properties p = getAllProperties(locale);
-        Enumeration<String> keys = (Enumeration<String>) p.propertyNames();
-        Map<String, String> asMap = new HashMap<>();
-        while (keys.hasMoreElements()) {
-            String key = keys.nextElement();
-            asMap.put(key, p.getProperty(key));
-        }
-        return asMap;
+  public Map<String, String> getAllMessages(Locale locale) {
+    Properties props = getAllProperties(locale);
+    Enumeration<String> keys = (Enumeration<String>) props.propertyNames();
+    Map<String, String> asMap = new HashMap<>();
+    while (keys.hasMoreElements()) {
+      String key = keys.nextElement();
+      asMap.put(key, props.getProperty(key));
     }
+    return asMap;
+  }
 }

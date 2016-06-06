@@ -13,14 +13,14 @@ import java.util.Map;
 @RestController
 public class MessageController {
 
-    Logger logger = LoggerFactory.getLogger(ServiceNameController.class);
+  Logger logger = LoggerFactory.getLogger(ServiceNameController.class);
 
-    @Autowired
-    private ExposedMessageSource messageSource;
+  @Autowired
+  private ExposedMessageSource messageSource;
 
-    @RequestMapping("/messages")
-    public Map<String, String> getAllMessages() {
-        logger.info("Returning all messages for current locale");
-        return messageSource.getAllMessages(LocaleContextHolder.getLocale());
-    }
+  @RequestMapping("/messages")
+  public Map<String, String> getAllMessages() {
+    logger.info("Returning all messages for current locale");
+    return messageSource.getAllMessages(LocaleContextHolder.getLocale());
+  }
 }
