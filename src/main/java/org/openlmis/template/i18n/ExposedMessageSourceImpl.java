@@ -15,8 +15,7 @@ public class ExposedMessageSourceImpl extends ReloadableResourceBundleMessageSou
 
   protected Properties getAllProperties(Locale locale) {
     clearCacheIncludingAncestors();
-    ReloadableResourceBundleMessageSource.PropertiesHolder propertiesHolder = getMergedProperties(
-        locale);
+    PropertiesHolder propertiesHolder = getMergedProperties(locale);
     return propertiesHolder.getProperties();
   }
 
