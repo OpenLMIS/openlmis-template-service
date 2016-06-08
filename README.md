@@ -42,6 +42,7 @@ that most Services will find useful:
 will be generated under `src/main/resources/db/migration`. Put your 
 migration SQL into it.
 - `test` to run unit tests
+- `integrationTest` to run integration tests
 
 While Gradle is our usual build tool, OpenLMIS v3+ is a collection of 
 Independent Services where each Gradle build produces 1 Service. 
