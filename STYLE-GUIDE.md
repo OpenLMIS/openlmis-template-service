@@ -15,4 +15,5 @@ In most cases, the Hibernate DefaultNamingStrategy follows these conventions.  S
 * Each Independent Service should store it's tables in its own schema.  The convention is to use the Service's name as the schema.  e.g. The Requistion Service uses the `requisition` schema
 * Tables, Columns, constraints etc should be all lower case.
 * Table names should be pluralized.  This is to avoid *most* used words. e.g. orders instead of order
+* Table names with multiple words should be snake_case.
 * Column names with multiple words should be merged together.  e.g. `getFirstName()` would map to `firstname`
