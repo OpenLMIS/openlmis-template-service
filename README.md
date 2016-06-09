@@ -36,12 +36,14 @@ Gradle is our usual build tool.  This template includes common tasks
 that most Services will find useful:
 
 - `clean` to remove build artifacts
-- `build` to build all source
-- `generateMigration -PmigrationName=<yourMigrationName>` to create a 
+- `build` to build all source. `build`, after building sources, also runs unit tests. Build will be successful only if all tests pass.
+- `generateMigration -PmigrationName=<yourMigrationName>` to create a
 "blank" database migration file. The file
-will be generated under `src/main/resources/db/migration`. Put your 
+will be generated under `src/main/resources/db/migration`. Put your
 migration SQL into it.
 - `test` to run unit tests
+
+The **test results** are shown in the console.
 
 While Gradle is our usual build tool, OpenLMIS v3+ is a collection of 
 Independent Services where each Gradle build produces 1 Service. 
