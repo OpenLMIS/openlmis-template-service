@@ -19,58 +19,59 @@ In most cases, the Hibernate DefaultNamingStrategy follows these conventions.  S
 * Column names with multiple words should be merged together.  e.g. `getFirstName()` would map to `firstname`
 
 # Unit tests 
-* __Every single test should be independent and isolated. Unit test shouldn't deped on another unit test.__ 
+* __Every single test should be independent and isolated. Unit test shouldn't depend on another unit test.__ 
 
-  There is one incorrect example below:
+  DO NOT:
   ```java
+  List<Item> list = new ArrayList<>();
+
   @Test
-  public void testIsNotAnAdultIfAgeLessThan18() {
-    age = 17;
-    boolean isAdult = ageService.isAdult(age);
-    assertEquals(false, isAdult);
-    testIsNotAnAdultIfAgeMoreThan18();
+  public void testListSize1() {
+    Item item = new Item();
+    list.add(item);
+    assertEquals(1, list.size());
   }
   
   @Test
-  public void testIsNotAnAdultIfAgeMoreThan18() {
-    age = 19;
-    boolean isAdult = ageService.isAdult(age);
-    assertEquals(true, isAdult);
+  public void testListSize2() {
+    Item item = new Item();
+    list.add(item);
+    assertEquals(2, list.size());
   }
   ```
 * __One behavior should be tested in just one unit test.__
   
-  There is one incorrect example below:
+  DO NOT:
   ```java
   @Test
   public void testIsNotAnAdultIfAgeLessThan18AndIsPersonAbleToRunForPresident() {
     int age = 17;
     boolean isAdult = ageService.isAdult(age);
-    assertEquals(false, isAdult);
+    assertFalse(isAdult);
     
     boolean isAbleToRunForPresident = electionsService.isAbleToRunForPresident(age)
-    assertEquals(false, isAbleToRunForPresident);
+    assertFalse(isAbleToRunForPresident);
   }
   ```
-  and correct counterpart:
+  DO:
     ```java
   
   @Test
   public void testIsNotAnAdultIfAgeLessThan18() {
     int age = 17;
     boolean isAdult = ageService.isAdult(age);
-    assertEquals(false, isAdult);
+    assertFalse(isAdult);
   
   @Test
   public void testIsPersonAbleToRunForPresident()
     int age = 17;
     boolean isAbleToRunForPresident = electionsService.isAbleToRunForPresident(age)
-    assertEquals(false, isAbleToRunForPresident);
+    assertFalse(isAbleToRunForPresident);
   }
   ```
 * __Every unit test should have at least one assertion.__
 
-  There is one incorrect example below:
+  DO NOT:
   ```java
   @Test
   public void testIsNotAnAdultIfAgeLessThan18() {
@@ -79,18 +80,18 @@ In most cases, the Hibernate DefaultNamingStrategy follows these conventions.  S
   }
   ```
   
-  and correct counterpart:
+  DO:
   ```java
   @Test
   public void testIsNotAnAdultIfAgeLessThan18() {
     int age = 17;
     boolean isAdult = ageService.isAdult(age);
-    assertEquals(false, isAdult);
+    assertFalse(isAdult);
   }
   ```
 * __Don't make unnecessary assertions. Don't assert mocked behavior, avoid assertions that check the exact same thing as another unit test.__
 
-  There is one incorrect example below:
+  DO NOT:
  ```java
   @Test
   public void testIsNotAnAdultIfAgeLessThan18() {
@@ -98,12 +99,12 @@ In most cases, the Hibernate DefaultNamingStrategy follows these conventions.  S
     assertEquals(17, age);
     
     boolean isAdult = ageService.isAdult(age);
-    assertEquals(false, isAdult);
+    assertFalse(isAdult);
   }
   ```
 * __Unit test have to be independent from external resources (i.e. don't connect with databases or servers)__
   
-  There is one incorrect example below:
+  DO NOT:
  ```java
   @Test
   public void testIsNotAnAdultIfAgeLessThan18() {
@@ -115,7 +116,7 @@ In most cases, the Hibernate DefaultNamingStrategy follows these conventions.  S
   ```
 * __Unit test shouldn't test String Contexts. Integration test are better for this purpose.__
  
-  There is one incorrect example below:
+  DO NOT:
  ```java
   @RunWith(SpringJUnit4ClassRunner.class)
   @ContextConfiguration(locations = {"/services-test-config.xml"})
@@ -134,14 +135,14 @@ In most cases, the Hibernate DefaultNamingStrategy follows these conventions.  S
   ```
 * __Test method name should consistently show what is being tested.__
 
-  There is one correct example below:
+  DO:
   ```java
   @Test
   public void testIsNotAnAdultIfAgeLessThan18() {
     ...
   }
   ```
-  and incorrect counterpart:
+  DO NOT:
   ```java
   
   @Test
@@ -151,18 +152,18 @@ In most cases, the Hibernate DefaultNamingStrategy follows these conventions.  S
   ```
 * __Unit test should be repeatable - each run should yield the same result.__
  
-  There is one incorrect example below:
+  DO NOT:
   ```java
   @Test
   public void testIsNotAnAdultIfAgeLessThan18() {
     int age = randomGenerator.nextInt(100);
     boolean isAdult = ageService.isAdult(age);
-    assertEquals(false, isAdult);
+    assertFalse(isAdult);
   }
   ```
 * __You should remember about intializing and cleaning each global state between test runs.__
  
-  There is one incorrect example below:
+  DO:
   ```java
   @Mock
   private AgeService ageService;
@@ -177,12 +178,12 @@ In most cases, the Hibernate DefaultNamingStrategy follows these conventions.  S
   @Test
   public void testIsNotAnAdultIfAgeLessThan18() {
     boolean isAdult = ageService.isAdult(age);
-    assertEquals(true, isAdult);
+    assertTrue(isAdult);
   }
   ```
 * __Test should run fast. When we have hundreds of tests we just don't want to wait several minutes till all tests pass.__
  
-  There is one incorrect example below:
+  DO NOT:
  ```java
   @Test
   public void testIsNotAnAdultIfAgeLessThan18() {
@@ -190,6 +191,6 @@ In most cases, the Hibernate DefaultNamingStrategy follows these conventions.  S
     sleep(1000);
     boolean isAdult = ageService.isAdult(age);
     sleep(1000);
-    assertEquals(false, isAdult);
+    assertFalse(isAdult);
   }
   ```
