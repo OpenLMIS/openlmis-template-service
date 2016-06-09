@@ -139,7 +139,7 @@ compose instructions have been provided to demonstrate this.
 > docker-compose -f docker-compose.builder.yml run --service-ports template-service
 ```
 
-# Internationalization (i18n)
+### Internationalization (i18n)
 Internationalization is implemented by the definition of two beans found in the Application 
 class, localeResolver and messageSource. (Alternatively, they could be defined in an application 
 context XML file.) The localeResolver determines the locale, using a cookie named `lang` in the 
