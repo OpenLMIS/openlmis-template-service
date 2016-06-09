@@ -151,3 +151,14 @@ ExposedMessageSourceImpl. These provide a method to get all the messages in a lo
 message file.
 
 See the MessageController class for examples on how to get messages.
+
+### Debugging
+To debug the Spring Boot application, use the `--debug-jvm` option.
+
+```shell
+$ gradle bootRun --debug-jvm
+```
+
+This will enable debugging for the application, listening on port 5005, which the container has 
+exposed. Note that the process starts suspended, so the application will not start up until the 
+debugger has connected.
