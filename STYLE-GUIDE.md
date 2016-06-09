@@ -1,5 +1,5 @@
 # OpenLMIS Service Style Guide
-This is a WIP as a style guide for an Independant Service.  Clones of this file should reference this definition.
+This is a WIP as a style guide for an Independent Service.  Clones of this file should reference this definition.
 
 For the original style guide please see:
 https://github.com/OpenLMIS/open-lmis/blob/master/STYLE-GUIDE.md
@@ -17,3 +17,27 @@ In most cases, the Hibernate DefaultNamingStrategy follows these conventions.  S
 * Table names should be pluralized.  This is to avoid *most* used words. e.g. orders instead of order
 * Table names with multiple words should be snake_case.
 * Column names with multiple words should be merged together.  e.g. `getFirstName()` would map to `firstname`
+
+# i18n Naming Conventions
+These naming conventions will be applicable for the messages property files.
+
+* Keys for the messages property files should follow a hierarchy. However, since there is no 
+official hierarchy support for property files, keys should follow a naming convention of most to 
+least significant.
+* Key hierarchy should be delimited with a period (.).
+* The first portion of the key should be the name of the Independent Service.
+* The second portion of the key should indicate the type of message; error for error messages, 
+message for anything not an error.
+* The third and following portions will further describe the key.
+* Keys should use only lowercase characters (NO camelCase).
+* If multiple words are necessary, they should be separated with a dash (-).
+
+Examples:
+
+* `requisition.error.product.code.invalid` - an alternative could be `requisition.error
+.product-code.invalid` if code is not a sub-section of product.
+* `requisition.message.requisition.created` - requisition successfully created.
+* `reference-data.error.facility.not-found` - facility not found.
+
+Note: UI-related keys (labels, buttons, etc.) are not addressed here, as they would be owned by the
+UI, and not the Independent Service.
