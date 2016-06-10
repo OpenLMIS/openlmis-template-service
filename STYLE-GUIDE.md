@@ -85,9 +85,10 @@ UI, and not the Independent Service.
     int age = 17;
     boolean isAdult = ageService.isAdult(age);
     assertFalse(isAdult);
+  }
 
   @Test
-  public void testIsPersonAbleToRunForPresident()
+  public void testIsPersonAbleToRunForPresident() {
     int age = 17;
     boolean isAbleToRunForPresident = electionsService.isAbleToRunForPresident(age)
     assertFalse(isAbleToRunForPresident);
@@ -126,7 +127,7 @@ UI, and not the Independent Service.
     assertFalse(isAdult);
   }
   ```
-* __Unit test have to be independent from external resources (i.e. don't connect with databases or servers)__
+* __Unit test has to be independent from external resources (i.e. don't connect with databases or servers)__
 
   DO NOT:
  ```java
@@ -138,7 +139,7 @@ UI, and not the Independent Service.
     assertEquals(HttpStatus.ORDINAL_200_OK, response.getStatusLine().getStatusCode());
   }
   ```
-* __Unit test shouldn't test Spring Contexts. Integration test are better for this purpose.__
+* __Unit tests shouldn't test Spring Contexts. Integration test are better for this purpose.__
 
   DO NOT:
  ```java
