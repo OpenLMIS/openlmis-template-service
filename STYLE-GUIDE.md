@@ -139,7 +139,7 @@ UI, and not the Independent Service.
     assertEquals(HttpStatus.ORDINAL_200_OK, response.getStatusLine().getStatusCode());
   }
   ```
-* __Unit tests shouldn't test Spring Contexts. Integration test are better for this purpose.__
+* __Unit test shouldn't test Spring Contexts. Integration tests are better for this purpose.__
 
   DO NOT:
  ```java
