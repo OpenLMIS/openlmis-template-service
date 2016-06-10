@@ -42,13 +42,6 @@ Examples:
 Note: UI-related keys (labels, buttons, etc.) are not addressed here, as they would be owned by the
 UI, and not the Independent Service.
 
-# Testing services dependent on external APIs
-OpenLMIS is using WireMock for mocking web services. An example integration test can be found here:
-https://github.com/OpenLMIS/openlmis-example/blob/master/src/test/java/org/openlmis/example/WeatherServiceTest.java
-
-The stub mappings which are served by WireMock's HTTP server are placed under _src/test/resources/mappings_ and _src/test/resources/__files_
-For instructions on how to create them please refer to http://wiremock.org/record-playback.html
-
 # Unit tests
 * __Every single test should be independent and isolated. Unit test shouldn't depend on another unit test.__
 
@@ -225,3 +218,10 @@ For instructions on how to create them please refer to http://wiremock.org/recor
     assertFalse(isAdult);
   }
   ```
+
+# Testing services dependent on external APIs
+OpenLMIS is using WireMock for mocking web services. An example integration test can be found here:
+https://github.com/OpenLMIS/openlmis-example/blob/master/src/test/java/org/openlmis/example/WeatherServiceTest.java
+
+The stub mappings which are served by WireMock's HTTP server are placed under _src/test/resources/mappings_ and _src/test/resources/__files_
+For instructions on how to create them please refer to http://wiremock.org/record-playback.html
