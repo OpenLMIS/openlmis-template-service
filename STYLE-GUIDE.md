@@ -1,5 +1,5 @@
 # OpenLMIS Service Style Guide
-This is a WIP as a style guide for an Independant Service.  Clones of this file should reference this definition.
+This is a WIP as a style guide for an Independent Service.  Clones of this file should reference this definition.
 
 For the original style guide please see:
 https://github.com/OpenLMIS/open-lmis/blob/master/STYLE-GUIDE.md
@@ -194,7 +194,7 @@ In most cases, the Hibernate DefaultNamingStrategy follows these conventions.  S
     assertFalse(isAdult);
   }
   ```
- 
+
 # i18n Naming Conventions
 These naming conventions will be applicable for the messages property files.
 
