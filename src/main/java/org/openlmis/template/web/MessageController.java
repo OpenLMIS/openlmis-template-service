@@ -18,6 +18,14 @@ public class MessageController {
   @Autowired
   private ExposedMessageSource messageSource;
 
+  @RequestMapping("/hello")
+  public String hello() {
+    String[] msgArgs = {"world"};
+    logger.debug("Returning hello world message");
+    return messageSource.getMessage("template.message.hello", msgArgs, 
+        LocaleContextHolder.getLocale());
+  }
+
   @RequestMapping("/messages")
   public Map<String, String> getAllMessages() {
     logger.info("Returning all messages for current locale");

@@ -36,13 +36,15 @@ Gradle is our usual build tool.  This template includes common tasks
 that most Services will find useful:
 
 - `clean` to remove build artifacts
-- `build` to build all source
-- `generateMigration -PmigrationName=<yourMigrationName>` to create a 
+- `build` to build all source. `build`, after building sources, also runs unit tests. Build will be successful only if all tests pass.
+- `generateMigration -PmigrationName=<yourMigrationName>` to create a
 "blank" database migration file. The file
-will be generated under `src/main/resources/db/migration`. Put your 
+will be generated under `src/main/resources/db/migration`. Put your
 migration SQL into it.
 - `test` to run unit tests
 - `integrationTest` to run integration tests
+
+The **test results** are shown in the console.
 
 While Gradle is our usual build tool, OpenLMIS v3+ is a collection of 
 Independent Services where each Gradle build produces 1 Service. 
@@ -138,3 +140,27 @@ compose instructions have been provided to demonstrate this.
 ```shell
 > docker-compose -f docker-compose.builder.yml run --service-ports template-service
 ```
+
+### Internationalization (i18n)
+Internationalization is implemented by the definition of two beans found in the Application 
+class, localeResolver and messageSource. (Alternatively, they could be defined in an application 
+context XML file.) The localeResolver determines the locale, using a cookie named `lang` in the 
+request, with `en` (for English) as the default. The messageSource determines where to find the 
+message files.
+
+Note there is a custom message source interface, ExposedMessageSource, with a corresponding class
+ExposedMessageSourceImpl. These provide a method to get all the messages in a locale-specific 
+message file.
+
+See the MessageController class for examples on how to get messages.
+
+### Debugging
+To debug the Spring Boot application, use the `--debug-jvm` option.
+
+```shell
+$ gradle bootRun --debug-jvm
+```
+
+This will enable debugging for the application, listening on port 5005, which the container has 
+exposed. Note that the process starts suspended, so the application will not start up until the 
+debugger has connected.
