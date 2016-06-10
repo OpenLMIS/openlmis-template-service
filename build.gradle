@@ -15,6 +15,7 @@ apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
 apply plugin: 'checkstyle'
+apply plugin: "jacoco"
 
 jar {
     baseName = 'openlmis-template-service'
@@ -23,6 +24,7 @@ jar {
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 sourceCompatibility = 1.8
@@ -38,6 +40,7 @@ dependencies {
     compile "org.springframework:spring-test"
 
     testCompile "junit:junit"
+    testCompile "org.mockito:mockito-core:1.+"
 }
 
 flyway {
@@ -93,9 +96,28 @@ task generateMigration << {
     migrationFile.createNewFile()
 }
 
+test {
+    testLogging {
+        events 'started', 'passed'
+    }
+}
+
+jacocoTestReport {
+    group = "reporting"
+    description = "Generate Jacoco coverage reports after running tests."
+    reports {
+        xml.enabled false
+        html.enabled true
+        csv.enabled false
+    }
+
+    additionalSourceDirs = files(sourceSets.main.allJava.srcDirs)
+}
+
 checkstyle {
     toolVersion = "6.19"
 }
 
+build.dependsOn jacocoTestReport
 // Makes sure checkstyle is run before build completes
 build.dependsOn check
