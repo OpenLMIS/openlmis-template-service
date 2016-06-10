@@ -194,7 +194,6 @@ In most cases, the Hibernate DefaultNamingStrategy follows these conventions.  S
     assertFalse(isAdult);
   }
   ```
-
 # i18n Naming Conventions
 These naming conventions will be applicable for the messages property files.
 
