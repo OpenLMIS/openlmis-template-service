@@ -114,7 +114,7 @@ In most cases, the Hibernate DefaultNamingStrategy follows these conventions.  S
     assertEquals(HttpStatus.ORDINAL_200_OK, response.getStatusLine().getStatusCode());
   }
   ```
-* __Unit test shouldn't test String Contexts. Integration test are better for this purpose.__
+* __Unit test shouldn't test Spring Contexts. Integration test are better for this purpose.__
  
   DO NOT:
  ```java
