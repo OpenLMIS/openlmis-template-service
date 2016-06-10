@@ -42,6 +42,184 @@ Examples:
 Note: UI-related keys (labels, buttons, etc.) are not addressed here, as they would be owned by the
 UI, and not the Independent Service.
 
+# Unit tests
+* __Every single test should be independent and isolated. Unit test shouldn't depend on another unit test.__
+
+  DO NOT:
+  ```java
+  List<Item> list = new ArrayList<>();
+
+  @Test
+  public void testListSize1() {
+    Item item = new Item();
+    list.add(item);
+    assertEquals(1, list.size());
+  }
+
+  @Test
+  public void testListSize2() {
+    Item item = new Item();
+    list.add(item);
+    assertEquals(2, list.size());
+  }
+  ```
+* __One behavior should be tested in just one unit test.__
+
+  DO NOT:
+  ```java
+  @Test
+  public void testIsNotAnAdultIfAgeLessThan18AndIsPersonAbleToRunForPresident() {
+    int age = 17;
+    boolean isAdult = ageService.isAdult(age);
+    assertFalse(isAdult);
+
+    boolean isAbleToRunForPresident = electionsService.isAbleToRunForPresident(age)
+    assertFalse(isAbleToRunForPresident);
+  }
+  ```
+  DO:
+    ```java
+
+  @Test
+  public void testIsNotAnAdultIfAgeLessThan18() {
+    int age = 17;
+    boolean isAdult = ageService.isAdult(age);
+    assertFalse(isAdult);
+  }
+
+  @Test
+  public void testIsPersonAbleToRunForPresident() {
+    int age = 17;
+    boolean isAbleToRunForPresident = electionsService.isAbleToRunForPresident(age)
+    assertFalse(isAbleToRunForPresident);
+  }
+  ```
+* __Every unit test should have at least one assertion.__
+
+  DO NOT:
+  ```java
+  @Test
+  public void testIsNotAnAdultIfAgeLessThan18() {
+    int age = 17;
+    boolean isAdult = ageService.isAdult(age);
+  }
+  ```
+
+  DO:
+  ```java
+  @Test
+  public void testIsNotAnAdultIfAgeLessThan18() {
+    int age = 17;
+    boolean isAdult = ageService.isAdult(age);
+    assertFalse(isAdult);
+  }
+  ```
+* __Don't make unnecessary assertions. Don't assert mocked behavior, avoid assertions that check the exact same thing as another unit test.__
+
+  DO NOT:
+ ```java
+  @Test
+  public void testIsNotAnAdultIfAgeLessThan18() {
+    int age = 17;
+    assertEquals(17, age);
+
+    boolean isAdult = ageService.isAdult(age);
+    assertFalse(isAdult);
+  }
+  ```
+* __Unit test has to be independent from external resources (i.e. don't connect with databases or servers)__
+
+  DO NOT:
+ ```java
+  @Test
+  public void testIsNotAnAdultIfAgeLessThan18() {
+    String uri = String.format("http://127.0.0.1:8080/age/", HOST, PORT);
+    HttpPost httpPost = new HttpPost(uri);
+    HttpResponse response = getHttpClient().execute(httpPost);
+    assertEquals(HttpStatus.ORDINAL_200_OK, response.getStatusLine().getStatusCode());
+  }
+  ```
+* __Unit test shouldn't test Spring Contexts. Integration tests are better for this purpose.__
+
+  DO NOT:
+ ```java
+  @RunWith(SpringJUnit4ClassRunner.class)
+  @ContextConfiguration(locations = {"/services-test-config.xml"})
+  public class MyServiceTest implements ApplicationContextAware
+  {
+
+    @Autowired
+    MyService service;
+    ...
+      @Override
+      public void setApplicationContext(ApplicationContext context) throws BeansException
+      {
+          // something with the context here
+      }
+  }
+  ```
+* __Test method name should consistently show what is being tested.__
+
+  DO:
+  ```java
+  @Test
+  public void testIsNotAnAdultIfAgeLessThan18() {
+    ...
+  }
+  ```
+  DO NOT:
+  ```java
+
+  @Test
+  public void firstTests() {
+    ...
+  }
+  ```
+* __Unit test should be repeatable - each run should yield the same result.__
+
+  DO NOT:
+  ```java
+  @Test
+  public void testIsNotAnAdultIfAgeLessThan18() {
+    int age = randomGenerator.nextInt(100);
+    boolean isAdult = ageService.isAdult(age);
+    assertFalse(isAdult);
+  }
+  ```
+* __You should remember about intializing and cleaning each global state between test runs.__
+
+  DO:
+  ```java
+  @Mock
+  private AgeService ageService;
+  private age;
+
+  @Before
+  public void init() {
+    age = 18;
+    when(ageService.isAdult(age)).thenReturn(true);
+  }
+
+  @Test
+  public void testIsNotAnAdultIfAgeLessThan18() {
+    boolean isAdult = ageService.isAdult(age);
+    assertTrue(isAdult);
+  }
+  ```
+* __Test should run fast. When we have hundreds of tests we just don't want to wait several minutes till all tests pass.__
+
+  DO NOT:
+ ```java
+  @Test
+  public void testIsNotAnAdultIfAgeLessThan18() {
+    int age = 17;
+    sleep(1000);
+    boolean isAdult = ageService.isAdult(age);
+    sleep(1000);
+    assertFalse(isAdult);
+  }
+  ```
+
 # Testing services dependent on external APIs
 OpenLMIS is using WireMock for mocking web services. An example integration test can be found here:
 https://github.com/OpenLMIS/openlmis-example/blob/master/src/test/java/org/openlmis/example/WeatherServiceTest.java
