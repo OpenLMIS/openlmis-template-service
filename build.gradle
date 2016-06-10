@@ -37,6 +37,7 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-data-jpa"
     compile "org.postgresql:postgresql:9.4.1208"
     compile "com.github.tomakehurst:wiremock:1.58"
+    compile "org.springframework:spring-test"
 
     testCompile "junit:junit"
     testCompile "org.mockito:mockito-core:1.+"
@@ -50,6 +51,36 @@ flyway {
     sqlMigrationPrefix = ''
     placeholderPrefix = '#['
     placeholderSuffix = ']'
+}
+
+sourceSets {
+    integrationTest {
+        java {
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+            srcDir file('src/integration-test/java')
+        }
+        resources.srcDir file('src/integration-test/resources')
+    }
+}
+
+configurations {
+    integrationTestCompile.extendsFrom testCompile
+    integrationTestRuntime.extendsFrom testRuntime
+}
+
+task integrationTest(type: Test) {
+    testClassesDir = sourceSets.integrationTest.output.classesDir
+    classpath = sourceSets.integrationTest.runtimeClasspath
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+check.dependsOn integrationTest
+integrationTest.mustRunAfter test
+
+tasks.withType(Test) {
+    reports.html.destination = file("${reporting.baseDir}/${name}")
 }
 
 // Usage: gradle generateMigration [-PmigrationName=name_of_migration]

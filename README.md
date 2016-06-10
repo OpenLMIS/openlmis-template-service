@@ -42,6 +42,7 @@ that most Services will find useful:
 will be generated under `src/main/resources/db/migration`. Put your
 migration SQL into it.
 - `test` to run unit tests
+- `integrationTest` to run integration tests
 
 The **test results** are shown in the console.
 
@@ -85,7 +86,7 @@ $ gradle clean build
 $ gradle bootRun
 ```
 
-### Build Deployment Image
+### <a name="buildimage">Build Deployment Image</a>
 The specialized docker-compose.builder.yml is geared toward CI and build 
 servers for automated building, testing and docker image generation of 
 the service.
@@ -115,3 +116,51 @@ volume and maps tomcat's port directly to the host.
 - `docker-compose.builder.yml`:  an alternative docker-compose file
 suitable for CI type of environments to test & build this Service
 and generate a publishable/deployment ready Image of the service.
+
+### Logging
+Logging is implemented using SLF4J in the code, Logback in Spring Boot, and routed to an 
+external Syslog server. There is a default configuration XML (logback.xml) in the resources 
+folder. To configure the log level for the development environment, simply modify the logback.xml
+to suit your needs.
+
+Configuring log level for a production environment is a bit more complex, as the code has already
+been packaged into a Spring Boot jar file. However, the default log configuration XML can be 
+overridden by setting the Spring Boot logging.config property to an external logback.xml when the
+jar is executed. The container needs to be run with a JAVA_OPTS environment variable set to a 
+logback.xml location, and with a volume with the logback.xml mounted to that location. Some docker 
+compose instructions have been provided to demonstrate this.
+
+1. Build the deployment image. (See [Build Deployment Image](#buildimage))
+2. Get a logback.xml file and modify it to suit your log level configuration.
+3. Modify `docker-compose.builder.yml` to point to your logback.xml location.
+  a. Under `volumes`, where it shows two logback.xml locations separated by a colon, change the 
+  location before the colon.
+4. Run the command below.
+
+```shell
+> docker-compose -f docker-compose.builder.yml run --service-ports template-service
+```
+
+### Internationalization (i18n)
+Internationalization is implemented by the definition of two beans found in the Application 
+class, localeResolver and messageSource. (Alternatively, they could be defined in an application 
+context XML file.) The localeResolver determines the locale, using a cookie named `lang` in the 
+request, with `en` (for English) as the default. The messageSource determines where to find the 
+message files.
+
+Note there is a custom message source interface, ExposedMessageSource, with a corresponding class
+ExposedMessageSourceImpl. These provide a method to get all the messages in a locale-specific 
+message file.
+
+See the MessageController class for examples on how to get messages.
+
+### Debugging
+To debug the Spring Boot application, use the `--debug-jvm` option.
+
+```shell
+$ gradle bootRun --debug-jvm
+```
+
+This will enable debugging for the application, listening on port 5005, which the container has 
+exposed. Note that the process starts suspended, so the application will not start up until the 
+debugger has connected.
