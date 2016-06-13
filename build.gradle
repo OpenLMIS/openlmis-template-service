@@ -44,9 +44,9 @@ dependencies {
 }
 
 flyway {
-    url = "jdbc:postgresql://openlmis-db:5432/open_lmis"
-    user = "postgres"
-    password = "p@ssw0rd"
+    url = "$System.env.DATABASE_URL"
+    user = "$System.env.POSTGRES_USER"
+    password = "$System.env.POSTGRES_PASSWORD"
     schemas = ['public']
     sqlMigrationPrefix = ''
     placeholderPrefix = '#['
