@@ -11,6 +11,7 @@ services:
       - 'build'
     environment:
       GRADLE_OPTS: '-Dorg.gradle.daemon=false'
+    env_file: .env
   image:
     build: .
     image: openlmis/template-service
