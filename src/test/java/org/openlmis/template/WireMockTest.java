@@ -14,6 +14,8 @@ import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -21,6 +23,8 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 public class WireMockTest {
+
+  Logger logger = LoggerFactory.getLogger(WireMockTest.class);
 
   private class WireMockTestClient {
     String resourceUrl = "http://localhost:8080/api/resource";
@@ -39,7 +43,8 @@ public class WireMockTest {
       HttpEntity<String> entity = new HttpEntity<>(messageJson, headers);
       try {
         restTemplate.postForEntity(resourceUrl, entity, Object.class);
-      } catch (HttpClientErrorException ignored) {
+      } catch (HttpClientErrorException exception) {
+        logger.debug(exception.getMessage());
       }
     }
   }
@@ -68,5 +73,4 @@ public class WireMockTest {
         .withRequestBody(matching(".*1234.*"))
         .withHeader("Content-Type", matching("application/json")));
   }
-
 }
