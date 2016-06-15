@@ -16,6 +16,7 @@ apply plugin: 'idea'
 apply plugin: 'spring-boot'
 apply plugin: 'checkstyle'
 apply plugin: "jacoco"
+apply plugin: 'pmd'
 
 jar {
     baseName = 'openlmis-template-service'
@@ -121,3 +122,10 @@ checkstyle {
 build.dependsOn jacocoTestReport
 // Makes sure checkstyle is run before build completes
 build.dependsOn check
+
+pmd {
+    toolVersion = '5.2.3'
+    consoleOutput= true
+    ignoreFailures = false
+    reportsDir = file("build/reports/pmd")
+}
