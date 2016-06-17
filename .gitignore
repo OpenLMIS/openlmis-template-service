@@ -6,3 +6,4 @@ build/
 out/
 .idea/
 .env
+.tx/
