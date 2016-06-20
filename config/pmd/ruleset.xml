@@ -1,32 +1,33 @@
 <?xml version="1.0"?>
 <ruleset name="OpenLMIS ruleset">
 
-    <rule ref="rulesets/strings.xml"/>
+    <rule ref="rulesets/java/strings.xml"/>
 
-    <rule ref="rulesets/unusedcode.xml/UnusedLocalVariable"/>
-    <rule ref="rulesets/unusedcode.xml/UnusedPrivateField"/>
+    <rule ref="rulesets/java/basic.xml"/>
 
-    <rule ref="rulesets/imports.xml/DuplicateImports"/>
+    <rule ref="rulesets/java/braces.xml"/>
 
-    <rule ref="rulesets/finalizer.xml/FinalizeShouldBeProtected"/>
+    <rule ref="rulesets/java/empty.xml"/>
 
-    <rule ref="rulesets/design.xml/PreserveStackTrace"/>
+    <rule ref="rulesets/java/unusedcode.xml/UnusedLocalVariable"/>
+    <rule ref="rulesets/java/unusedcode.xml/UnusedPrivateField"/>
 
-    <rule ref="rulesets/strictexception.xml/AvoidThrowingRawExceptionTypes"/>
-    <rule ref="rulesets/strictexception.xml/DoNotThrowExceptionInFinally"/>
+    <rule ref="rulesets/java/imports.xml/DuplicateImports"/>
 
-    <rule ref="rulesets/basic.xml/ReturnFromFinallyBlock"/>
-    <rule ref="rulesets/basic.xml/UnnecessaryConversionTemporary"/>
-    <rule ref="rulesets/basic.xml/DontCallThreadRun"/>
+    <rule ref="rulesets/java/finalizers.xml/FinalizeShouldBeProtected"/>
 
-    <rule ref="rulesets/basic.xml/EmptyCatchBlock"/>
+    <rule ref="rulesets/java/design.xml/PreserveStackTrace"/>
 
-    <rule ref="rulesets/codesize.xml/CyclomaticComplexity"/>
-    <rule ref="rulesets/codesize.xml/TooManyMethods"/>
+    <rule ref="rulesets/java/strictexception.xml/AvoidThrowingRawExceptionTypes"/>
+    <rule ref="rulesets/java/strictexception.xml/DoNotThrowExceptionInFinally"/>
 
-    <rule ref="rulesets/braces.xml"/>
+    <rule ref="rulesets/java/codesize.xml/CyclomaticComplexity">
+        <properties>
+            <property name="reportLevel" value="11"/>
+        </properties>
+    </rule>
+    <rule ref="rulesets/java/codesize.xml/TooManyMethods"/>
 
-    <rule ref="rulesets/logging-java.xml/AvoidPrintStackTrace"/>
+    <rule ref="rulesets/java/logging-java.xml/AvoidPrintStackTrace"/>
 
-    <rule ref="rulesets/javabeans.xml/BeanMembersShouldSerialize"/>
 </ruleset>

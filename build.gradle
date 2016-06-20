@@ -142,8 +142,16 @@ build.dependsOn jacocoTestReport
 build.dependsOn check
 
 pmd {
-    toolVersion = '5.2.3'
+    toolVersion = '5.4.0'
     consoleOutput= true
     ignoreFailures = false
+    ruleSetFiles = files("config/pmd/ruleset.xml")
     reportsDir = file("build/reports/pmd")
+}
+
+tasks.withType(Pmd){
+    reports {
+        xml.enabled true
+        html.enabled true
+    }
 }
