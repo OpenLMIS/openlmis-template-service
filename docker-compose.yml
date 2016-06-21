@@ -1,13 +1,13 @@
 version: "2"
 services:
   template-service:
-    image: template-service
+    image: openlmis/template-service
     links:
       - db
       - log
     ports:
-      - "8080:8080"
-      - "5005:5005"
+      - "8080"
+    env_file: .env
   db:
     image: openlmis/postgres
     ports:

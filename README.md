@@ -131,6 +131,16 @@ volume and maps tomcat's port directly to the host.
 - `docker-compose.builder.yml`:  an alternative docker-compose file
 suitable for CI type of environments to test & build this Service
 and generate a publishable/deployment ready Image of the service.
+- `docker-compose.prod.yml`:  Docker-compose file suitable for production.
+Contains nginx-proxy image and virtual host configuration of each service.
+
+### Running complete application with nginx proxy
+1. Enter desired `VIRTUAL_HOST` for each service in the `docker-compose.prod.yml` file.
+2. Start up containers
+```shell
+> docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
+```
+3. The application should be available at port 80.
 
 ### Logging
 Logging is implemented using SLF4J in the code, Logback in Spring Boot, and routed to an 
