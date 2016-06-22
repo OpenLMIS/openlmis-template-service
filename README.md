@@ -179,6 +179,16 @@ message file.
 
 See the MessageController class for examples on how to get messages.
 
+Additionally, [Transifex](https://www.transifex.com/) has been integrated into the development and 
+build process. In order to sync with the project's resources in Transifex, you must provide 
+values for the following keys: `TRANSIFEX_USER`, `TRANSIFEX_PASSWORD`.
+
+For the development environment in Docker, you can sync with Transifex by running the
+`sync_transifex.sh` script. This will upload your source messages file to the Transifex project 
+and download translated messages files.
+
+The build process has syncing with Transifex seamlessly built-in.
+
 ### Debugging
 To debug the Spring Boot application, use the `--debug-jvm` option.
 
