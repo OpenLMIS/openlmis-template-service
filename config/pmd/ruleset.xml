@@ -13,6 +13,7 @@
     <rule ref="rulesets/java/unusedcode.xml/UnusedPrivateField"/>
 
     <rule ref="rulesets/java/imports.xml/DuplicateImports"/>
+    <rule ref="rulesets/java/imports.xml/UnusedImports"/>
 
     <rule ref="rulesets/java/finalizers.xml/FinalizeShouldBeProtected"/>
 
