@@ -9,6 +9,11 @@ https://github.com/OpenLMIS/open-lmis/blob/master/STYLE-GUIDE.md
 # Java
 OpenLMIS has [adopted](https://groups.google.com/d/msg/openlmis-dev/CCwBglBFbpk/pY406WbkAAAJ) the [Google Java Styleguide](https://google.github.io/styleguide/javaguide.html).  These checks are *mostly* encoded in Checkstyle and should be enforced for all contributions.
 
+# RESTful Interface Design & Documentation
+Designing and documenting 
+
+- resource names should be pluralized and consistent.  e.g. prefer `requistions`, never `requisition`.
+
 # Postgres Database
 In most cases, the Hibernate DefaultNamingStrategy follows these conventions.  Schemas and table names will however need to be specified.
 
