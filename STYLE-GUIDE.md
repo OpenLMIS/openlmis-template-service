@@ -12,7 +12,25 @@ OpenLMIS has [adopted](https://groups.google.com/d/msg/openlmis-dev/CCwBglBFbpk/
 # RESTful Interface Design & Documentation
 Designing and documenting 
 
-- resource names should be pluralized and consistent.  e.g. prefer `requistions`, never `requisition`.
+Note: many of these guidelines come from [Best Practices for Designing a Pragmatic RESTful API]
+(http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api)
+
+* Result filtering, sorting and searching should be done by query parameters. [Details]
+(http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#advanced-queries)
+* Return a resource representation after a create/update. [Details]
+(http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#useful-post-responses)
+* Use camelCase (vs. snake_case) for names, since we are using Java and JSON. [Details]
+(http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#snake-vs-camel)
+* Don't use response envelopes as default (if not using Spring Data REST). [Details]
+(http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#envelope)
+* Use JSON encoded bodies for create/update. [Details]
+(http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#json-requests)
+* Use a clear and consistent error payload. [Details]
+(http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#errors)
+* Use the HTTP status codes effectively. [Details]
+(http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#http-status)
+* Resource names should be pluralized and consistent.  e.g. prefer `requisitions`, never 
+`requisition`.
 
 # Postgres Database
 In most cases, the Hibernate DefaultNamingStrategy follows these conventions.  Schemas and table names will however need to be specified.
