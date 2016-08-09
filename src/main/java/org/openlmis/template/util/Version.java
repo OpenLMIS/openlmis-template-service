@@ -46,14 +46,12 @@ public class Version {
 
     InputStream inputStream = getClass().getResourceAsStream(VERSION);
     if (inputStream != null) {
-      BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-      try {
+      try(BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
         this.service = getValueFromLine(reader.readLine());
         this.build = getValueFromLine(reader.readLine());
         this.branch = getValueFromLine(reader.readLine());
         this.timeStamp = getValueFromLine(reader.readLine());
         this.version = getValueFromLine(reader.readLine());
-        reader.close();
       } catch (IOException ex) {
         LOGGER.error("Error reading version information from version file");
       }
