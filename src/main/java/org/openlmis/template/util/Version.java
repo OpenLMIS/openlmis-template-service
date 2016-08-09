@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+/**
+ * Class containing version information.
+ */
 public class Version {
 
   public static final String VERSION = "/version";
@@ -34,10 +37,10 @@ public class Version {
   @Setter
   private String version = "version";
 
-  Logger logger = LoggerFactory.getLogger(Version.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(Version.class);
 
   /**
-   * Allow displaying build information.
+   * Class constructor used to fill Version with data from version file.
    */
   public Version() {
 
@@ -52,7 +55,7 @@ public class Version {
         this.version = getValueFromLine(reader.readLine());
         reader.close();
       } catch (IOException ex) {
-        logger.error("Error reading line from file");
+        LOGGER.error("Error reading version information from version file");
       }
     }
   }
