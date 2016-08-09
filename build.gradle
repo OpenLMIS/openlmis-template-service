@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat
+
 buildscript {
     repositories {
         mavenCentral()
@@ -154,5 +156,27 @@ tasks.withType(Pmd){
     reports {
         xml.enabled true
         html.enabled true
+    }
+}
+
+def time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+time.setTimeZone(TimeZone.getTimeZone("GMT"))
+
+def versionToCopy = copySpec {
+    from 'src/main/resources'
+    include 'version_template'
+}
+
+task generateBuildInfo(type:Copy) {
+    with versionToCopy
+    into 'build/resources/main'
+    rename { 'version' }
+    expand([
+            build: "$System.env.BUILD_NUMBER", // ${build}
+            branch: "$System.env.GIT_BRANCH", // ${branch}
+            time: time.format(new Date()) + " GMT" // ${time}
+    ])
+    doLast{
+        delete 'src/main/resources/version_template'
     }
 }
