@@ -1,4 +1,4 @@
-Service: requisition
+Service: template
 Build: ${build}
 Branch: ${branch}
 Timestamp: ${time}
