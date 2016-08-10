@@ -37,11 +37,9 @@ public class Version {
    */
   public Version() {
 
-    InputStream inputStream;
-    try {
-      Properties properties = new Properties();
-      inputStream = getClass().getClassLoader().getResourceAsStream(VERSION);
+    try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(VERSION)) {
       if (inputStream != null) {
+        Properties properties = new Properties();
         properties.load(inputStream);
         service = properties.getProperty("Service");
         build = properties.getProperty("Build");
