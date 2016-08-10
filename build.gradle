@@ -170,7 +170,7 @@ def versionToCopy = copySpec {
 task generateBuildInfo(type:Copy) {
     with versionToCopy
     into 'build/resources/main'
-    rename { 'version' }
+    rename { 'version.properties' }
     expand([
             build: "$System.env.BUILD_NUMBER", // ${build}
             branch: "$System.env.GIT_BRANCH", // ${branch}
