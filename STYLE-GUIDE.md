@@ -66,6 +66,15 @@ Note: UI-related keys (labels, buttons, etc.) are not addressed here, as they wo
 UI, and not the Independent Service.
 
 # Unit tests
+
+Summary
+* Who:  written by code-author
+* What: the smallest unit (e.g. one piece of a model's behavior, a function, etc)
+* When: at build time, should be /fast/ and targetted - I can run just a portion of the test suite
+* Where: able to access package-private scope of thing under test
+* Why: to help test the fundamental pieces/functionality, helps guide and document design, protects against regression and guides future re-factors.
+
+
 * __Every single test should be independent and isolated. Unit test shouldn't depend on another unit test.__
 
   DO NOT:
@@ -242,6 +251,24 @@ UI, and not the Independent Service.
     assertFalse(isAdult);
   }
   ```
+
+# Integration Testing
+
+Summary:
+* Who: Code author
+* What: Test basic functionality of the integration of two components
+* When: Run-time when the components are wired together
+* Where: Can run locally (likely lives in Service), however must useful in CI environments
+* Why:  To ensure the basic contracts between Services/components are working and are available
+
+# End-to-End
+
+Summary:
+* Who
+* What
+* When
+* Where
+* Why
 
 # Testing services dependent on external APIs
 OpenLMIS is using WireMock for mocking web services. An example integration test can be found here:
