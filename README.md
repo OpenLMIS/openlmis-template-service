@@ -7,7 +7,6 @@ OpenLMIS 3.x Independent Service.
 * Docker Compose 1.6+
 
 ## Quick Start
-
 1. Fork/clone this repository from GitHub.
 
  ```shell
@@ -37,9 +36,7 @@ environment, start the Service with: `gradle bootRun`
 and version. Note that you can determine yourDockerIPAddress by running `docker-machine ip`.
 10. Go to `http://<yourDockerIPAddress>:8080/api/` to see the APIs.
 
-
-## Building & Testing
-
+## <a name="building">Building & Testing</a>
 Gradle is our usual build tool.  This template includes common tasks 
 that most Services will find useful:
 
@@ -62,8 +59,7 @@ publish these.
 
 See [Developing with Docker](#devdocker). 
 
-## <a name="devdocker"></a> Developing with Docker
-
+## <a name="devdocker">Developing with Docker</a>
 OpenLMIS utilizes Docker to help with development, building, publishing
 and deployment of OpenLMIS Services. This helps keep development to 
 deployment environments clean, consistent and reproducible and 
@@ -84,7 +80,7 @@ instructions to:
 - build a lean image of itself suitable for deployment
 - publish its deployment image to a Docker Repository
 
-### Development Environment
+### <a name="devenv">Development Environment</a>
 Launches into shell with Gradle & JDK available suitable for building 
 Service.  PostgreSQL connected suitable for testing. If you run the 
 Service, it should be available on port 8080.
@@ -114,7 +110,7 @@ Start instructions.
 ### Publish to Docker Repository
 TODO
 
-### Docker's file details
+### <a name="dockerfiles">Docker's file details</a>
 A brief overview of the purpose behind each docker related file
 
 - `Dockerfile`:  build a deployment ready image of this service 
@@ -134,7 +130,7 @@ and generate a publishable/deployment ready Image of the service.
 - `docker-compose.prod.yml`:  Docker-compose file suitable for production.
 Contains nginx-proxy image and virtual host configuration of each service.
 
-### Running complete application with nginx proxy
+### <a name="nginx">Running complete application with nginx proxy</a>
 1. Enter desired `VIRTUAL_HOST` for each service in the `docker-compose.prod.yml` file.
 2. Start up containers
 ```shell
@@ -142,7 +138,7 @@ Contains nginx-proxy image and virtual host configuration of each service.
 ```
 3. The application should be available at port 80.
 
-### Logging
+### <a name="logging">Logging</a>
 Logging is implemented using SLF4J in the code, Logback in Spring Boot, and routed to an 
 external Syslog server. There is a default configuration XML (logback.xml) in the resources 
 folder. To configure the log level for the development environment, simply modify the logback.xml
@@ -166,7 +162,7 @@ compose instructions have been provided to demonstrate this.
 > docker-compose -f docker-compose.builder.yml run --service-ports template-service
 ```
 
-### Internationalization (i18n)
+### <a name="internationalization">Internationalization (i18n)</a>
 Internationalization is implemented by the definition of two beans found in the Application 
 class, localeResolver and messageSource. (Alternatively, they could be defined in an application 
 context XML file.) The localeResolver determines the locale, using a cookie named `lang` in the 
@@ -189,7 +185,7 @@ and download translated messages files.
 
 The build process has syncing with Transifex seamlessly built-in.
 
-### Debugging
+### <a name="debugging">Debugging</a>
 To debug the Spring Boot application, use the `--debug-jvm` option.
 
 ```shell
