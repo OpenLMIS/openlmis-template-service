@@ -261,14 +261,33 @@ Summary:
 * Where: Can run locally (likely lives in Service), however must useful in CI environments
 * Why:  To ensure the basic contracts between Services/components are working and are available
 
+TODO:  write example of a web-service test (webserver to 
+
+1. Webserver to application code
+  * tests proper serialization and de-serialization - basic contract
+  * typically input and output is JSON and HTTP status codes
+  * doesn't tests (mocks) database, external services (e.g. auth), etc
+2. Application code to Database
+  * tests that ORM/mappers work with DB schema
+3. Application code (service) to an external service
+  * tests that external service is available (and perhaps correct version)
+  * tests basic JSON and HTTP status codes
+  * doesn't duplicate integration tests that the external service should have
+4. Service Discovery
+  * tests if service register endpoints with nginx
+  * all other services mocked out, not an e2e test
+
 # End-to-End
 
 Summary:
-* Who
-* What
-* When
-* Where
-* Why
+* Who: Likely written by QA 
+* What: User-flow (multiple pieces all together like a user would do)
+* When: Written when user-visibile functionality is ready
+* Where: Stored in Blue, Run in CI typically
+* Why: To show user-functionality working - all components are working together
+
+TODO:  needs tool standardization (postman? selenium?)
+
 
 # Testing services dependent on external APIs
 OpenLMIS is using WireMock for mocking web services. An example integration test can be found here:
