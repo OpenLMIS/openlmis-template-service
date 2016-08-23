@@ -8,9 +8,9 @@ OpenLMIS, like many software projects, relies on testing to guide development an
 ## Types of Tests
 The following test categories have been identified for use in OpenLMIS.  As illustrated in this great [slide deck](http://martinfowler.com/articles/microservice-testing/), we expect the effort/number of tests in each category to reflect the [test pyramid](http://martinfowler.com/articles/microservice-testing/#conclusion-test-pyramid):
 
-* [Unit](#unit)
-* [Integration](#integration)
-* [End-to-End](#e2e)
+1. [Unit](#unit)
+2. [Integration](#integration)
+3. [End-to-End](#e2e)
 
 ### Unit tests <a name="unit"></a>
 
