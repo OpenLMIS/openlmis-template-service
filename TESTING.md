@@ -1,4 +1,15 @@
-# Unit tests
+# Testing Guide
+
+## Test Strategy
+
+### Categories
+
+* [Unit](#unit)
+* [Integration](#integration)
+* [End-to-End](#e2e)
+
+
+## Unit tests <a name="unit"></a>
 
 Summary
 * Who:  written by code-author
@@ -185,7 +196,7 @@ Summary
   }
   ```
 
-# Integration Testing
+## Integration Testing <a name="integration"></a>
 
 Summary:
 * Who: Code author
@@ -210,7 +221,7 @@ TODO:  write example of a web-service test (webserver to
   * tests if service register endpoints with nginx
   * all other services mocked out, not an e2e test
 
-# End-to-End
+## End-to-End <a name="e2e"></a>
 
 Summary:
 * Who: Likely written by QA 
@@ -222,7 +233,7 @@ Summary:
 TODO:  needs tool standardization (postman? selenium?)
 
 
-# Testing services dependent on external APIs
+## Testing services dependent on external APIs
 OpenLMIS is using WireMock for mocking web services. An example integration test can be found here:
 https://github.com/OpenLMIS/openlmis-example/blob/master/src/test/java/org/openlmis/example/WeatherServiceTest.java
 
