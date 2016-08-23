@@ -1,15 +1,18 @@
 # Testing Guide
+This guide is intended to layout the general automated test strategy for OpenLMIS.
 
 ## Test Strategy
+OpenLMIS, like many software projects, relies on testing to guide development and prevent regressions.  To effect this we've adopted a standard set of tools to write and execute our tests, and categorize them to understand what types of tests we have, who writes them, when they're written, run, and where they live.
 
-### Categories
+
+## Types of Tests
+The following test categories have been identified for use in OpenLMIS.  As illustrated in this great [slide deck](http://martinfowler.com/articles/microservice-testing/), we expect the effort/number of tests in each category to reflect the [test pyramid](http://martinfowler.com/articles/microservice-testing/#conclusion-test-pyramid):
 
 * [Unit](#unit)
 * [Integration](#integration)
 * [End-to-End](#e2e)
 
-
-## Unit tests <a name="unit"></a>
+### Unit tests <a name="unit"></a>
 
 Summary
 * Who:  written by code-author
@@ -18,6 +21,7 @@ Summary
 * Where: able to access package-private scope of thing under test
 * Why: to help test the fundamental pieces/functionality, helps guide and document design, protects against regression and guides future re-factors.
 
+#### Unit test examples
 
 * __Every single test should be independent and isolated. Unit test shouldn't depend on another unit test.__
 
@@ -196,7 +200,7 @@ Summary
   }
   ```
 
-## Integration Testing <a name="integration"></a>
+### Integration Testing <a name="integration"></a>
 
 Summary:
 * Who: Code author
@@ -221,7 +225,7 @@ TODO:  write example of a web-service test (webserver to
   * tests if service register endpoints with nginx
   * all other services mocked out, not an e2e test
 
-## End-to-End <a name="e2e"></a>
+### End-to-End <a name="e2e"></a>
 
 Summary:
 * Who: Likely written by QA 
