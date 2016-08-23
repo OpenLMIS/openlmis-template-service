@@ -14,12 +14,11 @@ The following test categories have been identified for use in OpenLMIS.  As illu
 
 ### Unit tests <a name="unit"></a>
 
-Summary
-* Who:  written by code-author
+* Who:  written by code-author during implementation
 * What: the smallest unit (e.g. one piece of a model's behavior, a function, etc)
 * When: at build time, should be /fast/ and targetted - I can run just a portion of the test suite
-* Where: able to access package-private scope of thing under test
-* Why: to help test the fundamental pieces/functionality, helps guide and document design, protects against regression and guides future re-factors.
+* Where: next to unit under test, generally able to access package-private scope of unit under test
+* Why: to test fundamental pieces/functionality, helps guide and document design and refactors, protects against regression
 
 #### Unit test examples
 
