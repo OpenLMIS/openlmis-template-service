@@ -208,17 +208,21 @@ The following test categories have been identified for use in OpenLMIS.  As illu
 * Where: Reside inside a service, seperated from other types of tests/code.
 * Why:  Ensures that the basic pathways to a service's external run-time dependancies work.  e.g. that a db schema supports the ORM, or a non-responsive service call is gracefully handled.
 
+### Contract <a name="contract"></a>
+
+* Who: Code author during implementation, with input from BA/QA.
+* What: Enforces contracts between and to services.
+* When: Ran in CI.
+* Where: Reside inside seperate repository:  [openlmis-contract-tests](http://github.com/openlmis/openlmis-contract-tests).
+* Why:  Tests multiple services working together, testing contracts that a Service both provides as well as the requirements a dependant has. 
+
 ### End-to-End <a name="e2e"></a>
 
-Summary:
-* Who: Likely written by QA 
-* What: User-flow (multiple pieces all together like a user would do)
-* When: Written when user-visibile functionality is ready
-* Where: Stored in Blue, Run in CI typically
-* Why: To show user-functionality working - all components are working together
-
-TODO:  needs tool standardization (postman? selenium?)
-
+* Who: QA / developer with input from BA.
+* What: Typical/core business scenarios.
+* When: Ran in CI.
+* Where: Resides in seperate repository.
+* Why: Ensures all the pieces are working together to carry-out a business scenario.  Helps ensure end-users can achieve their goals.
 
 ## Testing services dependent on external APIs
 OpenLMIS is using WireMock for mocking web services. An example integration test can be found here:
