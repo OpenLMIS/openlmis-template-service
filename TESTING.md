@@ -10,14 +10,15 @@ The following test categories have been identified for use in OpenLMIS.  As illu
 
 1. [Unit](#unit)
 2. [Integration](#integration)
-3. [End-to-End](#e2e)
+3. [Contract](#contract)
+4. [End-to-End](#e2e)
 
 ### Unit tests <a name="unit"></a>
 
 * Who:  written by code-author during implementation
 * What: the smallest unit (e.g. one piece of a model's behavior, a function, etc)
 * When: at build time, should be /fast/ and targetted - I can run just a portion of the test suite
-* Where: next to unit under test, generally able to access package-private scope of unit under test
+* Where: Reside inside a service, next to unit under test. Generally able to access package-private scope
 * Why: to test fundamental pieces/functionality, helps guide and document design and refactors, protects against regression
 
 #### Unit test examples
@@ -201,28 +202,11 @@ The following test categories have been identified for use in OpenLMIS.  As illu
 
 ### Integration Testing <a name="integration"></a>
 
-Summary:
-* Who: Code author
-* What: Test basic functionality of the integration of two components
-* When: Run-time when the components are wired together
-* Where: Can run locally (likely lives in Service), however must useful in CI environments
-* Why:  To ensure the basic contracts between Services/components are working and are available
-
-TODO:  write example of a web-service test (webserver to 
-
-1. Webserver to application code
-  * tests proper serialization and de-serialization - basic contract
-  * typically input and output is JSON and HTTP status codes
-  * doesn't tests (mocks) database, external services (e.g. auth), etc
-2. Application code to Database
-  * tests that ORM/mappers work with DB schema
-3. Application code (service) to an external service
-  * tests that external service is available (and perhaps correct version)
-  * tests basic JSON and HTTP status codes
-  * doesn't duplicate integration tests that the external service should have
-4. Service Discovery
-  * tests if service register endpoints with nginx
-  * all other services mocked out, not an e2e test
+* Who: Code author during implementation
+* What: Test basic operation of a service to persistent storage or a service to another service.  When another service is required, a test-double should be used, not the actual service.
+* When: As explicitly asked for, these tests are typically slower and therefore need to be kept seperate from build to not slow development.  Will be run in CI on every change.
+* Where: Reside inside a service, seperated from other types of tests/code.
+* Why:  Ensures that the basic pathways to a service's external run-time dependancies work.  e.g. that a db schema supports the ORM, or a non-responsive service call is gracefully handled.
 
 ### End-to-End <a name="e2e"></a>
 
