@@ -47,6 +47,22 @@ dependencies {
     testCompile "org.mockito:mockito-core:1.+"
 }
 
+idea {
+    project {
+        vcs = 'Git'
+        ipr.withXml { xmlFile ->
+            // enable 'Annotation Processors', source: https://gist.github.com/stephanos/8645809
+            xmlFile.asNode().component
+                    .find { it.@name == 'CompilerConfiguration' }['annotationProcessing'][0]
+                    .replaceNode {
+                annotationProcessing {
+                    profile(default: true, name: 'Default', useClasspath: 'true', enabled: true)
+                }
+            }
+        }
+    }
+}
+
 flyway {
     url = "$System.env.DATABASE_URL"
     user = "$System.env.POSTGRES_USER"
