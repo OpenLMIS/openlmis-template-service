@@ -123,7 +123,8 @@ composition of the Reference Distribution.
 base definition to provide for the normal usage of docker-compose
 inside of a single Service:  building a development environment.
 Wires this Service together with a DB for testing, a gradle cache
-volume and maps tomcat's port directly to the host.
+volume and maps tomcat's port directly to the host. More on how this
+file works: https://docs.docker.com/compose/extends/
 - `docker-compose.builder.yml`:  an alternative docker-compose file
 suitable for CI type of environments to test & build this Service
 and generate a publishable/deployment ready Image of the service.
