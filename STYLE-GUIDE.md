@@ -1,5 +1,6 @@
 # OpenLMIS Service Style Guide
-This is a WIP as a style guide for an Independent Service.  Clones of this file should reference this definition.
+This is a WIP as a style guide for an Independent Service. Clones of this file should reference 
+this definition.
 
 For the original style guide please see:
 https://github.com/OpenLMIS/open-lmis/blob/master/STYLE-GUIDE.md
@@ -7,7 +8,9 @@ https://github.com/OpenLMIS/open-lmis/blob/master/STYLE-GUIDE.md
 ---
 
 # Java
-OpenLMIS has [adopted](https://groups.google.com/d/msg/openlmis-dev/CCwBglBFbpk/pY406WbkAAAJ) the [Google Java Styleguide](https://google.github.io/styleguide/javaguide.html).  These checks are *mostly* encoded in Checkstyle and should be enforced for all contributions.
+OpenLMIS has [adopted](https://groups.google.com/d/msg/openlmis-dev/CCwBglBFbpk/pY406WbkAAAJ) the
+[Google Java Styleguide](https://google.github.io/styleguide/javaguide.html).  These checks are
+*mostly* encoded in Checkstyle and should be enforced for all contributions.
 
 # RESTful Interface Design & Documentation
 Designing and documenting 
@@ -31,15 +34,22 @@ Note: many of these guidelines come from [Best Practices for Designing a Pragmat
 (http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#http-status)
 * Resource names should be pluralized and consistent.  e.g. prefer `requisitions`, never 
 `requisition`.
+* A PUT on a single resource (e.g. PUT /facilities/{id}) is not strictly an update; if the 
+resource does not exist, one should be created using the specified identity (assuming the 
+identity is a valid UUID).
 
 # Postgres Database
-In most cases, the Hibernate DefaultNamingStrategy follows these conventions.  Schemas and table names will however need to be specified.
+In most cases, the Hibernate DefaultNamingStrategy follows these conventions. Schemas and table 
+names will however need to be specified.
 
-* Each Independent Service should store it's tables in its own schema.  The convention is to use the Service's name as the schema.  e.g. The Requistion Service uses the `requisition` schema
+* Each Independent Service should store it's tables in its own schema.  The convention is to use 
+the Service's name as the schema.  e.g. The Requistion Service uses the `requisition` schema
 * Tables, Columns, constraints etc should be all lower case.
-* Table names should be pluralized.  This is to avoid *most* used words. e.g. orders instead of order
+* Table names should be pluralized.  This is to avoid *most* used words. e.g. orders instead of 
+order
 * Table names with multiple words should be snake_case.
-* Column names with multiple words should be merged together.  e.g. `getFirstName()` would map to `firstname`
+* Column names with multiple words should be merged together.  e.g. `getFirstName()` would map to
+ `firstname`
 
 # i18n Naming Conventions
 These naming conventions will be applicable for the messages property files.
