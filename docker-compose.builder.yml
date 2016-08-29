@@ -2,12 +2,17 @@ version: "2"
 services:
   builder:
     image: openlmis/dev
+    links:
+      - db
+      - log
     volumes:
       - '.:/app'
+      - '../logback.xml:/logback.xml'
     command:
       - './build.sh'
     environment:
       GRADLE_OPTS: '-Dorg.gradle.daemon=false'
+      JAVA_OPTS: '-Dlogging.config=/logback.xml'
     env_file: .env
   sonar:
     image: openlmis/dev
@@ -23,21 +28,8 @@ services:
   image:
     build: .
     image: openlmis/template-service
-  template-service:
-    image: openlmis/template-service
-    links:
-      - db
-      - log
-    ports:
-      - "8080:8080"
-    environment:
-      JAVA_OPTS: '-Dlogging.config=/logback.xml'
-    volumes:
-      - '../logback.xml:/logback.xml'
   db:
     image: openlmis/postgres
-    ports:
-      - "5432"
     env_file: .env
   log:
     image: openlmis/rsyslog
