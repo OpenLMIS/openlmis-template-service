@@ -30,14 +30,14 @@ The following test categories have been identified for use in OpenLMIS.  As illu
   List<Item> list = new ArrayList<>();
 
   @Test
-  public void testListSize1() {
+  public void shouldContainOneElementWhenFirstElementisAdded() {
     Item item = new Item();
     list.add(item);
     assertEquals(1, list.size());
   }
 
   @Test
-  public void testListSize2() {
+  public void shouldContainTwoElementsWhenNextElementIsAdded() {
     Item item = new Item();
     list.add(item);
     assertEquals(2, list.size());
@@ -48,7 +48,7 @@ The following test categories have been identified for use in OpenLMIS.  As illu
   DO NOT:
   ```java
   @Test
-  public void testIsNotAnAdultIfAgeLessThan18AndIsPersonAbleToRunForPresident() {
+  public void shouldNotBeAdultAndShouldNotBeAbleToRunForPresidentWhenAgeBelow18() {
     int age = 17;
     boolean isAdult = ageService.isAdult(age);
     assertFalse(isAdult);
@@ -61,14 +61,14 @@ The following test categories have been identified for use in OpenLMIS.  As illu
     ```java
 
   @Test
-  public void testIsNotAnAdultIfAgeLessThan18() {
+  public void shouldNotBeAdultWhenAgeBelow18() {
     int age = 17;
     boolean isAdult = ageService.isAdult(age);
     assertFalse(isAdult);
   }
 
   @Test
-  public void testIsPersonAbleToRunForPresident() {
+  public void shouldNotBeAbleToRunForPresidentWhenAgeBelow18() {
     int age = 17;
     boolean isAbleToRunForPresident = electionsService.isAbleToRunForPresident(age)
     assertFalse(isAbleToRunForPresident);
@@ -79,7 +79,7 @@ The following test categories have been identified for use in OpenLMIS.  As illu
   DO NOT:
   ```java
   @Test
-  public void testIsNotAnAdultIfAgeLessThan18() {
+  public void shouldNotBeAdultWhenAgeBelow18() {
     int age = 17;
     boolean isAdult = ageService.isAdult(age);
   }
@@ -88,7 +88,7 @@ The following test categories have been identified for use in OpenLMIS.  As illu
   DO:
   ```java
   @Test
-  public void testIsNotAnAdultIfAgeLessThan18() {
+  public void shouldNotBeAdultWhenAgeBelow18() {
     int age = 17;
     boolean isAdult = ageService.isAdult(age);
     assertFalse(isAdult);
@@ -99,7 +99,7 @@ The following test categories have been identified for use in OpenLMIS.  As illu
   DO NOT:
  ```java
   @Test
-  public void testIsNotAnAdultIfAgeLessThan18() {
+  public void shouldNotBeAdultWhenAgeBelow18() {
     int age = 17;
     assertEquals(17, age);
 
@@ -112,7 +112,7 @@ The following test categories have been identified for use in OpenLMIS.  As illu
   DO NOT:
  ```java
   @Test
-  public void testIsNotAnAdultIfAgeLessThan18() {
+  public void shouldNotBeAdultWhenAgeBelow18() {
     String uri = String.format("http://127.0.0.1:8080/age/", HOST, PORT);
     HttpPost httpPost = new HttpPost(uri);
     HttpResponse response = getHttpClient().execute(httpPost);
@@ -138,12 +138,12 @@ The following test categories have been identified for use in OpenLMIS.  As illu
       }
   }
   ```
-* __Test method name should consistently show what is being tested.__
+* __Test method name should clearly indicate what is being tested and what is the expected output and condition. The "should - when" pattern should be used in the name.__
 
   DO:
   ```java
   @Test
-  public void testIsNotAnAdultIfAgeLessThan18() {
+  public void shouldNotBeAdultWhenAgeBelow18() {
     ...
   }
   ```
@@ -151,7 +151,12 @@ The following test categories have been identified for use in OpenLMIS.  As illu
   ```java
 
   @Test
-  public void firstTests() {
+  public void firstTest() {
+    ...
+  }
+  
+  @Test
+  public void testIsNotAdult() {
     ...
   }
   ```
@@ -160,7 +165,7 @@ The following test categories have been identified for use in OpenLMIS.  As illu
   DO NOT:
   ```java
   @Test
-  public void testIsNotAnAdultIfAgeLessThan18() {
+  public void shouldNotBeAdultWhenAgeBelow18() {
     int age = randomGenerator.nextInt(100);
     boolean isAdult = ageService.isAdult(age);
     assertFalse(isAdult);
@@ -181,7 +186,7 @@ The following test categories have been identified for use in OpenLMIS.  As illu
   }
 
   @Test
-  public void testIsNotAnAdultIfAgeLessThan18() {
+  public void shouldNotBeAdultWhenAgeBelow18() {
     boolean isAdult = ageService.isAdult(age);
     assertTrue(isAdult);
   }
@@ -191,7 +196,7 @@ The following test categories have been identified for use in OpenLMIS.  As illu
   DO NOT:
  ```java
   @Test
-  public void testIsNotAnAdultIfAgeLessThan18() {
+  public void shouldNotBeAdultWhenAgeBelow18() {
     int age = 17;
     sleep(1000);
     boolean isAdult = ageService.isAdult(age);
