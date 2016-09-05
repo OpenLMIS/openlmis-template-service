@@ -57,9 +57,9 @@ The following test categories have been identified for use in OpenLMIS.  As illu
     assertFalse(isAbleToRunForPresident);
   }
   ```
+  
   DO:
-    ```java
-
+  ```java
   @Test
   public void shouldNotBeAdultWhenAgeBelow18() {
     int age = 17;
