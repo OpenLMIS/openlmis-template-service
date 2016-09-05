@@ -7,12 +7,12 @@ https://github.com/OpenLMIS/open-lmis/blob/master/STYLE-GUIDE.md
 
 ---
 
-# Java
+## Java
 OpenLMIS has [adopted](https://groups.google.com/d/msg/openlmis-dev/CCwBglBFbpk/pY406WbkAAAJ) the
 [Google Java Styleguide](https://google.github.io/styleguide/javaguide.html).  These checks are
 *mostly* encoded in Checkstyle and should be enforced for all contributions.
 
-# RESTful Interface Design & Documentation
+## RESTful Interface Design & Documentation
 Designing and documenting 
 
 Note: many of these guidelines come from [Best Practices for Designing a Pragmatic RESTful API]
@@ -38,7 +38,7 @@ Note: many of these guidelines come from [Best Practices for Designing a Pragmat
 resource does not exist, one should be created using the specified identity (assuming the 
 identity is a valid UUID).
 
-# Postgres Database
+## Postgres Database
 In most cases, the Hibernate DefaultNamingStrategy follows these conventions. Schemas and table 
 names will however need to be specified.
 
@@ -51,7 +51,7 @@ order
 * Column names with multiple words should be merged together.  e.g. `getFirstName()` would map to
  `firstname`
 
-# i18n Naming Conventions
+## i18n Naming Conventions
 These naming conventions will be applicable for the messages property files.
 
 * Keys for the messages property files should follow a hierarchy. However, since there is no 
@@ -75,6 +75,6 @@ Examples:
 Note: UI-related keys (labels, buttons, etc.) are not addressed here, as they would be owned by the
 UI, and not the Independent Service.
 
-# Testing
+## Testing
 
 See the [Testing Guide](TESTING.md).
