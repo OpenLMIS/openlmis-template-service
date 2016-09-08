@@ -4,7 +4,6 @@ This guide is intended to layout the general automated test strategy for OpenLMI
 ## Test Strategy
 OpenLMIS, like many software projects, relies on testing to guide development and prevent regressions.  To effect this we've adopted a standard set of tools to write and execute our tests, and categorize them to understand what types of tests we have, who writes them, when they're written, run, and where they live.
 
-
 ## Types of Tests
 The following test categories have been identified for use in OpenLMIS.  As illustrated in this great [slide deck](http://martinfowler.com/articles/microservice-testing/), we expect the effort/number of tests in each category to reflect the [test pyramid](http://martinfowler.com/articles/microservice-testing/#conclusion-test-pyramid):
 
@@ -57,7 +56,7 @@ The following test categories have been identified for use in OpenLMIS.  As illu
     assertFalse(isAbleToRunForPresident);
   }
   ```
-  
+
   DO:
   ```java
   @Test
@@ -154,7 +153,7 @@ The following test categories have been identified for use in OpenLMIS.  As illu
   public void firstTest() {
     ...
   }
-  
+
   @Test
   public void testIsNotAdult() {
     ...
@@ -219,7 +218,7 @@ The following test categories have been identified for use in OpenLMIS.  As illu
 * What: Enforces contracts between and to services.
 * When: Ran in CI.
 * Where: Reside inside seperate repository:  [openlmis-contract-tests](http://github.com/openlmis/openlmis-contract-tests).
-* Why:  Tests multiple services working together, testing contracts that a Service both provides as well as the requirements a dependant has. 
+* Why:  Tests multiple services working together, testing contracts that a Service both provides as well as the requirements a dependant has.
 
 ### End-to-End <a name="e2e"></a>
 
