@@ -16,7 +16,7 @@ The following test categories have been identified for use in OpenLMIS.  As illu
 
 * Who:  written by code-author during implementation
 * What: the smallest unit (e.g. one piece of a model's behavior, a function, etc)
-* When: at build time, should be /fast/ and targetted - I can run just a portion of the test suite
+* When: at build time, should be /fast/ and targeted - I can run just a portion of the test suite
 * Where: Reside inside a service, next to unit under test. Generally able to access package-private scope
 * Why: to test fundamental pieces/functionality, helps guide and document design and refactors, protects against regression
 
@@ -208,8 +208,8 @@ The following test categories have been identified for use in OpenLMIS.  As illu
 
 * Who: Code author during implementation
 * What: Test basic operation of a service to persistent storage or a service to another service.  When another service is required, a test-double should be used, not the actual service.
-* When: As explicitly asked for, these tests are typically slower and therefore need to be kept seperate from build to not slow development.  Will be run in CI on every change.
-* Where: Reside inside a service, seperated from other types of tests/code.
+* When: As explicitly asked for, these tests are typically slower and therefore need to be kept separate from build to not slow development.  Will be run in CI on every change.
+* Where: Reside inside a service, separated from other types of tests/code.
 * Why:  Ensures that the basic pathways to a service's external run-time dependancies work.  e.g. that a db schema supports the ORM, or a non-responsive service call is gracefully handled.
 
 ### Contract <a name="contract"></a>
@@ -217,8 +217,14 @@ The following test categories have been identified for use in OpenLMIS.  As illu
 * Who: Code author during implementation, with input from BA/QA.
 * What: Enforces contracts between and to services.
 * When: Ran in CI.
-* Where: Reside inside seperate repository:  [openlmis-contract-tests](http://github.com/openlmis/openlmis-contract-tests).
+* Where: Reside inside separate repository:  [openlmis-contract-tests](http://github.com/openlmis/openlmis-contract-tests).
 * Why:  Tests multiple services working together, testing contracts that a Service both provides as well as the requirements a dependant has.
+
+The main difference between contract and integration tests:
+In contract tests, all the services under test are *real*, meaning that they will be processing requests and sending responses.
+Test doubles, mocking, stubbing should not be a part of contract tests.
+
+Refer to [this doc](https://github.com/OpenLMIS/openlmis-contract-tests/blob/master/README.md) for examples of how to write contract tests.
 
 ### End-to-End <a name="e2e"></a>
 
