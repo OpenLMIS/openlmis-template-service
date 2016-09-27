@@ -94,6 +94,7 @@ task integrationTest(type: Test) {
     classpath = sourceSets.integrationTest.runtimeClasspath
     testLogging {
         events "passed", "skipped", "failed"
+        exceptionFormat = 'full'
     }
 }
 check.dependsOn integrationTest
@@ -120,6 +121,7 @@ task generateMigration << {
 test {
     testLogging {
         events 'started', 'passed'
+        exceptionFormat = 'full'
     }
 }
 
