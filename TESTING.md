@@ -9,8 +9,9 @@ The following test categories have been identified for use in OpenLMIS.  As illu
 
 1. [Unit](#unit)
 2. [Integration](#integration)
-3. [Contract](#contract)
-4. [End-to-End](#e2e)
+3. [Component](#component)
+4. [Contract](#contract)
+5. [End-to-End](#e2e)
 
 ### Unit Tests <a name="unit"></a>
 
@@ -254,3 +255,14 @@ https://github.com/OpenLMIS/openlmis-example/blob/master/src/test/java/org/openl
 
 The stub mappings which are served by WireMock's HTTP server are placed under _src/test/resources/mappings_ and _src/test/resources/__files_
 For instructions on how to create them please refer to http://wiremock.org/record-playback.html
+
+## Testing Tools
+
+* spring-boot-starter-test
+  * Spring Boot Test
+  * JUnit
+  * Mockito
+  * Hamcrest
+* [WireMock](http://wiremock.org)
+* [REST Assured](http://rest-assured.io)
+* [raml-tester](https://github.com/nidi3/raml-tester)
