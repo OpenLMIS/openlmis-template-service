@@ -12,7 +12,7 @@ The following test categories have been identified for use in OpenLMIS.  As illu
 3. [Contract](#contract)
 4. [End-to-End](#e2e)
 
-### Unit tests <a name="unit"></a>
+### Unit Tests <a name="unit"></a>
 
 * Who:  written by code-author during implementation
 * What: the smallest unit (e.g. one piece of a model's behavior, a function, etc)
@@ -20,7 +20,7 @@ The following test categories have been identified for use in OpenLMIS.  As illu
 * Where: Reside inside a service, next to unit under test. Generally able to access package-private scope
 * Why: to test fundamental pieces/functionality, helps guide and document design and refactors, protects against regression
 
-#### Unit test examples
+#### Unit Test Examples
 
 * __Every single test should be independent and isolated. Unit test shouldn't depend on another unit test.__
 
@@ -204,7 +204,7 @@ The following test categories have been identified for use in OpenLMIS.  As illu
   }
   ```
 
-### Integration Testing <a name="integration"></a>
+### Integration Tests <a name="integration"></a>
 
 * Who: Code author during implementation
 * What: Test basic operation of a service to persistent storage or a service to another service.  When another service is required, a test-double should be used, not the actual service.
@@ -212,7 +212,21 @@ The following test categories have been identified for use in OpenLMIS.  As illu
 * Where: Reside inside a service, separated from other types of tests/code.
 * Why:  Ensures that the basic pathways to a service's external run-time dependancies work.  e.g. that a db schema supports the ORM, or a non-responsive service call is gracefully handled.
 
-### Contract <a name="contract"></a>
+For testing controllers, they are divided up into unit and integration tests. The controller unit tests will be testing the logic in the controller, while the integration tests will be mostly testing serialization/deserialization (and therefore do not need to test all code paths). In both cases, the underlying services and repositories are mocked.
+
+### Component Tests <a name="component"></a>
+
+* Who: Code author during implementation
+* What: Test more complex operations in a service.  When another service is required, a test-double should be used, not the actual service.
+* When: As explicitly asked for, these tests are typically slower and therefore need to be kept separate from build to not slow development.  Will be run in CI on every change.
+* Where: Reside inside a service, separated from other types of tests/code.
+* Why:  Tests interactions between components in a service are working as expected.
+
+These are not integration tests, which strictly test the integration between the service and an external dependency. These test the interactions between components in a service are working correctly. While integration tests just test the basic pathways are working, component tests verify that, based on input, the output matches what is expected.
+
+These are not contract tests, which are more oriented towards business requirements, but are more technical in nature. The contract tests will make certain assumptions about components, and these tests make sure those assumptions are tested.
+
+### Contract Tests <a name="contract"></a>
 
 * Who: Code author during implementation, with input from BA/QA.
 * What: Enforces contracts between and to services.
@@ -226,7 +240,7 @@ Test doubles, mocking, stubbing should not be a part of contract tests.
 
 Refer to [this doc](https://github.com/OpenLMIS/openlmis-contract-tests/blob/master/README.md) for examples of how to write contract tests.
 
-### End-to-End <a name="e2e"></a>
+### End-to-End Tests <a name="e2e"></a>
 
 * Who: QA / developer with input from BA.
 * What: Typical/core business scenarios.
