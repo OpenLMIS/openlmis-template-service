@@ -79,7 +79,7 @@ UI, and not the Independent Service.
 
 See the [Testing Guide](TESTING.md).
 
-## Docker <a href="#docker"></a>
+## Docker <a href="docker"></a>
 
 Everything deployed in the reference distribution needs to be a Docker container.  Official OpenLMIS containers are made from their respective containers that are published for all to see on our [Docker Hub](https://hub.docker.com/u/openlmis/).
 
