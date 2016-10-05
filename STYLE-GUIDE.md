@@ -78,3 +78,15 @@ UI, and not the Independent Service.
 ## Testing
 
 See the [Testing Guide](TESTING.md).
+
+## Docker <a href="#docker"></a>
+
+Everything deployed in the reference distribution needs to be a Docker container.  Official OpenLMIS containers are made from their respective containers that are published for all to see on our [Docker Hub](https://hub.docker.com/u/openlmis/).
+
+* Dockerfile (Image) [best practices](https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/)
+* Keep Images portable & one-command focused.  You should be comfortable publishing these images publicly and openly to the DockerHub.
+* Keep Containers ephemeral.  You shouldn't have to worry about throwing one away and starting a new one.
+* Utilize docker compose to launch containers as services and map resources
+* An OpenLMIS Service should be published in one image found on Docker Hub
+* Services and Infrastructure that the OpenLMIS tech committee owns are published under the "openlmis" namespace of docker and on the Docker Hub.
+* Avoid [Docker Host Mounting](https://docs.docker.com/engine/tutorials/dockervolumes/#/mount-a-host-directory-as-a-data-volume), as this doesn't work well when deploying to remote hosts (e.g. in CI/CD)
