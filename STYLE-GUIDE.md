@@ -17,13 +17,15 @@ Some additional guidance:
 * Try to keep the number of packages to a minimum. An Independent Service's Java code should 
 generally all be in one package under `org.openlmis` (e.g. `org.openlmis.requisition`).
 * Sub-packages below that should generally follow layered-architecture conventions; most (if not 
-all) classes should fit in these four: `domain`, `repository`, `service`, `web`. Other packages 
-will have classes that should fit in one of these. To give specific guidance:
-    * Serializers/Deserializers of domain classes should go under `domain`, since they have 
-knowledge of domain object details.
+all) classes should fit in these four: `domain`, `repository`, `service`, `web`. To give specific
+ guidance:
     * Things that do not strictly deal with the domain should NOT go in the `domain` package.
+    * Serializers/Deserializers of domain classes should go under `domain`, since they have 
+    knowledge of domain object details.
     * DTO classes, belonging to serialization/deserialization for endpoints, should go under `web`.
     * Exception classes should go with the classes that throw the exception.
+    * We do not want separate sub-packages called `exception`, `dto`, `serializer` for these 
+    purposes.
 
 ## RESTful Interface Design & Documentation
 Designing and documenting 
