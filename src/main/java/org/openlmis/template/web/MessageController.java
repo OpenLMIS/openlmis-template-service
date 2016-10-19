@@ -13,7 +13,7 @@ import java.util.Map;
 @RestController
 public class MessageController {
 
-  Logger logger = LoggerFactory.getLogger(ServiceNameController.class);
+  Logger logger = LoggerFactory.getLogger(MessageController.class);
 
   @Autowired
   private ExposedMessageSource messageSource;

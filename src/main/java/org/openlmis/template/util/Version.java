@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Instant;
 import java.util.Properties;
 
 /**
@@ -42,10 +43,10 @@ public class Version {
         Properties properties = new Properties();
         properties.load(inputStream);
         service = properties.getProperty("Service");
+        version = properties.getProperty("Version");
         build = properties.getProperty("Build");
         branch = properties.getProperty("Branch");
-        timeStamp = properties.getProperty("Timestamp");
-        version = properties.getProperty("Version");
+        timeStamp = properties.getProperty("Timestamp", Instant.now().toString());
       }
     } catch (IOException ex) {
       LOGGER.error("Error loading version properties file");

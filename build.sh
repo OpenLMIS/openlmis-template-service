@@ -4,4 +4,4 @@
 ./sync_transifex.sh
 
 # Run Gradle build
-gradle clean generateBuildInfo build
+gradle clean build
