@@ -16,6 +16,11 @@ public class Application {
     SpringApplication.run(Application.class, args);
   }
 
+  /**
+   * Creates new LocaleResolver.
+   *
+   * @return Created LocalResolver.
+   */
   @Bean
   public LocaleResolver localeResolver() {
     CookieLocaleResolver lr = new CookieLocaleResolver();
@@ -23,7 +28,12 @@ public class Application {
     lr.setDefaultLocale(Locale.ENGLISH);
     return lr;
   }
-  
+
+  /**
+   * Creates new MessageSource.
+   *
+   * @return Created MessageSource.
+   */
   @Bean
   public ExposedMessageSourceImpl messageSource() {
     ExposedMessageSourceImpl messageSource = new ExposedMessageSourceImpl();

@@ -18,6 +18,11 @@ public class MessageController {
   @Autowired
   private ExposedMessageSource messageSource;
 
+  /**
+   * Returns "hello world" message.
+   *
+   * @return value of template.message.hello
+   */
   @RequestMapping("/hello")
   public String hello() {
     String[] msgArgs = {"world"};
