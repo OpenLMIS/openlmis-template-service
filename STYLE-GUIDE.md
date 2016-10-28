@@ -26,6 +26,14 @@ all) classes should fit in these four: `domain`, `repository`, `service`, `web`.
     * Exception classes should go with the classes that throw the exception.
     * We do not want separate sub-packages called `exception`, `dto`, `serializer` for these 
     purposes.
+* When wanting to convert a domain object to/from a DTO, define Exporter/Importer interfaces for 
+the domain object, and export/import methods in the domain that use the interface methods. Then 
+create a DTO class that implements the interface methods. (See [Right](https://github.com/OpenLMIS/openlmis-referencedata/blob/master/src/main/java/org/openlmis/referencedata/domain/Right.java)
+ and [RightDto](https://github.com/OpenLMIS/openlmis-referencedata/blob/master/src/main/java/org/openlmis/referencedata/dto/RightDto.java)
+ for details.)
+* Even though the no-argument constructor is required by Hibernate for entity objects, do not use
+it for object construction; use provided constructors or static factory methods. If one does not 
+exist, create one using common sense parameters.
 
 ## RESTful Interface Design & Documentation
 Designing and documenting 
@@ -54,6 +62,12 @@ resource does not exist, one should be created using the specified identity (ass
 identity is a valid UUID).
 * Exceptions, being thrown in exceptional circumstances (according to *Effective Java* by Joshua 
 Bloch), should return 500-level HTTP codes from REST calls.
+* Not all domain objects in the services need to be exposed as resources. Care should be taken to
+ design the endpoints in a way that makes sense for clients. Examples:
+    * `RoleAssignment`s are managed under the users resource. Clients just care that users have 
+    roles; they do not care about the mapping.
+    * `RequisitionGroupProgramSchedule`s are managed under the requisitionGroups resource. 
+    Clients just care that requisition groups have schedules (based on program).
 
 ## Postgres Database
 In most cases, the Hibernate DefaultNamingStrategy follows these conventions. Schemas and table 
