@@ -188,3 +188,164 @@ http://www.oracle.com/technetwork/articles/entarch/effective-exceptions2-097044.
 http://alvinalexander.com/scala/best-practice-option-some-none-pattern-scala-idioms
 
 optional:  http://www.oracle.com/technetwork/articles/java/java8-optional-2175753.html
+
+
+## How the API responds with validation error messages
+
+### What are Validation Error Messages?
+
+In OpenLMIS APIs, validation errors can happen on PUT, POST, and DELETE. When validation or
+permissions are not accepted by the API, invalid requests should respond with a helpful validation
+error message. Generally these don't happen for a GET, because a GET is not modifying or
+validating any data.
+
+The Goal: We want the APIs to respond with validation error messages in a standard way. This will
+allow the APIs and the UI components to all be coded and tested against one standard.
+
+### Example: Permissions/RBAC
+The API does a lot of permission checks in case a user tries to make a request without the needed
+permissions. For example, a user may try to initiate a requisition at a facility where they don't
+have permissions. That should generate a HTTP 403 Forbidden response with a JSON body like this:
+
+```Javascript
+{
+  "message" : "Action prohibited because user does not have the permission: Requisition - Create",
+  "messageKey" : "requisition.error.prohibited.no-permission"
+}
+```
+
+When creating these error validation messages, we encourage developers to avoid repeating code.
+It may be appropriate to write a shared library or a helper class that generates these JSON
+validation error responses with a simple constructor.
+
+We also don't want developers to spend lots of time authoring wordy messages. It's best to keep the
+messages short, clear and simple.
+
+To aid in translation, we want to fill in variables at the end of the message string after a ":". We
+discourage the interpolation of variables into the middle of the message string, because that is a
+challenge with our current translation tools. An example of this improper variable use would be:
+"User account storeroom123 does not have permission to initiate requisitions at clinic789".
+
+Message key names are important for translations. Keys should follow our [Style Guide i18n Naming
+Conventions](https://github.com/OpenLMIS/openlmis-template-service/blob/master/STYLE-GUIDE.md#i18n-naming-conventions).
+
+Future: We may extend this to support an array of multiple messages (each one with its "message" and
+"messageKey").
+
+### Example: Validation Not Accepted
+
+The APIs do some validation deep within an object that may need to return a validation error message
+for a specific field. For example, a user may try to save a requisition with a Stock Adjustment
+decrement that is larger than the amount of stock on hand and stock received. If there were a
+beginning quantity of 10, a received quantity of 20 (for a total of 30 on hand), then it would be
+invalid to transfer out 100. This kind of validation may be flagged on the client side first and not
+sent to the server. But the server also performs validation to make sure data it saves is valid.
+This PUT request to save a requisition with an invalid combination of data fields should generate a
+HTTP 422 Unprocessable Entity response with a JSON body like this:
+
+```Javascript
+{
+  "message" : "Requisition cannot be saved with invalid quantity",
+  "messageKey" : "requisition.error.quantity.invalid",
+  "fields" : [{
+    "name" : "requisitionLineItems",
+    "id" : "21c3015e-ff67-433a-a342-972805c93aa8",
+    "fields" : [{ "name" : "totalLossesAndAdjustments" }]
+  }]
+}
+```
+
+It is optional to provide "fields", but when provided this information helps specific what exact
+field has the validation error. This may be used by the UI to provide an error message on a
+specific field. In the example above, the nested use of fields specifies that the
+"requisitionLineItems" property has the error, the specific line item is UUID "21c301..", and
+within that the "totalLossesAndAdjustments" field is the field with the validation error.
+
+Inside "fields" objects, the "name" and "id" are optional. But if there is a specific field or a
+specific id that is causing the validation error, we encourage API developers to provide these
+when possible. The "id" can help to provide a UUID for the specific part of the record that has an
+issue, such as one of the Line Items within a Requisition. The "name" can help when a particular
+property is the cause of the validation error. It's important to use the API JSON property names,
+not the DB field names and not the UI field names or DOM locations, so that neither side of the
+boundary between back-end API and front-end clients apps needs to know too much about the other
+side.
+
+Notice that "fields" is an array, so multiple validation errors at any level can be flagged.
+
+Future: We may extend this to support allowing each field to have its own "message" and "messageKey".
+
+### Translation/i18n
+
+As mentioned above, "messageKeys" will help in translation. We expect that the source code of
+OpenLMIS services will include message strings written in English. Any running instance of an
+OpenLMIS API service may use a translation property file to translate these messages at run time.
+So any running OpenLMIS system may be returning its "messages" in the language of choice based
+on its configuration.
+
+### Do we return these on Success?
+
+On success of a PUT, POST or DELETE, generally the API should return the updated resource.
+Sometimes it may be appropriate to give an empty response. But success responses should not include
+a validation message of the type specified here. This will eliminate the practice which was done
+in OpenLMIS v2, EG:
+
+```Javascript
+PUT /requisitions/75/save.json
+Response: HTTP 200 OK
+Body: {"success":"R&R saved successfully!"}
+```
+
+Generally, success is a 2xx HTTP status code and we don't return validation error messages on
+success. Generally, validation errors are 4xx HTTP status codes (client errors). Also, we don't
+return these validation error messages for 5xx HTTP status codes (server or network errors);
+OpenLMIS software does not always have control over what the stack returns for 5xx responses (those
+could come from NGINX or even a load balancer).
+
+### Proposed RAML
+
+```Javascript
+schemas:
+  - errorResponseFields: |
+    { "type": "object",
+      "$schema": "http://json-schema.org/draft-03/schema",
+      "title": "ErrorResponseFields",
+      "description": "Fields listed as part of an Error Response",
+      "properties": {
+        "name": { "type": "string", "required": false, "title": "name of the property" },
+        "id": { "type": "string", "required": false, |
+          "title": "id, often a UUID, of the object that caused an error" },
+        "fields": {"type": "array", "required": false, |
+          "title": "fields within this one that caused the error",
+          "items": { "type": "object", "$ref": "#/schemas/errorResponseFields" }, "uniqueItems": false}
+      }
+    }
+
+  - errorResponse: |
+    { "type": "object",
+      "$schema": "http://json-schema.org/draft-03/schema",
+      "title": "ErrorResponse",
+      "description": "Error response",
+      "properties": {
+        "message": { "type": "string", "required": true, "title": "error message" },
+        "messageKey": { "type": "string", "required": true, "title": "key for translations" },
+        "fields": {"type": "array", "required": false, "title": "fields that caused the error", |
+          "items": { "type": "object", "$ref": "#/schemas/errorResponseFields" }, "uniqueItems": false}
+      }
+    }
+
+/requisitions:
+  /{id}:
+    put:
+      description: Save a requisition with its line items
+      responses:
+        403:
+        422:
+          body:
+            application/json:
+              schema: errorResponse
+```
+
+### HTTP Status Codes
+
+The uses of HTTP 403 and 422 above are examples. Further guidance is coming soon with a suggested
+list of all OpenLMIS standard HTTP response codes and how we use them in OpenLMIS services.
