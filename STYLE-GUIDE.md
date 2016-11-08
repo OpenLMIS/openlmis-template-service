@@ -71,6 +71,27 @@ taken to design the endpoints in a way that makes sense for clients. Examples:
     * `RequisitionGroupProgramSchedule`s are managed under the requisitionGroups resource. 
     Clients just care that requisition groups have schedules (based on program).
 
+We use RAML (0.8) to document our RESTful APIs, which are then converted into HTML for static API 
+documentation or Swagger UI for live documentation. Some guidelines for defining APIs in RAML:
+
+* JSON schemas for the RAML should be defined in a separate JSON file, and placed in a `schemas` 
+subfolder in relation to the RAML file. These JSON schema files would then be referenced in the 
+RAML file like this (using role as an example):
+    ```
+    - role: !include schemas/role.json
+    
+    - roleArray: |
+      {
+        "type": "array",
+        "items": { "type": "object", "$ref": "schemas/role.json" }
+      }
+    ```
+
+    * (Note: this practice has been established because RAML 0.8 cannot define an array of a JSON
+    schema for a request/response body ([details](http://forums.raml.org/t/set-body-to-be-array-of-defined-schema-objects/1566/3)).
+    If the project moves to the RAML 1.0 spec and our [RAML testing tool](https://github.com/nidi3/raml-tester)
+    adds support for RAML 1.0, this practice might be revised.)
+
 ## Postgres Database
 In most cases, the Hibernate DefaultNamingStrategy follows these conventions. Schemas and table 
 names will however need to be specified.
