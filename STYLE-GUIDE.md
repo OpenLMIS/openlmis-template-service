@@ -40,23 +40,23 @@ exist, create one using common sense parameters.
 ## RESTful Interface Design & Documentation
 Designing and documenting 
 
-Note: many of these guidelines come from [Best Practices for Designing a Pragmatic RESTful API]
-(http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api)
+Note: many of these guidelines come from
+[Best Practices for Designing a Pragmatic RESTful API](http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api).
 
-* Result filtering, sorting and searching should be done by query parameters. [Details]
-(http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#advanced-queries)
-* Return a resource representation after a create/update. [Details]
-(http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#useful-post-responses)
-* Use camelCase (vs. snake_case) for names, since we are using Java and JSON. [Details]
-(http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#snake-vs-camel)
-* Don't use response envelopes as default (if not using Spring Data REST). [Details]
-(http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#envelope)
-* Use JSON encoded bodies for create/update. [Details]
-(http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#json-requests)
-* Use a clear and consistent error payload. [Details]
-(http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#errors)
-* Use the HTTP status codes effectively. [Details]
-(http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#http-status)
+* Result filtering, sorting and searching should be done by query parameters.
+[Details](http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#advanced-queries)
+* Return a resource representation after a create/update.
+[Details](http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#useful-post-responses)
+* Use camelCase (vs. snake_case) for names, since we are using Java and JSON.
+[Details](http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#snake-vs-camel)
+* Don't use response envelopes as default (if not using Spring Data REST).
+[Details](http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#envelope)
+* Use JSON encoded bodies for create/update.
+[Details](http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#json-requests)
+* Use a clear and consistent error payload.
+[Details](http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#errors)
+* Use the HTTP status codes effectively.
+[Details](http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#http-status)
 * Resource names should be pluralized and consistent.  e.g. prefer `requisitions`, never 
 `requisition`.
 * A PUT on a single resource (e.g. PUT /facilities/{id}) is not strictly an update; if the 
@@ -73,9 +73,9 @@ taken to design the endpoints in a way that makes sense for clients. Examples:
 * RESTful endpoints that simply wish to return a JSON value (boolean, number, string) should wrap
  that value in a JSON object, with the value assigned to the property "result". (e.g. `{ 
  "result": true }`)
-    * (Note: this is to ensure compliance with all JSON parsers, especially ones that adhere to 
-    RFC4627, which do not consider JSON values to be valid JSON. See the discussion [here]
-    (http://stackoverflow.com/questions/18419428/what-is-the-minimum-valid-json).)
+    * Note: this is to ensure compliance with all JSON parsers, especially ones that adhere to 
+    RFC4627, which do not consider JSON values to be valid JSON. See the discussion
+    [here](http://stackoverflow.com/questions/18419428/what-is-the-minimum-valid-json).
 
 We use RAML (0.8) to document our RESTful APIs, which are then converted into HTML for static API 
 documentation or Swagger UI for live documentation. Some guidelines for defining APIs in RAML:
