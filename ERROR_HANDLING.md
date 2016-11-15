@@ -196,10 +196,45 @@ optional:  http://www.oracle.com/technetwork/articles/java/java8-optional-217575
 
 In OpenLMIS APIs, validation errors can happen on PUT, POST, DELETE or even GET. When validation or
 permissions are not accepted by the API, invalid requests should respond with a helpful validation
-error message. Different clients may use this message as they wish, and may display it to end-users.
+error message. This response has an HTTP response body with a simple JSON object that wraps the
+message. Different clients may use this message as they wish, and may display it to end-users.
 
 The Goal: We want the APIs to respond with validation error messages in a standard way. This will
 allow the APIs and the UI components to all be coded and tested against one standard.
+
+#### When does this pattern apply?
+
+When does this "validation error message" pattern apply? We want to apply this pattern for all of
+the error situations where we return a HTTP response body with an error message. For more details
+about which HTTP status codes this aligns with, see the 'HTTP Status Codes' section below.
+
+#### What do we return on Success?
+
+In general, success responses should not include a validation message of the type specified here.
+This will eliminate the practice which was done in OpenLMIS v2, EG:
+
+```Javascript
+PUT /requisitions/75/save.json
+Response: HTTP 200 OK
+Body: {"success":"R&R saved successfully!"}
+```
+
+On success of a PUT or POST, the API should usually return the updated resource with a HTTP 200
+OK or HTTP 201 Created response code. On DELETE, if there is nothing appropriate to return, then
+an empty response body is appropriate with a HTTP 204 No Content response code.
+
+#### HTTP Status Codes
+
+Success is generally a 2xx HTTP status code and we don't return validation error messages on
+success. Generally, validation errors are 4xx HTTP status codes (client errors). Also, we don't
+return these validation error messages for 5xx HTTP status codes (server or network errors).
+We do not address 5xx errors because OpenLMIS software does not always have control over what the
+stack returns for 5xx responses (those could come from NGINX or even a load balancer).
+
+Examples below show appropriate use of HTTP 403 and 422 status codes with validation error messages.
+The [OpenLMIS Service Style Guide](https://github.com/OpenLMIS/openlmis-template-service/blob/master/STYLE-GUIDE.md)
+includes further guidance on HTTP Status Codes that comes from
+[Best Practices for Designing a Pragmatic RESTful API](http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#http-status).
 
 ### Example: Permissions/RBAC
 The API does a lot of permission checks in case a user tries to make a request without the needed
@@ -263,27 +298,6 @@ quantities do not add up correctly, it could provide an error message tied to a 
 AngularJS UI app), and the client can immediately let the end-user know about a specific field
 with a validation error.
 
-### Do we return these on Success?
-
-In general, success responses should not include a validation message of the type specified here.
-This will eliminate the practice which was done in OpenLMIS v2, EG:
-
-```Javascript
-PUT /requisitions/75/save.json
-Response: HTTP 200 OK
-Body: {"success":"R&R saved successfully!"}
-```
-
-On success of a PUT or POST, the API should usually return the updated resource with a HTTP 200
-OK or HTTP 201 Created response code. On DELETE, if there is nothing appropriate to return, then
-an empty response body is appropriate with a HTTP 204 No Content response code.
-
-Generally, success is a 2xx HTTP status code and we don't return validation error messages on
-success. Generally, validation errors are 4xx HTTP status codes (client errors). Also, we don't
-return these validation error messages for 5xx HTTP status codes (server or network errors);
-OpenLMIS software does not always have control over what the stack returns for 5xx responses (those
-could come from NGINX or even a load balancer).
-
 ### Proposed RAML
 
 ```Javascript
@@ -310,8 +324,3 @@ schemas:
             application/json:
               schema: errorResponse
 ```
-
-### HTTP Status Codes
-
-The uses of HTTP 403 and 422 above are examples. Further guidance is coming soon with a suggested
-list of all OpenLMIS standard HTTP response codes and how we use them in OpenLMIS services.
