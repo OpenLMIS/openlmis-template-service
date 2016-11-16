@@ -10,6 +10,7 @@ buildscript {
 plugins {
     id "org.flywaydb.flyway" version "4.0"
     id "org.sonarqube" version "2.0.1"
+    id "com.moowork.node" version "0.12"
 }
 
 apply plugin: 'java'
@@ -39,6 +40,7 @@ dependencies {
     compile "org.postgresql:postgresql:9.4.1208"
     compile "com.github.tomakehurst:wiremock:1.58"
     compile "org.springframework:spring-test"
+    compile 'org.webjars:swagger-ui:2.2.6'
 
     testCompile "junit:junit"
     testCompile "org.mockito:mockito-core:1.+"
@@ -102,9 +104,8 @@ task integrationTest(type: Test) {
         events "passed", "skipped", "failed"
         exceptionFormat = 'full'
     }
+    mustRunAfter test
 }
-check.dependsOn integrationTest
-integrationTest.mustRunAfter test
 
 tasks.withType(Test) {
     reports.html.destination = file("${reporting.baseDir}/${name}")
@@ -124,18 +125,19 @@ task generateMigration << {
     migrationFile.createNewFile()
 }
 
-processResources {
-    // update version information in build
-    filesMatching('**/version.properties') {
-        expand(project.properties)
-    }
+task checkApiIsRaml(type:Exec) {
+    executable "raml-cop"
+    args "src/main/resources/api-definition.yaml"
 }
 
-test {
-    testLogging {
-        events 'started', 'passed'
-        exceptionFormat = 'full'
-    }
+task demoDataSeed(type:Exec) {
+    executable "./demo-data/demo_seed.sh"
+    args "./demo-data", "node ./demo-data/seed_generator.js"
+}
+
+configure(checkApiIsRaml) {
+    group = JavaBasePlugin.VERIFICATION_GROUP
+    description = 'Verify that the api-specification is valid RAML'
 }
 
 jacocoTestReport {
@@ -172,11 +174,6 @@ sonarqube {
     }
 }
 
-build {
-    dependsOn check
-    dependsOn jacocoTestReport
-}
-
 pmd {
     toolVersion = '5.4.0'
     consoleOutput= true
@@ -190,4 +187,38 @@ tasks.withType(Pmd){
         xml.enabled true
         html.enabled true
     }
+}
+
+
+test {
+    testLogging {
+        events 'started', 'passed'
+        exceptionFormat = 'full'
+    }
+}
+
+apply from: "documentation.gradle"
+integrationTest {
+    dependsOn ramlToSwagger
+}
+
+processResources {
+    // we want the generated swagger spec file included in the output jar
+    finalizedBy ramlToSwagger
+    // update version information in build
+    filesMatching('**/version.properties') {
+        expand(project.properties)
+    }
+}
+
+check {
+    dependsOn checkApiIsRaml
+    dependsOn integrationTest
+}
+
+build {
+    dependsOn jacocoTestReport
+    dependsOn check
+    dependsOn ramlToHtml
+    dependsOn copyRamlHtmlToBuild
 }

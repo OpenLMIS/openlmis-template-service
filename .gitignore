@@ -7,3 +7,4 @@ out/
 .idea/
 .env
 .tx/
+node_modules/
