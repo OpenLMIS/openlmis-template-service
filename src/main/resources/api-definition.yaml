@@ -11,7 +11,7 @@ documentation:
 schemas:
   - version: |
       {   "$schema": "http://json-schema.org/draft-03/schema",
-          "description": "A single version",
+          "description": "Service version and build information",
           "type": "object",
           "properties": {
               "service": { "type": "string", "required": true},
