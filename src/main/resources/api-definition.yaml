@@ -2,7 +2,7 @@
 ---
 title: OpenLMIS Template API
 version: "@version@"
-baseUri: "http://localhost:8080/api"
+baseUri: "http://localhost:8080"
 
 documentation:
     - title: Getting Started
