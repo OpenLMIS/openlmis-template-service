@@ -6,6 +6,8 @@ OpenLMIS 3.x Independent Service.
 * Docker 1.11+
 * Docker Compose 1.6+
 
+All other dependencies, such as Java, are delivered automatically via the Docker image. It is unnecessary to install them locally to run the service, though often helpful to do so for the sake of development. See the _Tech_ section of [openlmis/dev](https://hub.docker.com/r/openlmis/dev/) for a list of these optional dependencies.
+
 ## Quick Start
 1. Fork/clone this repository from GitHub.
 
