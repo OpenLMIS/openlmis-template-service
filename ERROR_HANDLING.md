@@ -3,119 +3,95 @@
 OpenLMIS would like to follow error handling best practices, this document covers the
 conventions we'd _like_ to see followed in the various OpenLMIS components.
 
-## Java
+## Java and Spring
 
-Java and Exceptions have a long history in how they were designed to be used, and how they've often
-been abused in terms of the approach to error handling that is employed.
+The Java community has a long-standing debate about the proper use of Exceptions.  This section 
+attempts to be pragmatic about the use of exceptions - especially understanding the Spring 
+community's exception handling techniques.
+
+Exceptions in Java are broken down into two categories: those that are recovearable (checked) and 
+those where client code can in no-way recover from the Exception (runtime).  OpenLMIS *strongly* 
+discourages the use of checked exceptions, and the following section discusses what is encouraged
+and why checked exceptions should be avoided.
 
 ### A pattern for normal error-handling
 
-Most all code has to handle "normal" errors.  Normal errors that include things like malformed, 
-incorrect or inappropriate input from a client.  Since most code has to handle errors, it 
-should be obvious and straightforward which errors that code handles and how it handles them.
-The goal of which is to improve clarity in testing the code and the paths that are taken should an 
-error be encountered.
+Normal errors for the purpose of this document are things like input validation or other business 
+logic constraints.  There are a number of sources that make the claim that these types of errors 
+are not exceptional (i.e. bad user input is to be expected normally) and therefore Java 
+Exception's shouldn't be used.  While that's generally *very* good advice, we will be using 
+runtime exceptions (not checked exceptions) as long as they follow the best practices laid out here.
 
-The pattern we'd like to use in OpenLMIS is to avoid throwing exceptions and instead to utilize
-the return type of a method to indicate if any error conditions were encountered.
+The reasoning behind this approach is two-fold:
 
-A few simple types to help us with this:
+* Runtime exceptions are used when client code *can't* recover from their use.  Typically 
+this has been used for the class of programming errors that indicate that the software encountered a 
+completely unexpected programming error for which it should immediately terminate.  We 
+expand this definition to include user-input validation and business logic constraints 
+for which further user-action is required.  In that case the code can't recover - it has to 
+receive something else before it could ever proceed, and while we don't want the program to 
+terminate, we do want the current execution to cease so that it may pop back to a Controller level 
+component that will convert these exceptions into the relevant (non-500) HTTP response.
+* Using Runtime exceptions implies that we *never* write code that catches them. 
+We will use Spring's `@ControllerAdvice` which will catch them for us, but our code should have 
+less "clutter" as it'll be largely devoid of routine error-validation handling.
 
-```Java
-public class ErrorCode {
-  private String code;
-  private String label;
-  private String message;
-  ...
-}
+Effectively using this pattern requires the following rules:
 
-public class CheckReturn<E> {
-  private E successPayload;
-  private List<ErrorCode> errors;
-  
-  public CheckReturn<E>() {...}
-  
-  public void addError(ErrorCode errorCode) {...}
-  public void setSuccess(E successPayload) {...}
-  public boolean hasError() {...}
-  public E returnSuccess() { return successPayload; }
-}
+1. The Exception type (class) that's thrown will map one-to-one with an HTTP Status code that we 
+want to return, and this mapping will be true across the Service.  e.g. a 
+`throw ValidationException` will always result in the HTTP Status code 400 being returned with the 
+body containing a "nice message" (and not a stacktrace).
+2. The exception thrown is a sub-type of `java.lang.RuntimeException`. 
+3. Client code to a method that returns RuntimeException's should never try to handle the 
+exception.  i.e. it should **not** `try {...} catch ...`
+4. The only place that these RuntimeExceptions are handled is by a class annotated 
+`@ControllerAdvice` that lives along-side all of the Controllers.
+5. If the client code needs to report multiple errors (e.g. multiple issues in validating user 
+input), then that collection of errors needs to be grouped before the exception is thrown.
+6. A Handler should never be taking one of our exception types, and returning a HTTP 500 level 
+status.  This class is reserved specifically to indicate that a programming error has occurred.  
+Reserving this directly allows for easier searching of the logs for program-crashing type of errors.
+
+#### Example
+
+The exception
+```java
+public class ValidationException extends RuntimeException { ... }
 ```
 
-This pattern defines some basic types:
+A controller which uses the exception
+```java
+@Controller
+public class WorkflowController {
 
-* ErrorCode would likely be an immutable value class that helps us construct errors, their messages 
-(and translated message), potentially a numerical code, compare errors, etc.
-* CheckReturn is a utility class that helps facilitate returning _this_ OR (exclusive) _that_ 
-from a method call.  i.e. either return some successful payload, or indicate that error(s) 
-were encountered, _never_ both.
-
-We then use these types in some application code:
-
-```Java
-public class Foo {
-  public CheckReturn<String> foo() {
-    CheckReturn cRet = new CheckReturn<String>();
+  @RequestMapping(...)
+  public WorkflowDraft doSomeWorkflow() {
     ...
-    if (someMethod().isPresent()) cRet.addError(...);
-    if (someOtherMethod.isPresent()) cRet.addError(...);
-    if ( false == cRet.hasErrors() ) cRet.setSuccess("foo");
-    return cRet;
-  }
-}
-
-public class Bar {
-  public void bar() {
-    Foo myFoo = ...
-    CheckReturn<String> fooRet = myFoo.foo();
-    if( fooRet.hasErrors() {
-      ...
-    } else {
-      System.out.println("Can foo get a " + fooRet.returnSuccess());
+    
+    if (someError)
+      throw new ValidationException(...);
+    
+    ...
+    
+    return new WorkflowDraft(...);
   }
 }
 ```
 
-* Foo returns a CheckReturn which here we can assume is either a successful return of the method
-  foo(), OR a failure in that it will add a number of ErrorCodes.
-* Bar when using Foo, then asks the CheckReturn from foo() if the method was successful or not. 
-  If errors are present, it would handle them, possibly itself returning another CheckReturn.
-  
-CheckReturn here is meant to convey that a method can either be successful or not.  However there
-are variations on this theme:
-
-* a method call might either return something, or it may not - but it may not warrant a full error
-code.  This is usually encountered for methods that find and return an object.  In such a case 
-instead of returning `null`, we should instead return 
-[Optional](https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html).
-* a method call might need to return something _and_ return that there were some errors. This is 
-a less common case, however if it's needed it should be evident in the return type by adding 
-another type similar to CheckReturn, that describes this contract.  An example of this is a tuple
-which in Java is easily implemented with Functional Java's 
-[P2<A, B>](http://www.functionaljava.org/javadoc/4.6/functionaljava/fj/P2.html).
-
-
-#### Summary
-
-* Exceptions should be avoided.  If an exception is being used, it should be for truly
-_exceptional_ conditions; never for simple validation.  Checked exceptions should only be declared 
-when the condition is _recoverable_ by the client.  Runtime exceptions should only be used 
-to indicate programming errors. _Effective Java_ by Joshua Bloch enumerates these concepts further.
-* Error handling should be evident through a method's return type.
-* Most error handling should use an "either" approach such as CheckReturn above.
-This is most similar to Scala's 
-[Optional](http://www.scala-lang.org/api/current/scala/Option.html) or Functional Java's 
-[Either](http://www.functionaljava.org/javadoc/4.6/functionaljava/fj/data/Either.html).
-* Methods that don't need to return ErrorCodes should avoid returning `null` and 
-instead use Java 8's [Optional](https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html).
-* Methods that need to be able to return both successful objects _and_ errors should use a 
-return type which is a tuple, such as Functional Java's 
-[P2<A, B>](http://www.functionaljava.org/javadoc/4.6/functionaljava/fj/P2.html).
-
-
-### Exceptions - what we do want
-
-TODO
+The exception handler that's called by Spring should the `WorkflowController` throw 
+`ValidationException`.
+```java
+@ControllerAdvice
+public class WorkflowExceptionHandler {
+ @ExceptionHandler(ValidationException.class)
+ @ResponseStatus(HttpStatus.BAD_REQUEST)
+ private Message.LocalizedMessage handleValidationException(ValidationException ve) { 
+   ...
+   return ve.getTheLocalizedMessage();
+  }
+}
+```
 
 ### Exceptions - what we don't want
 
@@ -153,43 +129,26 @@ for and an HTTP 200 (success), or to respond with HTTP 404 - the setting was not
 
 This usage of an Exception here is not what we want for a few reasons:
 
-* Not finding the supplied key through a web-endpoint is not exceptional. This is clearly 
- evident in that the behavior desired for the client is for the web-endpoint to return 
- the setting asked for, or a not-found message.
-* The situation is not recoverable.  No matter how many times the client attempts to find
- the given key, it will not find it.  If this were a recoverable situation, we would expect that 
- the exception we're handling would be of a type that helps us do _something_ that would allow us
- to retrieve the setting we're seeking.  If the setting configuration lived in an external service,
- then the code that is responsible for interacting with that service might throw checked exceptions
- that would help a client handle situations where it needed to wait for the setting Service to
- become available.  Even if this was an external Service however, we still wouldn't expect to
- handle conditions where the key truly wasn't found nor would we likely expect to see this in the
- web-endpoint logic.
+* The Controller directly handles the exception - it has a try-catch block.  It should only 
+handle the successful path which is when the exception isn't thrown.  We should have a Handler 
+which is `@ControllerAdvice`.
+* The exception `ConfigurationSettingException` doesn't add anything - either semantically or 
+functionally.  We know that this type of error isn't that there's some type of Configuration 
+Setting problem, but rather that something wasn't found.  This could more generically and more 
+accurately be named a `NotFoundException`.  It conveys the semantics of the error and one single 
+Handler method for the entire Spring application could handle all `NotFoundExceptions` by 
+returning a HTTP 404.
+* It's worth noting that this type of null return is handled well in Java 8's Optional.  We would
+still throw an exception at the Controller so that the Handler could handle the error, however 
+an author of middle-ware code should be aware that they could use Optional instead of throwing 
+an exception on a null immediately.  This would be most useful if many errors could occur - i.e.
+in processing a stream.
 * This code is flagged by static analysis 
- [tools](http://sonar.openlmis.org/issues/search#issues=AVc18ErL0QRqkcp89olY) with the error that 
- this exception should be "Either log or re-throw this exception".  This error could simply be 
- corrected for the static analysis tool by logging the exception, however this would 
- likely result in a plethora of log messages that only indicate that a user asked for a key that
- didn't exist - which as noted previously isn't really appropriate as the condition isn't
- exceptional.
+[tools](http://sonar.openlmis.org/issues/search#issues=AVc18ErL0QRqkcp89olY) with the error that 
+this exception should be "Either log or re-throw this exception".  A lazy programmer might 
+"correct" this by logging the exception, however this would result in the log being permeated 
+with noise from bad user input - which should be avoided.
  
-
-
-## Further information
-
-https://www.ibm.com/developerworks/library/j-jtp05254/
-
-http://stackoverflow.com/questions/613954/the-case-against-checked-exceptions
-
-http://www.shaunabram.com/checked-exceptions-article/
-
-http://www.oracle.com/technetwork/articles/entarch/effective-exceptions2-097044.html
-
-http://alvinalexander.com/scala/best-practice-option-some-none-pattern-scala-idioms
-
-optional:  http://www.oracle.com/technetwork/articles/java/java8-optional-2175753.html
-
-
 ## How the API responds with validation error messages
 
 ### What are Validation Error Messages?
