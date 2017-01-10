@@ -11,7 +11,7 @@
 
   "scripts":
   {
-    "runApiSpecConverter": "api-spec-converter --from raml --to swagger_2 /app/build/resources/main/api-definition-raml.yaml > /app/build/resources/main/static/docs/api-definition.json",
+    "runApiSpecConverter": "api-spec-converter --from raml --to swagger_2 /app/build/resources/main/api-definition-swagger.yaml > /app/build/resources/main/static/docs/api-definition.json",
     "runApiHtmlConverter": "raml2html --input /app/build/resources/main/api-definition-raml.yaml --output /app/build/resources/main/api-definition.html"
   }
 }
