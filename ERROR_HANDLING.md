@@ -237,9 +237,9 @@ client/consumer may use the "messageKey" to translate responses into a language 
 The source code where a validation error is handled should have the "messageKey" only. The source
 code should not have hard-coded message strings in English or any language.
 
-#### Future: Messages with Placeholders for Translation
+#### Messages with Placeholders for Translation
 
-In the future, we may want to extend this pattern to support placeholder variables in a message.
+Placeholders allow messages to be dynamic.
 For example, "Action prohibited because user {0} does not have permission {1} at facility {2}".
 
 The Transifex tool appears to support different types of placeholders, such as {0} or %s and %d.
