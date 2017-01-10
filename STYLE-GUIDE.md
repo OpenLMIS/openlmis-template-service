@@ -122,7 +122,7 @@ least significant.
 * The second portion of the key should indicate the type of message; error for error messages, 
 message for anything not an error.
 * The third and following portions will further describe the key.
-* Portions of keys that don't have heirarchy, e.g. a.b.code.invalidLength and a.b.code.invalidFormat, 
+* Portions of keys that don't have heirarchy, e.g. `a.b.code.invalidLength` and `a.b.code.invalidFormat`, 
 should use camelCase.
 * Keys should not include hyphens or other punctuation.
 
