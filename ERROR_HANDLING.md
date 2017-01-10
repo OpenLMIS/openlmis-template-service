@@ -52,8 +52,8 @@ input), then that collection of errors needs to be grouped before the exception 
 6. A Handler should never be taking one of our exception types, and returning a HTTP 500 level 
 status.  This class is reserved specifically to indicate that a programming error has occurred.  
 Reserving this directly allows for easier searching of the logs for program-crashing type of errors.
-7. Handler's should log these exceptions at the DEBUG level.  Only if the exception is a programming 
-error (as opposed to bad user input) should the ERROR level be used.
+7. Handler's should log these exceptions at the DEBUG level.  A lower-level such as TRACE could be
+used, however others such as ERROR, INFO, FATAL, WARN, etc should not.
 
 #### Example
 
