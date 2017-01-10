@@ -52,9 +52,8 @@ input), then that collection of errors needs to be grouped before the exception 
 6. A Handler should never be taking one of our exception types, and returning a HTTP 500 level 
 status.  This class is reserved specifically to indicate that a programming error has occurred.  
 Reserving this directly allows for easier searching of the logs for program-crashing type of errors.
-7. logging and debug setting (api) - add to example
-give an id in 404 for example - ie significant to context.  
-Logging in UTC (check this is true - how logback setting can be made).
+7. Handler's should log these exceptions at the DEBUG level.  Only if the exception is a programming 
+error (as opposed to bad user input) should the ERROR level be used.
 
 #### Example
 
@@ -91,6 +90,7 @@ public class WorkflowExceptionHandler {
  @ResponseStatus(HttpStatus.BAD_REQUEST)
  private Message.LocalizedMessage handleValidationException(ValidationException ve) { 
    ...
+   logger.debug(ve);
    return ve.getTheLocalizedMessage();
   }
 }
