@@ -52,6 +52,8 @@ input), then that collection of errors needs to be grouped before the exception 
 6. A Handler should never be taking one of our exception types, and returning a HTTP 500 level 
 status.  This class is reserved specifically to indicate that a programming error has occurred.  
 Reserving this directly allows for easier searching of the logs for program-crashing type of errors.
+7. Handler's should log these exceptions at the DEBUG level.  A lower-level such as TRACE could be
+used, however others such as ERROR, INFO, FATAL, WARN, etc should not.
 
 #### Example
 
@@ -88,6 +90,7 @@ public class WorkflowExceptionHandler {
  @ResponseStatus(HttpStatus.BAD_REQUEST)
  private Message.LocalizedMessage handleValidationException(ValidationException ve) { 
    ...
+   logger.debug(ve);
    return ve.getTheLocalizedMessage();
   }
 }
@@ -234,9 +237,9 @@ client/consumer may use the "messageKey" to translate responses into a language 
 The source code where a validation error is handled should have the "messageKey" only. The source
 code should not have hard-coded message strings in English or any language.
 
-#### Future: Messages with Placeholders for Translation
+#### Messages with Placeholders for Translation
 
-In the future, we may want to extend this pattern to support placeholder variables in a message.
+Placeholders allow messages to be dynamic.
 For example, "Action prohibited because user {0} does not have permission {1} at facility {2}".
 
 The Transifex tool appears to support different types of placeholders, such as {0} or %s and %d.
@@ -256,6 +259,13 @@ quantities do not add up correctly, it could provide an error message tied to a 
 (line item) and field. Often this kind of validation may be done by the client (such as in the
 AngularJS UI app), and the client can immediately let the end-user know about a specific field
 with a validation error.
+
+#### Future:  Including Stack-Traces in Development Mode
+
+In the future, it may be useful to be able to launch the entire application in a debug mode.  
+In this mode errors returned via the API might include a stacktrace or other context normally 
+reserved for the server log.  This would be a non-default mode that developers could use to 
+more easily develop the application.
 
 ### Proposed RAML
 
