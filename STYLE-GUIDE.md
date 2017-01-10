@@ -124,6 +124,7 @@ message for anything not an error.
 * The third and following portions will further describe the key.
 * Portions of keys that don't have heirarchy, e.g. a.b.code.invalidLength and a.b.code.invalidFormat, 
 should use camelCase.
+* Keys should not include hyphens or other punctuation.
 
 Examples:
 
