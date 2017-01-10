@@ -260,6 +260,13 @@ quantities do not add up correctly, it could provide an error message tied to a 
 AngularJS UI app), and the client can immediately let the end-user know about a specific field
 with a validation error.
 
+#### Future:  Including Stack-Traces in Development Mode
+
+In the future, it may be useful to be able to launch the entire application in a debug mode.  
+In this mode errors returned via the API might include a stacktrace or other context normally 
+reserved for the server log.  This would be a non-default mode that developers could use to 
+more easily develop the application.
+
 ### Proposed RAML
 
 ```Javascript
