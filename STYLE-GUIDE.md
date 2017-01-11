@@ -122,15 +122,16 @@ least significant.
 * The second portion of the key should indicate the type of message; error for error messages, 
 message for anything not an error.
 * The third and following portions will further describe the key.
-* Keys should use only lowercase characters (NO camelCase).
-* If multiple words are necessary, they should be separated with a dash (-).
+* Portions of keys that don't have heirarchy, e.g. `a.b.code.invalidLength` and `a.b.code.invalidFormat`, 
+should use camelCase.
+* Keys should not include hyphens or other punctuation.
 
 Examples:
 
 * `requisition.error.product.code.invalid` - an alternative could be `requisition.error
 .product-code.invalid` if code is not a sub-section of product.
 * `requisition.message.requisition.created` - requisition successfully created.
-* `reference-data.error.facility.not-found` - facility not found.
+* `referenceData.error.facility.notFound` - facility not found.
 
 Note: UI-related keys (labels, buttons, etc.) are not addressed here, as they would be owned by the
 UI, and not the Independent Service.
