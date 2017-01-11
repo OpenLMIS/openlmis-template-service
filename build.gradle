@@ -30,6 +30,7 @@ targetCompatibility = 1.8
 repositories {
     mavenCentral()
     jcenter()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
 }
 
 dependencies {
@@ -41,6 +42,7 @@ dependencies {
     compile "com.github.tomakehurst:wiremock:1.58"
     compile "org.springframework:spring-test"
     compile 'org.webjars:swagger-ui:2.2.6'
+    compile 'org.openlmis:openlmis-service-util:3.0.0-SNAPSHOT'
 
     testCompile "junit:junit"
     testCompile "org.mockito:mockito-core:1.+"
