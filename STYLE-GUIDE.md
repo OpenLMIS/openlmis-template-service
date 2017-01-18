@@ -111,9 +111,11 @@ order
 * Column names with multiple words should be merged together.  e.g. `getFirstName()` would map to
  `firstname`
 
-Guidelines for bootstrap data:
+## RBAC (Roles & Rights) Naming Conventions
 
-* Names for rights in the system should follow a RESOURCE_ACTION pattern and should be all uppercase, e.g. REQUISITION_CREATE, or FACILITIES_MANAGE. This is so all of the rights of a certain resource can be ordered together (REQUISITION_CREATE, REQUISITION_AUTHORIZE, etc.).
+* Names for rights in the system should follow a RESOURCE_ACTION pattern and should be all uppercase,
+e.g. REQUISITION_CREATE, or FACILITIES_MANAGE. This is so all of the rights of a certain resource can 
+be ordered together (REQUISITION_CREATE, REQUISITION_AUTHORIZE, etc.).
 
 ## i18n Naming Conventions
 These naming conventions will be applicable for the messages property files.
