@@ -110,6 +110,7 @@ order
 * Table names with multiple words should be snake_case.
 * Column names with multiple words should be merged together.  e.g. `getFirstName()` would map to
  `firstname`
+* Columns of type uuid should end in 'id', including foreign keys.
 
 ## RBAC (Roles & Rights) Naming Conventions
 
