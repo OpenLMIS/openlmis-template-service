@@ -99,11 +99,12 @@ RAML file like this (using role as an example):
     adds support for RAML 1.0, this practice might be revised.)
 
 ## Postgres Database
-In most cases, the Hibernate DefaultNamingStrategy follows these conventions. Schemas and table 
-names will however need to be specified.
 
-* Each Independent Service should store it's tables in its own schema.  The convention is to use 
-the Service's name as the schema.  e.g. The Requistion Service uses the `requisition` schema
+For guidelines on how to write schema migrations using Flyway, see [Writing Schema Migrations 
+(Using Flyway)](FLYWAY.md).
+
+* Each Independent Service should store its tables in its own schema.  The convention is to use 
+the Service's name as the schema.  e.g. The Requisition Service uses the `requisition` schema
 * Tables, Columns, constraints etc should be all lower case.
 * Table names should be pluralized.  This is to avoid *most* used words. e.g. orders instead of 
 order
@@ -129,7 +130,7 @@ least significant.
 * The second portion of the key should indicate the type of message; error for error messages, 
 message for anything not an error.
 * The third and following portions will further describe the key.
-* Portions of keys that don't have heirarchy, e.g. `a.b.code.invalidLength` and `a.b.code.invalidFormat`, 
+* Portions of keys that don't have hierarchy, e.g. `a.b.code.invalidLength` and `a.b.code.invalidFormat`, 
 should use camelCase.
 * Keys should not include hyphens or other punctuation.
 
