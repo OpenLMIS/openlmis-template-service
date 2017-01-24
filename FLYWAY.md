@@ -3,7 +3,7 @@
 This document serves as a set of guidelines / best practices for writing Flyway schema migrations
  for an OpenLMIS Service.
 
-## Flyway in a Database
+## Intro to Flyway migrating a Database
 
 * Creates a table in the schema called `schema_version`.
 * Is smart enough to only apply new migrations to the database.
@@ -18,7 +18,8 @@ application startup, Flyway is automatically run.
 
 ## General Guidelines
 
-* Think about semantics in a migration; keep it conceptually self-contained.
+* Think about semantics in a migration; keep the changes conceptually self-contained.  A migration
+should do one "thing" well similar to best practices with Git commits.
 * Keep a migration relatively small; it should only have changes that are all related to each other.
 * Try to keep a migration "tied to the code"; meaning it should be added to the codebase around 
 the same time as its related code changes. Ideally, this would be in the same source control commit.
@@ -30,7 +31,7 @@ guideline is to keep things simple if the migrations in a dot release upgrade ar
 successful. In this case, the recommended upgrade set of steps would be:
   * Perform a full backup of the database.
   * Do an in-place upgrade.
-  * If the upgrade fails, revert the code and revert the database to the backup.
+  * If the upgrade fails, revert the deployed service and revert the database to the backup.
 * Do not use database dumps or diffs to auto-generate a migration script. (NO pg_dumps!)
 * Try to provide comments on table columns. This is especially important as reports access 
 database tables directly.
