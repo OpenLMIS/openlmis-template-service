@@ -97,6 +97,47 @@ RAML file like this (using role as an example):
     schema for a request/response body ([details](http://forums.raml.org/t/set-body-to-be-array-of-defined-schema-objects/1566/3)).
     If the project moves to the RAML 1.0 spec and our [RAML testing tool](https://github.com/nidi3/raml-tester)
     adds support for RAML 1.0, this practice might be revised.)
+    
+### Pagination
+
+Many of the GET endpoints that return _collections_ should be paginated at the API level.  We use
+the following guidelines for RESTful JSON pagination:
+
+* Pagination options are done by _query_ paramaters.  i.e. use `/api/someResources?page=2` and not
+`/api/someResources/page/2`.
+* When an endpoint is paginated, and the pagination options are _not_ given, then we return the
+full collection.  i.e. a single page with every possible instance of that resource.  It's 
+therefore up to the client to use collection endpoints responsibly and not over-load the backend.
+* A paginated resource that has not items returns a single page, with it's `content` attribute 
+as empty.
+* Resource's which only ever return a single identified item are _not_ paginated.
+* For Java Service's the query parameters should be defined by a [Pageable](http://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/domain/Pageable.html) 
+and the response should be a [Page](http://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/domain/Page.html).
+
+Example Request:
+```
+GET /api/requisitions/search?size=5&access_token=<sometoken>
+```
+
+Example Response:
+```json
+{
+  "content": [
+    {
+    ...
+    }
+  ],
+  "totalElements": 13,
+  "totalPages": 3,
+  "last": false,
+  "numberOfElements": 5,
+  "first": true,
+  "sort": null,
+  "size": 5,
+  "number": 0
+}
+```
+
 
 ## Postgres Database
 
