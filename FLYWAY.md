@@ -22,9 +22,9 @@ application startup, Flyway is automatically run.
 * Keep a migration relatively small; it should only have changes that are all related to each other.
 * Try to keep a migration "tied to the code"; meaning it should be added to the codebase around 
 the same time as its related code changes. Ideally, this would be in the same source control commit.
-* A migration should not have any data changes; schema changes only. (No INSERT/DELETE/etc. 
-statements!)
-  * This includes bootstrap data. See [Bootstrap Data Guidelines](#bootstrap) below.
+* A migration should generally only have schema changes. The only time a migration would have 
+data changes (i.e. INSERT/DELETE/etc. statements) is if it is considered "bootstrap" data.
+  * **Note:** See [Bootstrap Data Guidelines](#bootstrap) below.
 * Do not create reverse migrations (a migration that reverses an earlier migration). This 
 guideline is to keep things simple if the migrations in a dot release upgrade are only partially 
 successful. In this case, the recommended upgrade set of steps would be:
@@ -34,12 +34,16 @@ successful. In this case, the recommended upgrade set of steps would be:
 * Do not use database dumps or diffs to auto-generate a migration script. (NO pg_dumps!)
 * Try to provide comments on table columns. This is especially important as reports access 
 database tables directly.
+* Use the `gradle generateMigration` task to create the migration script. This will give the 
+correct format for the script name (`timestamp__migration_name.sql`).
+* When naming a migration script, try to be descriptive of what is in the migration script. For 
+example: if you add an email column to a users table, the script might be called 
+`20170123120000000__add_email_to_users.sql`.
 
 ## <a name="bootstrap">Guidelines about Loading Bootstrap Data</a>
 
 There is a certain set of data without which the system cannot function. In OpenLMIS, this is 
-called "bootstrap data". Even this data should not be present in migrations, but loaded 
-separately after the migrations.
+called "bootstrap" data. This is the only kind of data changes that are allowed in migrations.
 
 There are two ways that bootstrap data needs to be loaded into the system:
 
@@ -53,13 +57,12 @@ another Service's database.
 
 Below are the guidelines of how bootstrap data can be loaded for both ways:
 
-1. This can be solved by providing a SQL script called `afterMigrate.sql`, and configuring Flyway
- to be able to find it by adding the location of the script to the `flyway.locations` property in 
- Spring Boot's application.properties file.
-2. This problem is more complex to solve, as it requires service-to-service communication. A 
-custom implementation of FlywayCallback will probably need to be created so that on its 
-afterMigrate() call, it will get a service-based access token from the Auth Service and use that 
-token to call the applicable endpoint in the dependent Service. In the example above, the 
-endpoint would be the "create right" endpoint in the Reference Data Service.
-  * For this to work properly, the Auth Service and the dependent Service (Reference Data in the 
-  example) will need to be up and running when the Service is trying to load bootstrap data.
+1. This is already handled by Flyway, since bootstrap data can be added into a migration. 
+Bootstrap data can also be updated in future migrations.
+  * A notable exception is the first "admin" user in the system. It is assumed that this user 
+  will be modified or deleted and should not be updated in future dot releases.
+2. This problem is more complex to solve, as it requires service-to-service communication. For 
+3.0, since the only situation where this is expected is the creation of rights, all rights will 
+be created by the Reference Data Service, including rights "owned" by other services.
+  * For future releases after 3.0, an implementation will be provided where a Service contacts the 
+  Reference Data Service to create rights, but the design of this has not been determined yet.
