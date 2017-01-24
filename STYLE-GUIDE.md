@@ -108,15 +108,15 @@ the following guidelines for RESTful JSON pagination:
 * When an endpoint is paginated, and the pagination options are _not_ given, then we return the
 full collection.  i.e. a single page with every possible instance of that resource.  It's 
 therefore up to the client to use collection endpoints responsibly and not over-load the backend.
-* A paginated resource that has not items returns a single page, with it's `content` attribute 
+* A paginated resource that has no items returns a single page, with it's `content` attribute 
 as empty.
 * Resource's which only ever return a single identified item are _not_ paginated.
 * For Java Service's the query parameters should be defined by a [Pageable](http://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/domain/Pageable.html) 
 and the response should be a [Page](http://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/domain/Page.html).
 
-Example Request:
+Example Request (note that page is zero-based):
 ```
-GET /api/requisitions/search?size=5&access_token=<sometoken>
+GET /api/requisitions/search?page=0&size=5&access_token=<sometoken>
 ```
 
 Example Response:
