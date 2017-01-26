@@ -26,6 +26,8 @@ the same time as its related code changes. Ideally, this would be in the same so
 * A migration should generally only have schema changes. The only time a migration would have 
 data changes (i.e. INSERT/DELETE/etc. statements) is if it is considered "bootstrap" data.
   * **Note:** See [Bootstrap Data Guidelines](#bootstrap) below.
+* Migration scripts shouldn't have to check if a table/column exists.  The state of the DB (schema)
+is already set by the migration scripts that preceed it.
 * Do not create reverse migrations (a migration that reverses an earlier migration). This 
 guideline is to keep things simple if the migrations in a dot release upgrade are only partially 
 successful. In this case, the recommended upgrade set of steps would be:
