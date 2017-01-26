@@ -62,12 +62,12 @@ another Service's database.
 
 Below are the guidelines of how bootstrap data can be loaded for both ways:
 
-1. This is already handled by Flyway, since bootstrap data can be added into a migration. 
-Bootstrap data can also be updated in future migrations.
+1. Within a Service the standard Flyway migrations may load bootstrap data and "upgrade" it as
+the Service matures.
   * A notable exception is the first "admin" user in the system. It is assumed that this user 
   will be modified or deleted and should not be updated in future dot releases.
-2. This problem is more complex to solve, as it requires service-to-service communication. For 
-3.0, since the only situation where this is expected is the creation of rights, all rights will 
-be created by the Reference Data Service, including rights "owned" by other services.
+2. A service loading bootstrap data into another service is more complex to solve as it requires 
+service-to-service communication. For 3.0, since the only situation where this is expected is the 
+creation of rights, all rights will be created by the Reference Data Service, including rights "owned" by other services.
   * For future releases after 3.0, an implementation will be provided where a Service contacts the 
-  Reference Data Service to create rights, but the design of this has not been determined yet.
+  Reference Data Service to create rights, but the design of this has not yet been determined.
