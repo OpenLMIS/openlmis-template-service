@@ -28,6 +28,8 @@ data changes (i.e. INSERT/DELETE/etc. statements) is if it is considered "bootst
   * **Note:** See [Bootstrap Data Guidelines](#bootstrap) below.
 * Migration scripts shouldn't have to check if a table/column exists.  The state of the DB (schema)
 is already set by the migration scripts that preceed it.
+* Migration scripts shouldn't change.  Especially not after others may have run them.  NEVER after
+they have made it into a release.
 * Do not create reverse migrations (a migration that reverses an earlier migration). This 
 guideline is to keep things simple if the migrations in a dot release upgrade are only partially 
 successful. In this case, the recommended upgrade set of steps would be:
