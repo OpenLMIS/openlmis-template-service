@@ -21,7 +21,7 @@ import java.util.UUID;
  * Controller used to expose Widgets via HTTP.
  */
 @RestController
-public class WidgetController extends BaseController{
+public class WidgetController extends BaseController {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(WidgetController.class);
 
@@ -119,9 +119,7 @@ public class WidgetController extends BaseController{
     return ResponseEntity.status(HttpStatus.OK).body(auditData);
   }
 
-
-  private ResponseEntity<?> handleNotFound()
-  {
+  private ResponseEntity<?> handleNotFound() {
     //Note that most services throw a custom exception rather than
     // manually return a 404 as shown below.
     return new ResponseEntity(null, HttpStatus.BAD_REQUEST.NOT_FOUND);

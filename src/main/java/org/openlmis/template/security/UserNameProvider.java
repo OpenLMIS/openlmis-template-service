@@ -14,7 +14,7 @@ public class UserNameProvider implements AuthorProvider {
    */
   @Override
   public String provide() {
-   return "unauthenticated user";
+    return "unauthenticated user";
   }
 
 }
