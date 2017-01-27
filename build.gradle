@@ -43,6 +43,8 @@ dependencies {
     compile "org.springframework:spring-test"
     compile 'org.webjars:swagger-ui:2.2.6'
     compile 'org.openlmis:openlmis-service-util:3.0.0-SNAPSHOT'
+    compile 'org.apache.commons:commons-lang3:3.5'
+    compile 'org.javers:javers-spring-boot-starter-sql:2.8.1'
 
     testCompile "junit:junit"
     testCompile "org.mockito:mockito-core:1.+"

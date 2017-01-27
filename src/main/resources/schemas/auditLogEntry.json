@@ -1,0 +1,91 @@
+{
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "title": "AuditLogEntry",
+  "description": "A single entry in a resource's audit log",
+  "properties": {
+
+    "changeType": {
+      "type": "string",
+      "title": "changeType"
+    },
+
+    "globalId": {
+      "description": "The unique id of the object which was changed",
+      "type": "object",
+      "properties": {
+          "entity": {
+              "description": "The type of entity which was changed",
+              "type": "string"
+          },
+          "cdoId": {
+              "description": "The ID of the entity which was changed",
+              "anyOf": [
+                { "type": ["string", "null"] },
+                { "type": ["object", "null"] },
+                { "type": ["number", "null"] }
+              ]
+          }
+      }
+    },
+
+    "commitMetadata": {
+      "description": "Information about the change that was made",
+      "type": "object",
+      "properties": {
+          "author": {
+              "description": "The user or client which made the change",
+              "type": "string"
+            },
+          "properties": {
+              "description": "Optional metadata manually associated with the audit log's entry",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+          "commitDate": {
+              "description": "When the commit was made",
+              "type": "string"
+          },
+          "id": {
+              "description": "ID of the commit",
+              "anyOf": [
+                { "type": ["string", "null"] },
+                { "type": ["object", "null"] },
+                { "type": ["number", "null"] }
+              ]
+          }
+      }
+    },
+
+    "property": {
+      "description": "The name of the property which changed",
+      "type": "string"
+    },
+
+    "left": {
+      "description": "The original value of the property",
+      "anyOf": [
+          { "type": ["string", "null"] },
+          { "type": ["object", "null"] },
+          { "type": ["array" , "null"] },
+          { "type": ["boolean", "null"] },
+          { "type": ["number", "null"] }
+        ]
+    },
+
+    "right": {
+      "description": "The new value of the property",
+      "anyOf": [
+          { "type": ["string", "null"] },
+          { "type": ["object", "null"] },
+          { "type": ["array" , "null"] },
+          { "type": ["boolean", "null"] },
+          { "type": ["number", "null"] }
+        ]
+    }
+  },
+
+  "required": ["changeType", "globalId", "commitMetadata"]
+}

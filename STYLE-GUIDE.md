@@ -138,7 +138,6 @@ Example Response:
 }
 ```
 
-
 ## Postgres Database
 
 For guidelines on how to write schema migrations using Flyway, see [Writing Schema Migrations 
@@ -226,3 +225,30 @@ Less used:
 should not be using this directly, and instead use ERROR.
 * ERROR - is reserved for programming conditions or system conditions that would have resulted in the Service terminating, however some
 safety oriented code caught the condition and made it safe.  This should be reserved for a global Service level handler that will convert all Exceptions into a HTTP 5xx level exception.
+
+
+## Audit Logging
+
+Services use JaVers to log changes made throughout the system. The audits logs for individual resources
+should be exposed via endpoints which look as follows:
+
+```
+/api/someResources/{id}/auditLog
+```
+
+Just as with other paginated endpoints, these requests may be filtered via _page_ and _size_
+query paramaters:  `/api/someResources?page=0&size=10`
+
+The returned log may additionally be filtered by _author_ and _changedPropertyName_ query paramaters.
+The later specifies that only changes made by a given user should be returned, whereas the later dictates
+that only changes related to the named property should be shown.
+
+Each /auditLog endpoint should return a collection. Even if a specified {id} does not exist, an empty
+collection rather than a 404 error should be returned.
+
+Within production services, the response bodies returned by these endpoints should correspond
+to the JSON schema defined by _auditLogEntryArray_ within _/resources/api-definition.yaml_. It is
+recognized and accepted that this differs from the schema intended for use by other collections
+throughout the system. Specifically, whereas other collections which support paginated requests are
+expected to return pagination-related metadata (eg: "totalElements," "totalPages") within their
+response bodies, the responses proffered by /auditLog endpoints do not retur pagination related data.
