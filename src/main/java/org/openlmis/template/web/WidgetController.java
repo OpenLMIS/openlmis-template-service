@@ -35,7 +35,7 @@ public class WidgetController extends BaseController {
   public ResponseEntity createWidget(@RequestBody Widget widget) {
     LOGGER.debug("Creating new widget");
     Widget newWidget = widgetRepository.save(widget);
-    return new ResponseEntity(newWidget, HttpStatus.CREATED);
+    return ResponseEntity.status(HttpStatus.CREATED).body(newWidget);
   }
 
   /**
@@ -47,7 +47,7 @@ public class WidgetController extends BaseController {
     LOGGER.debug("Updating widget");
     widget.setId(id);
     widgetRepository.save(widget);
-    return new ResponseEntity(widget, HttpStatus.OK);
+    return ResponseEntity.status(HttpStatus.OK).body(widget);
   }
 
   /**
@@ -61,7 +61,7 @@ public class WidgetController extends BaseController {
       return handleNotFound();
     } else {
       widgetRepository.delete(widget);
-      return new ResponseEntity(HttpStatus.NO_CONTENT);
+      return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
   }
 
@@ -72,7 +72,7 @@ public class WidgetController extends BaseController {
   @RequestMapping(value = "/widgets", method = RequestMethod.GET)
   public ResponseEntity getAllWidgets() {
     Iterable<Widget> widgets = widgetRepository.findAll();
-    return new ResponseEntity(widgets, HttpStatus.OK);
+    return ResponseEntity.status(HttpStatus.OK).body(widgets);
   }
 
   /**
@@ -84,7 +84,7 @@ public class WidgetController extends BaseController {
     if (widget == null) {
       return handleNotFound();
     } else {
-      return new ResponseEntity(widget, HttpStatus.OK);
+      return ResponseEntity.status(HttpStatus.OK).body(widget);
     }
   }
 
@@ -122,7 +122,7 @@ public class WidgetController extends BaseController {
   private ResponseEntity<?> handleNotFound() {
     //Note that most services throw a custom exception rather than
     // manually return a 404 as shown below.
-    return new ResponseEntity(null, HttpStatus.BAD_REQUEST.NOT_FOUND);
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST.NOT_FOUND).body(null);
   }
 
 }
