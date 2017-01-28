@@ -243,8 +243,8 @@ The returned log may additionally be filtered by _author_ and _changedPropertyNa
 The later specifies that only changes made by a given user should be returned, whereas the later dictates
 that only changes related to the named property should be shown.
 
-Each /auditLog endpoint should return a collection. Even if a specified {id} does not exist, an empty
-collection rather than a 404 error should be returned.
+Each `/api/someResources/{id}/auditLog` endpoint should return a 404 error if and only if the specified {id} does not exist.
+In cases where the resource id exists but lacks an associated audit log, an empty array representing the empty audit should be returned.
 
 Within production services, the response bodies returned by these endpoints should correspond
 to the JSON schema defined by _auditLogEntryArray_ within _/resources/api-definition.yaml_. It is
