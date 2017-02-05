@@ -45,6 +45,7 @@ dependencies {
     compile 'org.openlmis:openlmis-service-util:3.0.0-SNAPSHOT'
     compile 'org.apache.commons:commons-lang3:3.5'
     compile 'org.javers:javers-spring-boot-starter-sql:2.8.1'
+    compile 'org.flywaydb:flyway-core:4.0.3'
 
     testCompile "junit:junit"
     testCompile "org.mockito:mockito-core:1.+"

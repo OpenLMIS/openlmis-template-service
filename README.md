@@ -198,3 +198,20 @@ $ gradle bootRun --debug-jvm
 This will enable debugging for the application, listening on port 5005, which the container has 
 exposed. Note that the process starts suspended, so the application will not start up until the 
 debugger has connected.
+
+## Production by Spring Profile
+
+By default when this service is started, it will clean it's schema in the database before migrating
+it.  This is meant for use during the normal development cycle.  For production data, this obviously
+is not desired as it would remove all of the production data.  To change the default clean & migrate
+behavior to just be a migrate behavior (which is still desired for production use), we use a Spring
+Profile named `production`.  To use this profile, it must be marked as Active.  The easiest way to
+do so is to add to the .env file:
+
+```java
+spring_profiles_active=production
+```
+
+This will set the similarly named environment variable and limit the profile in use.  The 
+expected use-case for this is when this service is deployed through the 
+[Reference Distribution](https://github.com/openlmis/openlmis-blue).
