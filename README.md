@@ -201,7 +201,7 @@ debugger has connected.
 
 ## Production by Spring Profile
 
-By default when this service is started, it will clean it's schema in the database before migrating
+By default when this service is started, it will clean its schema in the database before migrating
 it.  This is meant for use during the normal development cycle.  For production data, this obviously
 is not desired as it would remove all of the production data.  To change the default clean & migrate
 behavior to just be a migrate behavior (which is still desired for production use), we use a Spring
