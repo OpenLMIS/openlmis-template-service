@@ -159,7 +159,24 @@ order
 e.g. REQUISITION_CREATE, or FACILITIES_MANAGE. This is so all of the rights of a certain resource can 
 be ordered together (REQUISITION_CREATE, REQUISITION_AUTHORIZE, etc.).
 
-## i18n Naming Conventions
+## i18n (Localization)
+
+### Transifex and the Build Process
+
+OpenLMIS v3 uses Transifex for translating messages. The build process contains a step to sync 
+message property files with a corresponding Transifex project. Care should be taken when managing
+keys in these files and pushing them to Transifex.
+
+* If message keys are added to the property file, they will be added to the Transifex project, 
+where they are now available to be translated.
+* If message keys or strings are modified in the property file, any translations for them will be
+ lost and have to be re-translated.
+* If message keys are removed in the property file, they will be removed from the Transifex 
+project. If they are re-added later, any translations for them will be lost and have to be 
+re-translated.
+
+### Naming Conventions
+
 These naming conventions will be applicable for the messages property files.
 
 * Keys for the messages property files should follow a hierarchy. However, since there is no 
@@ -176,8 +193,8 @@ should use camelCase.
 
 Examples:
 
-* `requisition.error.product.code.invalid` - an alternative could be `requisition.error
-.product-code.invalid` if code is not a sub-section of product.
+* `requisition.error.product.code.invalid` - an alternative could be
+`requisition.error.productCode.invalid` if code is not a sub-section of product.
 * `requisition.message.requisition.created` - requisition successfully created.
 * `referenceData.error.facility.notFound` - facility not found.
 
