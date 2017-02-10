@@ -163,9 +163,10 @@ be ordered together (REQUISITION_CREATE, REQUISITION_AUTHORIZE, etc.).
 
 ### Transifex and the Build Process
 
-OpenLMIS v3 uses Transifex for translating messages. The build process contains a step to sync 
-message property files with a corresponding Transifex project. Care should be taken when managing
-keys in these files and pushing them to Transifex.
+OpenLMIS v3 uses Transifex for translating message strings so that the product can be used in
+multiple languages. The build process of each OpenLMIS service contains a step to sync message 
+property files with a corresponding Transifex project. Care should be taken when managing keys in
+these files and pushing them to Transifex.
 
 * If message keys are added to the property file, they will be added to the Transifex project, 
 where they are now available to be translated.
