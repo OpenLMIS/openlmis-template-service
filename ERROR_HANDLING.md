@@ -206,7 +206,7 @@ have permissions. That should generate a HTTP 403 Forbidden response with a JSON
 ```Javascript
 {
   "message" : "Action prohibited because user does not have permission at the facility",
-  "messageKey" : "requisition.error.prohibited.no-facility-permission"
+  "messageKey" : "requisition.error.prohibited.noFacilityPermission"
 }
 ```
 
