@@ -214,4 +214,4 @@ spring_profiles_active=production
 
 This will set the similarly named environment variable and limit the profile in use.  The 
 expected use-case for this is when this service is deployed through the 
-[Reference Distribution](https://github.com/openlmis/openlmis-blue).
+[Reference Distribution](https://github.com/openlmis/openlmis-ref-distro).

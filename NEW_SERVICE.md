@@ -20,7 +20,7 @@ them in template service means we can update in one repo)
   * deploy to test
   * deploy to sonar
 5. Publish the Service to DockerHub.  Set the description to describe the service's role and link to the GitHub repository.
-6. add Service in Blue
+6. add Service in the Reference Distribution
 7. update Read The Docs
 8. add Scalyr monitoring/notifications
 9. add any desired Slack notifications (such as Github and Jenkins build alerts)
