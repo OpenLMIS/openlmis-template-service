@@ -7,7 +7,7 @@ We use checkstyle to check for it being present in Java files. We also check for
 it during our Grunt build in javascript files.
 
 The current copyright header format can be found [here.]
-(https://raw.githubusercontent.com/OpenLMIS/openlmis-blue/master/LICENSE-HEADER)
+(https://raw.githubusercontent.com/OpenLMIS/openlmis-ref-distro/master/LICENSE-HEADER)
 
 Replace the year and holder with appropriate holder, for example:
 
