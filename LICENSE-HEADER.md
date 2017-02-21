@@ -9,5 +9,5 @@ it during our Grunt build in javascript files.
 The current copyright header format can be found here:
 https://raw.githubusercontent.com/OpenLMIS/openlmis-blue/master/LICENSE-HEADER
 
-Replace the year and holder with appropriate holder:
+Replace the year and holder with appropriate holder, for example:
 Copyright © 2017 VillageReach
