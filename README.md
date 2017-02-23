@@ -232,4 +232,7 @@ These variables are used by services for their connection to the database (none 
 * **POSTGRES_USER** - The username of the database user that the services should use. This variable is also used by our PostgreSQL container to create a user.
 * **POSTGRES_PASSWORD** - The password of the database user that the services should use. This variable is also used by our PostgreSQL container to create a user.
 
+These variables are used by our builds in order to integrate with the [Transifex](https://www.transifex.com/) translation management system:
 
+* **TRANSIFEX_USER** - The username to use with Transifex for updating translations.
+* **TRANSIFEX_USER** - The password to use with Transifex for updating translations.
