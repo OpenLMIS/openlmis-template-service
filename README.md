@@ -225,3 +225,11 @@ The following environment variables are common to our services. They can be set 
 * **CONSUL_HOST** - Identifies the IP address or DNS name of the Consul server. Set this to the host or IP under which the distribution is available and Consul listens for connections. Services should register with Consul under this address. This should be a host or an IP, for example 8.8.8.8.
 * **CONSUL_PORT** - The port used by the Consul server - services should use this port to register with Consul. This should be a port number, for example 8500. 8500 is used by default.
 * **REQUIRE_SSL** - Whether HTTPS is required. If set to true, nginx will redirect all incoming HTTP connections to HTTPS. By default SSL will not be required.
+
+These variables are used by services for their connection to the database (none of these have defaults):
+
+* **DATABASE_URL** - The JDBC url under which the database is accessible. Our services use `jdbc:postgresql://db:5432/open_lmis` for connecting to the PostgreSQL database running in a container.
+* **POSTGRES_USER** - The username of the database user that the services should use. This variable is also used by our PostgreSQL container to create a user.
+* **POSTGRES_PASSWORD** - The password of the database user that the services should use. This variable is also used by our PostgreSQL container to create a user.
+
+
