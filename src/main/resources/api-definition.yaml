@@ -100,57 +100,6 @@ resourceTypes:
                 type: string
                 required: true
                 repeat: false
-
-    - collection:
-        get:
-            responses:
-                200:
-                  description: Collection retrieved successfully
-                  headers:
-                    X-Content-Type-Options:
-                    X-XSS-Protection:
-                  body:
-                      application/json:
-                          schema: <<schema>>
-                404:
-                  description: Collection is empty.
-                  headers:
-                    X-Content-Type-Options:
-                    X-XSS-Protection:
-        post:
-            body:
-                application/json:
-                    schema: <<schema>>
-            responses:
-                201:
-                  description: Item created successfully
-                  headers:
-                    X-Content-Type-Options:
-                    X-XSS-Protection:
-                  body:
-                      application/json:
-                          schema: <<schema>>
-    - member:
-        get:
-            responses:
-                200:
-                    body:
-                        application/json:
-                            schema: <<schema>>
-        post:
-            body:
-                application/json:
-                    schema: <<schema>>
-            responses:
-                200:
-                    body:
-                        application/json:
-                            schema: <<schema>>
-        delete:
-            responses:
-                200:
-
-
 /:
     displayName: Version
     get:
