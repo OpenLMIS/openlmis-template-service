@@ -235,4 +235,4 @@ These variables are used by services for their connection to the database (none 
 These variables are used by our builds in order to integrate with the [Transifex](https://www.transifex.com/) translation management system:
 
 * **TRANSIFEX_USER** - The username to use with Transifex for updating translations.
-* **TRANSIFEX_USER** - The password to use with Transifex for updating translations.
+* **TRANSIFEX_PASSWORD** - The password to use with Transifex for updating translations.
