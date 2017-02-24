@@ -25,7 +25,8 @@ public class UserNameProvider implements AuthorProvider {
 
   /**
    * A service intended for production would offer an implementation of
-   * provide() based on its approach to authentication.
+   * provide() based on its approach to authentication. It is expected
+   * that most services will return a UUID rather than actual user name.
    */
   @Override
   public String provide() {
