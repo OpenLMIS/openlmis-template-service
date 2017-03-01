@@ -42,7 +42,7 @@ dependencies {
     compile "com.github.tomakehurst:wiremock:1.58"
     compile "org.springframework:spring-test"
     compile 'org.webjars:swagger-ui:2.2.6'
-    compile 'org.openlmis:openlmis-service-util:3.0.0-SNAPSHOT'
+    compile 'org.openlmis:openlmis-service-util:3.0.0'
     compile 'org.apache.commons:commons-lang3:3.5'
     compile 'org.javers:javers-spring-boot-starter-sql:2.8.1'
     compile 'org.flywaydb:flyway-core:4.0.3'
