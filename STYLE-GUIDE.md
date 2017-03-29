@@ -76,6 +76,9 @@ taken to design the endpoints in a way that makes sense for clients. Examples:
     * Note: this is to ensure compliance with all JSON parsers, especially ones that adhere to 
     RFC4627, which do not consider JSON values to be valid JSON. See the discussion
     [here](http://stackoverflow.com/questions/18419428/what-is-the-minimum-valid-json).
+* When giving names to resources in the APIs, if it is a UUID, its name should have a suffix of "Id"
+to show that. (e.g. `/api/users/{userId}/fulfillmentFacilities` has query parameter `rightId` to get
+by right UUID.)
 
 We use RAML (0.8) to document our RESTful APIs, which are then converted into HTML for static API 
 documentation or Swagger UI for live documentation. Some guidelines for defining APIs in RAML:
