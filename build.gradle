@@ -34,6 +34,7 @@ apply from: "codeAnalysis.gradle"
 apply from: "documentation.gradle"
 apply from: "database.gradle"
 apply from: "tests.gradle"
+apply from: "registration.gradle"
 
 group = serviceGroup
 version = serviceVersion
@@ -77,4 +78,5 @@ build {
     dependsOn check
     dependsOn ramlToHtml
     dependsOn copyRamlHtmlToBuild
+    dependsOn copyConsulRegistrationToBuild
 }
