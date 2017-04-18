@@ -1,0 +1,49 @@
+apply plugin: 'checkstyle'
+apply plugin: 'pmd'
+
+checkstyle {
+    toolVersion = "6.19"
+}
+
+pmd {
+    toolVersion = '5.4.0'
+    consoleOutput= true
+    ignoreFailures = false
+    ruleSetFiles = files("config/pmd/ruleset.xml")
+    reportsDir = file("build/reports/pmd")
+}
+
+tasks.withType(Pmd){
+    reports {
+        xml.enabled true
+        html.enabled true
+    }
+}
+
+task checkApiIsRaml(type:Exec) {
+    executable "raml-cop"
+    args "src/main/resources/api-definition.yaml"
+}
+
+configure(checkApiIsRaml) {
+    group = JavaBasePlugin.VERIFICATION_GROUP
+    description = 'Verify that the api-specification is valid RAML'
+}
+
+//Usage: gradle sonarqube
+sonarqube {
+    properties {
+        property "sonar.projectName", "OpenLMIS Template Service"
+        property "sonar.projectKey", "org.sonarqube:$rootProject.name"
+        property "sonar.projectVersion", version
+        property "sonar.host.url", "http://sonar.openlmis.org"
+        property "sonar.java.coveragePlugin", "jacoco"
+        //Tells SonarQube where the unit tests execution reports are
+        property "sonar.junit.reportsPath", "build/test-results/test"
+        //Tells SonarQube where the unit tests code coverage report is
+        property "sonar.jacoco.reportPath", "build/jacoco/test.exec"
+        //Tells SonarQube where the integration tests code coverage report is
+        property "sonar.jacoco.itReportPath", "build/jacoco/integrationTest.exec"
+        properties["sonar.tests"] += sourceSets.integrationTest.java
+    }
+}
