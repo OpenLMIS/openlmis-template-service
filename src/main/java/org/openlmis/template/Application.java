@@ -134,7 +134,7 @@ public class Application {
    * JaversSqlAutoConfiguration.java</a> for the default configuration upon which this code is based
    */
   @Bean
-  public Javers javersProvidor(ConnectionProvider connectionProvider,
+  public Javers javersProvider(ConnectionProvider connectionProvider,
                                PlatformTransactionManager transactionManager) {
     JaversSqlRepository sqlRepository = SqlRepositoryBuilder
             .sqlRepository()

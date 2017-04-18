@@ -34,21 +34,24 @@ repositories {
 }
 
 dependencies {
-    compile "org.springframework.boot:spring-boot-starter-web"
-    compile "org.springframework.boot:spring-boot-starter-data-rest"
-    compile "org.projectlombok:lombok:1.16.8"
-    compile "org.springframework.boot:spring-boot-starter-data-jpa"
-    compile "org.postgresql:postgresql:9.4.1208"
-    compile "com.github.tomakehurst:wiremock:1.58"
     compile "org.springframework:spring-test"
+    compile "org.springframework.boot:spring-boot-starter-data-jpa"
+    compile "org.springframework.boot:spring-boot-starter-data-rest"
+    compile "org.springframework.boot:spring-boot-starter-web"
+
+    compile "org.openlmis:openlmis-service-util:3.0.0"
+
+    compile "org.projectlombok:lombok:1.16.8"
+    compile "org.postgresql:postgresql:42.0.0"
     compile 'org.webjars:swagger-ui:2.2.6'
-    compile 'org.openlmis:openlmis-service-util:3.0.0'
     compile 'org.apache.commons:commons-lang3:3.5'
     compile 'org.javers:javers-spring-boot-starter-sql:2.8.1'
     compile 'org.flywaydb:flyway-core:4.0.3'
 
     testCompile "junit:junit"
     testCompile "org.mockito:mockito-core:1.+"
+    testCompile "com.github.tomakehurst:wiremock:1.58"
+    testCompile "org.springframework.boot:spring-boot-starter-test"
 }
 
 idea {
@@ -102,6 +105,30 @@ configurations {
     integrationTestRuntime.extendsFrom testRuntime
 }
 
+tasks.withType(Test) {
+    reports.html.destination = file("${reporting.baseDir}/${name}")
+    reports.junitXml.destination = file("${testResultsDir}/${name}")
+}
+
+test {
+    testLogging {
+        events 'started', 'passed'
+        exceptionFormat = 'full'
+    }
+}
+
+jacocoTestReport {
+    group = "reporting"
+    description = "Generate Jacoco coverage reports after running tests."
+    reports {
+        xml.enabled false
+        html.enabled true
+        csv.enabled false
+    }
+
+    additionalSourceDirs = files(sourceSets.main.allJava.srcDirs)
+}
+
 task integrationTest(type: Test) {
     testClassesDir = sourceSets.integrationTest.output.classesDir
     classpath = sourceSets.integrationTest.runtimeClasspath
@@ -110,11 +137,7 @@ task integrationTest(type: Test) {
         exceptionFormat = 'full'
     }
     mustRunAfter test
-}
-
-tasks.withType(Test) {
-    reports.html.destination = file("${reporting.baseDir}/${name}")
-    reports.junitXml.destination = file("${testResultsDir}/${name}")
+    environment 'BASE_URL', "http://localhost"
 }
 
 // Usage: gradle generateMigration [-PmigrationName=name_of_migration]
@@ -140,18 +163,6 @@ configure(checkApiIsRaml) {
     description = 'Verify that the api-specification is valid RAML'
 }
 
-jacocoTestReport {
-    group = "reporting"
-    description = "Generate Jacoco coverage reports after running tests."
-    reports {
-        xml.enabled false
-        html.enabled true
-        csv.enabled false
-    }
-
-    additionalSourceDirs = files(sourceSets.main.allJava.srcDirs)
-}
-
 checkstyle {
     toolVersion = "6.19"
 }
@@ -170,7 +181,7 @@ sonarqube {
         property "sonar.jacoco.reportPath", "build/jacoco/test.exec"
         //Tells SonarQube where the integration tests code coverage report is
         property "sonar.jacoco.itReportPath", "build/jacoco/integrationTest.exec"
-        properties["sonar.tests"] += sourceSets.integrationTest.java
+    properties["sonar.tests"] += sourceSets.integrationTest.java
     }
 }
 
@@ -186,14 +197,6 @@ tasks.withType(Pmd){
     reports {
         xml.enabled true
         html.enabled true
-    }
-}
-
-
-test {
-    testLogging {
-        events 'started', 'passed'
-        exceptionFormat = 'full'
     }
 }
 

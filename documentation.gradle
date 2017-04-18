@@ -5,8 +5,7 @@ def ramlToCopy = copySpec {
         include 'api-definition.yaml'
         rename { 'api-definition-swagger.yaml' }
         filter(ReplaceTokens, tokens: [
-                baseUrl: System.env.BASE_URL,
-                prefix: System.env.VIRTUAL_LOCATION ? "/" + System.env.VIRTUAL_LOCATION : "",
+                baseUrl: "http://localhost",
                 version: version])
         filter{
             line -> line.replaceAll("\"schemas(.*).json\"","\"#/schemas\$1\"")
@@ -16,7 +15,7 @@ def ramlToCopy = copySpec {
         include 'api-definition.yaml'
         rename { 'api-definition-raml.yaml' }
         filter(ReplaceTokens, tokens: [
-                baseUrl: System.env.BASE_URL,
+                baseUrl: "http://localhost",
                 version: version])
     }
     from('src/main/resources/schemas') {
@@ -53,4 +52,5 @@ task copyRamlHtmlToBuild(type:Copy) {
     with ramlHtmlToCopy
     into 'build/resources/main'
 }
+
 copyRamlHtmlToBuild.dependsOn ramlToHtml

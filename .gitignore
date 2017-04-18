@@ -1,10 +1,12 @@
 *.iml
 *.ipr
 *.iws
-.gradle/
-build/
-out/
-.idea/
+gradlew*
 .env
-.tx/
+out/
+build/
+gradle/
 node_modules/
+.tx/
+.idea/
+.gradle/
