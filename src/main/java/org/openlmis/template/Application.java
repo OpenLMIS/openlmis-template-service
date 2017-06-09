@@ -47,6 +47,9 @@ import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 
 import java.util.Locale;
 
+import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.apache.commons.lang3.LocaleUtils.toLocale;
+
 @SpringBootApplication
 @ImportResource("applicationContext.xml")
 @EntityScan(basePackageClasses = BaseEntity.class, basePackages = "org.openlmis.util.converter")
