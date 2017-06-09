@@ -54,6 +54,9 @@ public class Application {
 
   private Logger logger = LoggerFactory.getLogger(Application.class);
 
+  @Value("${defaultLocale}")
+  private Locale defaultLocale;
+
   @Autowired
   DialectName dialectName;
 
@@ -77,7 +80,12 @@ public class Application {
   public LocaleResolver localeResolver() {
     CookieLocaleResolver lr = new CookieLocaleResolver();
     lr.setCookieName("lang");
-    lr.setDefaultLocale(Locale.ENGLISH);
+
+    String envLocale = System.getenv("LOCALE");
+    Locale systemLocale = isBlank(envLocale)
+        ? defaultLocale : toLocale(envLocale);
+    lr.setDefaultLocale(systemLocale);
+
     return lr;
   }
 
