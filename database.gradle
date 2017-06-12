@@ -1,0 +1,22 @@
+flyway {
+    url = "$System.env.DATABASE_URL"
+    user = "$System.env.POSTGRES_USER"
+    password = "$System.env.POSTGRES_PASSWORD"
+    schemas = ['template']
+    sqlMigrationPrefix = ''
+    placeholderPrefix = '#['
+    placeholderSuffix = ']'
+}
+
+// Usage: gradle generateMigration [-PmigrationName=name_of_migration]
+//          Defaults to 'migration' as migration name
+// Example: gradle generateMigration -PmigrationName=add_column_to_users
+//          Will create a file in migration folder with name yyyyMMddHHmmssSSS_add_column_to_users.sql.
+task generateMigration << {
+    description 'Creates an empty new file within the src/main/resources/db/migration directory into which developers can add new SQL migration code.'
+    def fileName = project.hasProperty('migrationName') ? migrationName : 'migration'
+    def timestamp = new Date().format('yyyyMMddHHmmssSSS', TimeZone.getTimeZone('GMT'))
+    def fullFileName = "${timestamp}__${fileName}.sql"
+    def migrationFile = new File(sourceSets.main.resources.srcDirs.first(),'db/migration/'+fullFileName)
+    migrationFile.createNewFile()
+}
