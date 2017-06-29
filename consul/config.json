@@ -1,0 +1,15 @@
+{
+  "service": {
+    "Name": "requisition",
+    "Port": 8080,
+    "Tags": ["openlmis-service"]
+  },
+  "raml": "src/main/resources/api-definition.yaml",
+  "path": [
+    "requisition",
+    "requisition/docs",
+    "requisition/docs/<all>",
+    "requisition/webjars",
+    "requisition/webjars/<all>"
+  ]
+}
