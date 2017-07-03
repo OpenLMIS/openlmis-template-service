@@ -8,9 +8,9 @@ buildscript {
 }
 
 plugins {
-    id "org.flywaydb.flyway" version "4.0"
-    id "org.sonarqube" version "2.2.1"
-    id "com.moowork.node" version "0.12"
+    id "org.flywaydb.flyway" version "4.2.0"
+    id "org.sonarqube" version "2.5"
+    id "com.moowork.node" version "1.2.0"
 }
 
 apply plugin: 'java'
@@ -122,7 +122,7 @@ tasks.withType(Test) {
 //          Defaults to 'migration' as migration name
 // Example: gradle generateMigration -PmigrationName=add_column_to_users
 //          Will create a file in migration folder with name yyyyMMddHHmmssSSS_add_column_to_users.sql.
-task generateMigration << {
+task generateMigration {
     description 'Creates an empty new file within the src/main/resources/db/migration directory into which developers can add new SQL migration code.'
     def fileName = project.hasProperty('migrationName') ? migrationName : 'migration'
     def timestamp = new Date().format('yyyyMMddHHmmssSSS', TimeZone.getTimeZone('GMT'))
