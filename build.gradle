@@ -111,6 +111,7 @@ task integrationTest(type: Test) {
         exceptionFormat = 'full'
     }
     mustRunAfter test
+    environment 'BASE_URL', "http://localhost"
 }
 
 tasks.withType(Test) {
