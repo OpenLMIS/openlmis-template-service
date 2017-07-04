@@ -1,0 +1,20 @@
+version: "2"
+services:
+
+  template-service:
+    image: openlmis/template-service
+    links:
+      - db
+      - log
+    env_file: .env
+
+  db:
+    image: openlmis/postgres:9.6
+    ports:
+      - "8765:5432"
+    env_file: .env
+
+  log:
+    image: openlmis/rsyslog:1
+    volumes:
+      - '../logs/template-service:/var/log'
