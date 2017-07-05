@@ -100,7 +100,7 @@ resourceTypes:
                 type: string
                 required: true
                 repeat: false
-/:
+/template:
     displayName: Version
     get:
         description: Get version

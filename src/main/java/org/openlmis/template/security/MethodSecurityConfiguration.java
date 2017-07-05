@@ -13,30 +13,21 @@
  * http://www.gnu.org/licenses.  For additional information contact info@OpenLMIS.org. 
  */
 
-package org.openlmis.template.web;
+package org.openlmis.template.security;
 
-import org.openlmis.util.Version;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Controller used for displaying service's version information.
- */
-@RestController
-public class VersionController {
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
+import org.springframework.security.oauth2.provider.expression.OAuth2MethodSecurityExpressionHandler;
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(VersionController.class);
+@Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true, proxyTargetClass = true)
+public class MethodSecurityConfiguration extends GlobalMethodSecurityConfiguration {
 
-  /**
-   * Displays version information.
-   *
-   * @return {Version} Returns version read from file.
-   */
-  @RequestMapping("/template")
-  public Version display() {
-    LOGGER.debug("Returning version");
-    return new Version();
+  @Override
+  protected MethodSecurityExpressionHandler createExpressionHandler() {
+    return new OAuth2MethodSecurityExpressionHandler();
   }
 }
