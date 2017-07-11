@@ -15,7 +15,9 @@
 
 package org.openlmis.template.web;
 
+import org.openlmis.template.exception.NotFoundException;
 import org.openlmis.template.domain.Widget;
+import org.openlmis.template.i18n.MessageKeys;
 import org.openlmis.template.repository.WidgetRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,7 +75,7 @@ public class WidgetController extends BaseController {
 
     Widget widget = widgetRepository.findOne(id);
     if (widget == null) {
-      return handleNotFound();
+      throw new NotFoundException(MessageKeys.ERROR_NOT_FOUND);
     } else {
       widgetRepository.delete(widget);
       return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
@@ -97,7 +99,7 @@ public class WidgetController extends BaseController {
   public ResponseEntity getSpecifiedWidget(@PathVariable("id") UUID id) {
     Widget widget = widgetRepository.findOne(id);
     if (widget == null) {
-      return handleNotFound();
+      throw new NotFoundException(MessageKeys.ERROR_NOT_FOUND);
     } else {
       return ResponseEntity.status(HttpStatus.OK).body(widget);
     }
@@ -127,17 +129,10 @@ public class WidgetController extends BaseController {
     //Return a 404 if the specified widget can't be found
     Widget widget = widgetRepository.findOne(id);
     if (widget == null) {
-      return handleNotFound();
+      throw new NotFoundException(MessageKeys.ERROR_NOT_FOUND);
     }
 
     String auditData = getAuditLog(Widget.class, id, author, changedPropertyName, page, returnJson);
     return ResponseEntity.status(HttpStatus.OK).body(auditData);
   }
-
-  private ResponseEntity<?> handleNotFound() {
-    //Note that most services throw a custom exception rather than
-    // manually return a 404 as shown below.
-    return ResponseEntity.status(HttpStatus.BAD_REQUEST.NOT_FOUND).body(null);
-  }
-
 }
