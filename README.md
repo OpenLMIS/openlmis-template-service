@@ -226,6 +226,8 @@ The following environment variables are common to our services. They can be set 
 * **CONSUL_PORT** - The port used by the Consul server - services should use this port to register with Consul. This should be a port number, for example 8500. 8500 is used by default.
 * **REQUIRE_SSL** - Whether HTTPS is required. If set to `true`, nginx will redirect all incoming HTTP connections to HTTPS. By default SSL will not be required - either leave it blank or set to `false` if you wish to allow HTTP connections.
 * **LOCALE** - Default localized system language. It will be applied to all running services, if this variable is missing default "en" value will be used.
+* **CORS_ALLOWED_ORIGINS** - Comma-separated list of origins that are allowed, for example: `https://test.openlmis.org,http://some.external.domain`. `*` allows all origins. Leave empty to disable CORS.
+* **CORS_ALLOWED_METHODS** - Comma-separated list of HTTP methods that are allowed for the above origins.
 
 These variables are used by services for their connection to the database (none of these have defaults):
 
