@@ -43,6 +43,21 @@ traits:
                   type: integer
                   required: false
                   repeat: false
+    - secured:
+          queryParameters:
+              access_token:
+                  displayName: access_token
+                  description: OAuth2 access token
+                  type: string
+                  required: false
+                  repeat: false
+          headers:
+              Authorization:
+                  displayName: Authorization
+                  description: OAuth2 authorization token header. Takes the form of 'Bearer <token>'.
+                  type: string
+                  required: false
+                  repeat: false
 resourceTypes:
     - auditLog:
         description: This represents the audit log for all <<resourcePathName|!singularize>> resources.
