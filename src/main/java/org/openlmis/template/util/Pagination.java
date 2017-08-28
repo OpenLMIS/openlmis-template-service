@@ -29,14 +29,10 @@ public class Pagination {
    */
   public static final int DEFAULT_PAGE_NUMBER = 0;
 
-  /* Note that, even though we set this to Integer.MAX_VALUE, Spring is configured to enforce a
-    default of no more that 2000. We can use the below property to effectively set any value less
-    than 2000. If we want a larger value, however, it seems as though it'll be necessary to include
-    Spring Data Rest and to set the value via code. See
-    http://stackoverflow.com/questions/33675349/spring-data-rest-max-page-size-does-not-seem-to-work
-    for details. (Simply specifying a value in application.propeties didn't work.)
- */
-  public static final int DEFAULT_PAGE_SIZE = Integer.MAX_VALUE;
+  /*
+    Default number of element that would be retrieved if page size is not provided.
+   */
+  public static final int DEFAULT_PAGE_SIZE = 2000;
 
 
   /**
