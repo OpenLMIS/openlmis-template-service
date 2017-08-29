@@ -54,7 +54,7 @@ public class CustomWebMvcConfigurerAdapter extends WebMvcConfigurerAdapter {
     PageableHandlerMethodArgumentResolver resolver = new PageableHandlerMethodArgumentResolver();
     resolver.setFallbackPageable(new PageRequest(
         Pagination.DEFAULT_PAGE_NUMBER,
-        Pagination.DEFAULT_PAGE_SIZE));
+        Pagination.NO_PAGINATION));
     argumentResolvers.add(resolver);
     super.addArgumentResolvers(argumentResolvers);
   }

@@ -30,9 +30,9 @@ public class Pagination {
   public static final int DEFAULT_PAGE_NUMBER = 0;
 
   /*
-    Default number of element that would be retrieved if page size is not provided.
+    Use this constant if you want to return all elements.
    */
-  public static final int DEFAULT_PAGE_SIZE = 2000;
+  public static final int NO_PAGINATION = Integer.MAX_VALUE;
 
 
   /**
@@ -51,7 +51,7 @@ public class Pagination {
    */
   public static int getPageSize(Pageable pageable) {
     if (pageable == null) {
-      return DEFAULT_PAGE_SIZE;
+      return NO_PAGINATION;
     } else {
       return pageable.getPageSize();
     }
