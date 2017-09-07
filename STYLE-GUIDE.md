@@ -1,5 +1,5 @@
 # OpenLMIS Service Style Guide
-This is a WIP as a style guide for an Independent Service. Clones of this file should reference 
+This is a WIP as a style guide for an Independent Service. Clones of this file should reference
 this definition.
 
 For the original style guide please see:
@@ -14,31 +14,31 @@ OpenLMIS has [adopted](https://groups.google.com/d/msg/openlmis-dev/CCwBglBFbpk/
 
 Some additional guidance:
 
-* Try to keep the number of packages to a minimum. An Independent Service's Java code should 
+* Try to keep the number of packages to a minimum. An Independent Service's Java code should
 generally all be in one package under `org.openlmis` (e.g. `org.openlmis.requisition`).
-* Sub-packages below that should generally follow layered-architecture conventions; most (if not 
+* Sub-packages below that should generally follow layered-architecture conventions; most (if not
 all) classes should fit in these four: `domain`, `repository`, `service`, `web`. To give specific
  guidance:
     * Things that do not strictly deal with the domain should NOT go in the `domain` package.
-    * Serializers/Deserializers of domain classes should go under `domain`, since they have 
+    * Serializers/Deserializers of domain classes should go under `domain`, since they have
     knowledge of domain object details.
     * DTO classes, belonging to serialization/deserialization for endpoints, should go under `web`.
     * Exception classes should go with the classes that throw the exception.
-    * We do not want separate sub-packages called `exception`, `dto`, `serializer` for these 
+    * We do not want separate sub-packages called `exception`, `dto`, `serializer` for these
     purposes.
-* When wanting to convert a domain object to/from a DTO, define Exporter/Importer interfaces for 
-the domain object, and export/import methods in the domain that use the interface methods. Then 
+* When wanting to convert a domain object to/from a DTO, define Exporter/Importer interfaces for
+the domain object, and export/import methods in the domain that use the interface methods. Then
 create a DTO class that implements the interface methods. (See [Right](https://github.com/OpenLMIS/openlmis-referencedata/blob/master/src/main/java/org/openlmis/referencedata/domain/Right.java)
  and [RightDto](https://github.com/OpenLMIS/openlmis-referencedata/blob/master/src/main/java/org/openlmis/referencedata/dto/RightDto.java)
 for details.)
-    * Additionally, when Exporter/Importer interfaces reference relationships to other domain 
+    * Additionally, when Exporter/Importer interfaces reference relationships to other domain
     objects, their Exporter/Importer interfaces should also be used, not DTOs. (See [example](https://github.com/OpenLMIS/openlmis-referencedata/blob/master/src/main/java/org/openlmis/referencedata/domain/Role.java#L198).)
 * Even though the no-argument constructor is required by Hibernate for entity objects, do not use
-it for object construction; use provided constructors or static factory methods. If one does not 
+it for object construction; use provided constructors or static factory methods. If one does not
 exist, create one using common sense parameters.
 
 ## RESTful Interface Design & Documentation
-Designing and documenting 
+Designing and documenting
 
 Note: many of these guidelines come from
 [Best Practices for Designing a Pragmatic RESTful API](http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api).
@@ -57,38 +57,54 @@ Note: many of these guidelines come from
 [Details](http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#errors)
 * Use the HTTP status codes effectively.
 [Details](http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#http-status)
-* Resource names should be pluralized and consistent.  e.g. prefer `requisitions`, never 
+* Resource names should be pluralized and consistent.  e.g. prefer `requisitions`, never
 `requisition`.
-* A PUT on a single resource (e.g. PUT /facilities/{id}) is not strictly an update; if the 
-resource does not exist, one should be created using the specified identity (assuming the 
+* Resource representations should use the following naming and patterns:
+    * **Essential**: representations which can be no shorter.  Typically this is an id and a code.
+    Useful most commonly when the resource is a collection, e.g. `/api/facilities`.
+    * **Normal**: representations which typically are returned when asking about a specific
+    resource.  e.g. `/api/facilities/{id}`.  Normal representations define the normal transactional
+    boundary of that resource, and _do not_ include representations of other resources.
+    * **Optional**:  a representation that builds off of the resource's **essential**
+    representation, allowing for the client to ask for additional fields to be returned by
+    specifying a `fields` query parameter.  The support for these representations is completely, as
+    the name implies, optional for a resource to provide.
+    [Details](http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#limiting-fields)
+    * **Expanded**: a representation which is in part, not very RESTful.  This representation 
+    allows for other, related, resources to be included in the response by way of the `expand`
+    query parameter.  Support for these representations is also optional, and in part somewhat
+    discouraged.
+    [Details](http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#autoloading)
+* A PUT on a single resource (e.g. PUT /facilities/{id}) is not strictly an update; if the
+resource does not exist, one should be created using the specified identity (assuming the
 identity is a valid UUID).
-* Exceptions, being thrown in exceptional circumstances (according to *Effective Java* by Joshua 
+* Exceptions, being thrown in exceptional circumstances (according to *Effective Java* by Joshua
 Bloch), should return 500-level HTTP codes from REST calls.
-* Not all domain objects in the services need to be exposed as REST resources. Care should be 
+* Not all domain objects in the services need to be exposed as REST resources. Care should be
 taken to design the endpoints in a way that makes sense for clients. Examples:
-    * `RoleAssignment`s are managed under the users resource. Clients just care that users have 
+    * `RoleAssignment`s are managed under the users resource. Clients just care that users have
     roles; they do not care about the mapping.
-    * `RequisitionGroupProgramSchedule`s are managed under the requisitionGroups resource. 
+    * `RequisitionGroupProgramSchedule`s are managed under the requisitionGroups resource.
     Clients just care that requisition groups have schedules (based on program).
 * RESTful endpoints that simply wish to return a JSON value (boolean, number, string) should wrap
- that value in a JSON object, with the value assigned to the property "result". (e.g. `{ 
+ that value in a JSON object, with the value assigned to the property "result". (e.g. `{
  "result": true }`)
-    * Note: this is to ensure compliance with all JSON parsers, especially ones that adhere to 
+    * Note: this is to ensure compliance with all JSON parsers, especially ones that adhere to
     RFC4627, which do not consider JSON values to be valid JSON. See the discussion
     [here](http://stackoverflow.com/questions/18419428/what-is-the-minimum-valid-json).
 * When giving names to resources in the APIs, if it is a UUID, its name should have a suffix of "Id"
 to show that. (e.g. `/api/users/{userId}/fulfillmentFacilities` has query parameter `rightId` to get
 by right UUID.)
 
-We use RAML (0.8) to document our RESTful APIs, which are then converted into HTML for static API 
+We use RAML (0.8) to document our RESTful APIs, which are then converted into HTML for static API
 documentation or Swagger UI for live documentation. Some guidelines for defining APIs in RAML:
 
-* JSON schemas for the RAML should be defined in a separate JSON file, and placed in a `schemas` 
-subfolder in relation to the RAML file. These JSON schema files would then be referenced in the 
+* JSON schemas for the RAML should be defined in a separate JSON file, and placed in a `schemas`
+subfolder in relation to the RAML file. These JSON schema files would then be referenced in the
 RAML file like this (using role as an example):
     ```
     - role: !include schemas/role.json
-    
+
     - roleArray: |
       {
         "type": "array",
@@ -100,7 +116,7 @@ RAML file like this (using role as an example):
     schema for a request/response body ([details](http://forums.raml.org/t/set-body-to-be-array-of-defined-schema-objects/1566/3)).
     If the project moves to the RAML 1.0 spec and our [RAML testing tool](https://github.com/nidi3/raml-tester)
     adds support for RAML 1.0, this practice might be revised.)
-    
+
 ### Pagination
 
 Many of the GET endpoints that return _collections_ should be paginated at the API level.  We use
@@ -109,12 +125,12 @@ the following guidelines for RESTful JSON pagination:
 * Pagination options are done by _query_ paramaters.  i.e. use `/api/someResources?page=2` and not
 `/api/someResources/page/2`.
 * When an endpoint is paginated, and the pagination options are _not_ given, then we return the
-full collection.  i.e. a single page with every possible instance of that resource.  It's 
+full collection.  i.e. a single page with every possible instance of that resource.  It's
 therefore up to the client to use collection endpoints responsibly and not over-load the backend.
-* A paginated resource that has no items returns a single page, with it's `content` attribute 
+* A paginated resource that has no items returns a single page, with it's `content` attribute
 as empty.
 * Resource's which only ever return a single identified item are _not_ paginated.
-* For Java Service's the query parameters should be defined by a [Pageable](http://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/domain/Pageable.html) 
+* For Java Service's the query parameters should be defined by a [Pageable](http://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/domain/Pageable.html)
 and the response should be a [Page](http://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/domain/Page.html).
 
 Example Request (note that page is zero-based):
@@ -143,13 +159,13 @@ Example Response:
 
 ## Postgres Database
 
-For guidelines on how to write schema migrations using Flyway, see [Writing Schema Migrations 
+For guidelines on how to write schema migrations using Flyway, see [Writing Schema Migrations
 (Using Flyway)](FLYWAY.md).
 
-* Each Independent Service should store its tables in its own schema.  The convention is to use 
+* Each Independent Service should store its tables in its own schema.  The convention is to use
 the Service's name as the schema.  e.g. The Requisition Service uses the `requisition` schema
 * Tables, Columns, constraints etc should be all lower case.
-* Table names should be pluralized.  This is to avoid *most* used words. e.g. orders instead of 
+* Table names should be pluralized.  This is to avoid *most* used words. e.g. orders instead of
 order
 * Table names with multiple words should be snake_case.
 * Column names with multiple words should be merged together.  e.g. `getFirstName()` would map to
@@ -159,7 +175,7 @@ order
 ## RBAC (Roles & Rights) Naming Conventions
 
 * Names for rights in the system should follow a RESOURCE_ACTION pattern and should be all uppercase,
-e.g. REQUISITION_CREATE, or FACILITIES_MANAGE. This is so all of the rights of a certain resource can 
+e.g. REQUISITION_CREATE, or FACILITIES_MANAGE. This is so all of the rights of a certain resource can
 be ordered together (REQUISITION_CREATE, REQUISITION_AUTHORIZE, etc.).
 
 ## i18n (Localization)
@@ -167,31 +183,31 @@ be ordered together (REQUISITION_CREATE, REQUISITION_AUTHORIZE, etc.).
 ### Transifex and the Build Process
 
 OpenLMIS v3 uses Transifex for translating message strings so that the product can be used in
-multiple languages. The build process of each OpenLMIS service contains a step to sync message 
+multiple languages. The build process of each OpenLMIS service contains a step to sync message
 property files with a corresponding Transifex project. Care should be taken when managing keys in
 these files and pushing them to Transifex.
 
-* If message keys are added to the property file, they will be added to the Transifex project, 
+* If message keys are added to the property file, they will be added to the Transifex project,
 where they are now available to be translated.
 * If message keys or strings are modified in the property file, any translations for them will be
  lost and have to be re-translated.
-* If message keys are removed in the property file, they will be removed from the Transifex 
-project. If they are re-added later, any translations for them will be lost and have to be 
+* If message keys are removed in the property file, they will be removed from the Transifex
+project. If they are re-added later, any translations for them will be lost and have to be
 re-translated.
 
 ### Naming Conventions
 
 These naming conventions will be applicable for the messages property files.
 
-* Keys for the messages property files should follow a hierarchy. However, since there is no 
-official hierarchy support for property files, keys should follow a naming convention of most to 
+* Keys for the messages property files should follow a hierarchy. However, since there is no
+official hierarchy support for property files, keys should follow a naming convention of most to
 least significant.
 * Key hierarchy should be delimited with a period (.).
 * The first portion of the key should be the name of the Independent Service.
-* The second portion of the key should indicate the type of message; error for error messages, 
+* The second portion of the key should indicate the type of message; error for error messages,
 message for anything not an error.
 * The third and following portions will further describe the key.
-* Portions of keys that don't have hierarchy, e.g. `a.b.code.invalidLength` and `a.b.code.invalidFormat`, 
+* Portions of keys that don't have hierarchy, e.g. `a.b.code.invalidLength` and `a.b.code.invalidFormat`,
 should use camelCase.
 * Keys should not include hyphens or other punctuation.
 
@@ -224,13 +240,13 @@ Everything deployed in the reference distribution needs to be a Docker container
 ## Gradle Build
 Pertaining to the build process performed by Gradle.
 
-* Anything generated by the Gradle build process should go under the `build` folder (nothing 
+* Anything generated by the Gradle build process should go under the `build` folder (nothing
 generated should be in the `src` folder).
 
 ## Logging
 
-Each Service includes the SLF4J library for generating logging messages.  Each Service should be forwarding these log 
-statements to a remote logging container.  The Service's logging configuration should indicate the name of the service 
+Each Service includes the SLF4J library for generating logging messages.  Each Service should be forwarding these log
+statements to a remote logging container.  The Service's logging configuration should indicate the name of the service
 the logging statement comes from and should be in UTC.
 
 What generally should be logged:
