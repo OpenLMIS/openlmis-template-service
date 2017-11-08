@@ -2,9 +2,6 @@
 This is a WIP as a style guide for an Independent Service. Clones of this file should reference
 this definition.
 
-For the original style guide please see:
-https://github.com/OpenLMIS/open-lmis/blob/master/STYLE-GUIDE.md
-
 ---
 
 ## Java
