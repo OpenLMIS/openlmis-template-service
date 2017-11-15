@@ -24,11 +24,11 @@ version number.
 5. Add Java code to the template.
 6. Add an environment file called `.env` to the root folder of the project, with the required 
 project settings and credentials. For a starter environment file, you can use [this 
-one](https://github.com/OpenLMIS/openlmis-config/blob/master/.env). e.g.
+one](https://raw.githubusercontent.com/OpenLMIS/openlmis-ref-distro/master/settings-sample.env). e.g.
 
  ```shell
  cd <openlmis-your-service-name>
- curl -LO https://raw.githubusercontent.com/OpenLMIS/openlmis-config/master/.env
+ curl -o .env -L https://raw.githubusercontent.com/OpenLMIS/openlmis-ref-distro/master/settings-sample.env
  ```
 7. Develop w/ Docker by running `docker-compose run --service-ports <your-service-name>`.
 See [Developing w/ Docker](#devdocker).
