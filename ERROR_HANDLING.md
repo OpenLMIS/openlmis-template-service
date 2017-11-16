@@ -247,6 +247,24 @@ In OpenLMIS v2, the MessageService (called the Notification Service in v3) uses 
 make email messages translate-able. For an example, see the
 [StatusChangeEventService](https://github.com/OpenLMIS/open-lmis/blob/master/modules/core/src/main/java/org/openlmis/core/service/StatusChangeEventService.java#L62).
 
+#### Multiple errors in response
+
+When validation is not accepted, we want to use the top level error message with section
+below with multiple field errors. Every field error in response should contain message key and
+message for specific field rejected by validator.
+
+```Javascript
+{
+  "message" : "Validation error occurred",
+  "messageKey" : "requisition.error.validation.fail",
+  "fieldErrors": [{
+    "field": "requisitionLineItems",
+    "messageKey": "requisition.error.validation.incorrectValue",
+    "message": "stockOnHand or totalConsumedQuantity has incorrect value, it does not match the calculated value"
+  }]
+}
+```
+
 #### Future: Arrays of Messages
 
 In the future, we may extend these guidelines to support an array of multiple messages.
@@ -278,7 +296,16 @@ schemas:
       "description": "Error response",
       "properties": {
         "message": { "type": "string", "required": true, "title": "error message" },
-        "messageKey": { "type": "string", "required": true, "title": "key for translations" }
+        "messageKey": { "type": "string", "required": true, "title": "key for translations" },
+        "fieldErrors": {
+          "type": "array",
+          "required": false,
+          "items": {
+            "field": { "type": "string", "required": true, "title": "rejected field" },
+            "messageKey": { "type": "string", "required": true, "title": "key for translations" },
+            "message": { "type": "string", "required": true, "title": "error message" }
+          }
+        }
       }
     }
 
