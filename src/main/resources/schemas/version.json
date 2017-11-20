@@ -1,0 +1,35 @@
+{
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "title": "Version",
+  "description": "Service version and build information",
+  "properties": {
+    "service": {
+      "type": "string",
+      "title": "service"
+    },
+    "build": {
+      "type": "string",
+      "title": "build"
+    },
+    "branch": {
+      "type": "string",
+      "title": "branch"
+    },
+    "timeStamp": {
+      "type": "string",
+      "title": "timeStamp"
+    },
+    "version": {
+      "type": "string",
+      "title": "version"
+    }
+  },
+  "required": [
+    "service",
+    "build",
+    "branch",
+    "timeStamp",
+    "version"
+  ]
+}

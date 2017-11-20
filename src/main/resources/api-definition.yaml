@@ -17,18 +17,7 @@ schemas:
           "items": { "type": "object", "$ref": "schemas/auditLogEntry.json" }
       }
 
-  - version: |
-      {   "$schema": "http://json-schema.org/draft-03/schema",
-          "description": "Service version and build information",
-          "type": "object",
-          "properties": {
-              "service": { "type": "string", "required": true},
-              "build": { "type": "string", "required": true},
-              "branch": { "type": "string", "required": true},
-              "timeStamp": { "type": "string", "required": true},
-              "version": { "type": "string", "required": true}
-          }
-      }
+  - version: !include schemas/version.json
 
 traits:
     - paginated:
