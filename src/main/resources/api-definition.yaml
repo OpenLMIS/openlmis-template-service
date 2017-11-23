@@ -1,8 +1,9 @@
 #%RAML 0.8
 ---
-title: OpenLMIS Template API
+title: OpenLMIS CCE API
 version: "@version@"
-baseUri: "http://localhost:8080"
+baseUri: "@baseUrl@"
+protocols: [ HTTP, HTTPS ]
 
 documentation:
     - title: Getting Started
