@@ -41,8 +41,6 @@
       var url = window.location.search.match(/url=([^&]+)/);
       // Location without filename
       var baseUrl = window.location.href.replace(/[#|?].*/, "").match(/^(http.+\/).+$/)[1];
-      // Location without filename and protocol
-      var basePath = baseUrl.replace(/.*?:\/\//g, "");
 
       if (url && url.length > 1) {
         url = decodeURIComponent(url[1]);
@@ -77,6 +75,7 @@
               scopeSeparator: " ",
               additionalQueryStringParams: {}
             });
+            window.swaggerUi.api.setHost(window.location.hostname);
           }
 
           if(window.SwaggerTranslator) {
@@ -93,9 +92,6 @@
       });
 
       window.swaggerUi.load();
-      setTimeout(function(){
-        window.swaggerUi.api.setHost(basePath);
-      }, 1000);
 
       function log() {
         if ('console' in window) {
