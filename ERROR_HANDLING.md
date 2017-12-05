@@ -255,13 +255,18 @@ message for specific field rejected by validator.
 
 ```Javascript
 {
-  "message" : "Validation error occurred",
-  "messageKey" : "requisition.error.validation.fail",
-  "fieldErrors": [{
-    "field": "requisitionLineItems",
-    "messageKey": "requisition.error.validation.incorrectValue",
-    "message": "stockOnHand or totalConsumedQuantity has incorrect value, it does not match the calculated value"
-  }]
+  "message": "Validation error occurred",
+  "messageKey": "requisition.error.validation.fail",
+  "fieldErrors": {
+    "requisitionLineItems[0].stockOnHand": {
+      "message": "stockOnHand has incorrect value, it does not match the calculated value",
+      "messageKey": "requisition.error.validation.incorrectValue"
+    },
+    "requisitionLineItems[0].totalConsumedQuantity": {
+      "message": "totalConsumedQuantity has incorrect value, it does not match the calculated value",
+      "messageKey": "requisition.error.validation.incorrectValue"
+    }
+  }
 }
 ```
 
@@ -289,25 +294,23 @@ more easily develop the application.
 
 ```Javascript
 schemas:
-  - errorResponse: |
-    { "type": "object",
-      "$schema": "http://json-schema.org/draft-03/schema",
-      "title": "ErrorResponse",
-      "description": "Error response",
-      "properties": {
-        "message": { "type": "string", "required": true, "title": "error message" },
-        "messageKey": { "type": "string", "required": true, "title": "key for translations" },
-        "fieldErrors": {
-          "type": "array",
-          "required": false,
-          "items": {
-            "field": { "type": "string", "required": true, "title": "rejected field" },
-            "messageKey": { "type": "string", "required": true, "title": "key for translations" },
-            "message": { "type": "string", "required": true, "title": "error message" }
+  - localizedErrorResponse: |
+      {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-04/schema",
+        "title": "LocalizedErrorResponse",
+        "description": "Localized Error response",
+        "properties": {
+          "message": { "type": "string", "title": "error message" },
+          "messageKey": { "type": "string", "title": "key for translations" },
+          "fieldErrors": {
+            "type": "object",
+            "title": "FieldErrors",
+            "description": "Field errors"
           }
-        }
+        },
+        "required": ["messageKey", "message"]
       }
-    }
 
 /requisitions:
   /{id}:
