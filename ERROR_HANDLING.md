@@ -258,13 +258,13 @@ message for specific field rejected by validator.
   "message": "Validation error occurred",
   "messageKey": "requisition.error.validation.fail",
   "fieldErrors": {
-    "requisitionLineItems[0].stockOnHand": {
-      "message": "stockOnHand has incorrect value, it does not match the calculated value",
-      "messageKey": "requisition.error.validation.incorrectValue"
+    "comment": {
+        "message": "Comment is longer than 255 characters and can not be saved",
+        "messageKey": "requisition.comment.error.invalidLength"
     },
-    "requisitionLineItems[0].totalConsumedQuantity": {
-      "message": "totalConsumedQuantity has incorrect value, it does not match the calculated value",
-      "messageKey": "requisition.error.validation.incorrectValue"
+    "requisitionLineItems": {
+        "message": "Stock on hand can not be negative",
+        "messageKey": "requisition.error.validation.stockOnHand.cannotBeNegative"
     }
   }
 }
