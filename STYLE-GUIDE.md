@@ -29,9 +29,9 @@ create a DTO class that implements the interface methods. (See [Right](https://g
  and [RightDto](https://github.com/OpenLMIS/openlmis-referencedata/blob/master/src/main/java/org/openlmis/referencedata/dto/RightDto.java)
 for details.)
     * Additionally, when Exporter/Importer interfaces reference relationships to other domain
-    objects, their Exporter/Importer interfaces should also be used, not DTOs. (See [example](https://github.com/OpenLMIS/openlmis-referencedata/blob/master/src/main/java/org/openlmis/referencedata/domain/Role.java#L198).)
+    objects, their Exporter/Importer interfaces should also be used, not DTOs. (See [example](https://github.com/OpenLMIS/openlmis-referencedata/blob/master/src/main/java/org/openlmis/referencedata/domain/Role.java#L219).)
 * Even though the no-argument constructor is required by Hibernate for entity objects, do not use
-it for object construction; use provided constructors or static factory methods. If one does not
+it for object construction (you can set access modifier to `private`); use provided constructors or static factory methods. If one does not
 exist, create one using common sense parameters.
 
 ## RESTful Interface Design & Documentation
