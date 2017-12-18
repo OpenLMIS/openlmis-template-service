@@ -251,7 +251,9 @@ make email messages translate-able. For an example, see the
 
 When validation is not accepted, we want to use the top level error message with section
 below with multiple field errors. Every field error in response should contain message key and
-message for specific field rejected by validator.
+message for specific field rejected by validator. Field errors can be nested. Instead of arrays,
+map should be returned with rejected field name as a key. When field is an element of array, resource
+identifier should be used as the key, such as UUID or code.
 
 ```Javascript
 {
@@ -259,12 +261,16 @@ message for specific field rejected by validator.
   "messageKey": "requisition.error.validation.fail",
   "fieldErrors": {
     "comment": {
-        "message": "Comment is longer than 255 characters and can not be saved",
-        "messageKey": "requisition.comment.error.invalidLength"
+      "message": "Comment is longer than 255 characters and can not be saved",
+      "messageKey": "requisition.comment.error.invalidLength"
     },
     "requisitionLineItems": {
-        "message": "Stock on hand can not be negative",
-        "messageKey": "requisition.error.validation.stockOnHand.cannotBeNegative"
+      "0c4b5efe-259c-44c9-8969-f157f778ee0f": {
+        "stockOnHand": {
+          "message": "Stock on hand can not be negative",
+          "messageKey": "requisition.error.validation.stockOnHand.cannotBeNegative"
+        }
+      }
     }
   }
 }
