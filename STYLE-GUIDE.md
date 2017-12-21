@@ -263,8 +263,23 @@ safety oriented code caught the condition and made it safe.  This should be rese
 
 ## Audit Logging
 
-Services use JaVers to log changes made throughout the system. The audits logs for individual resources
-should be exposed via endpoints which look as follows:
+OpenLMIS aims to create a detailed audit log for most all actions that occur within the system.  In practice this
+means that as a community we want all RESTful Resources (e.g. `/api/facilities/{id}`) to also have a full audit log
+for every change (e.g. `/api/facilities/{id}/auditLog`) and for that audit log to be accessible to the user in a
+consistent manner.  
+
+A few special notes:
+
+* When a resource has line items (e.g. Requisition, Order, PoD, Stock Card, etc), the line item would not have its own 
+ REST Resource, in that case if changes are made to a line item, those changes need to be surfaced in the lint item's 
+ parent.  For example, if a change is made to a Requisition Line Item, then the audit log for that change is available
+ in the audit log for the Requisition, as one can't retrieve through the API the single line item.
+* There are a few cases where audit logs may not be required by default.  These cases typically involve the resource
+ being very transient in nature:  short drafts, created Searches, etc.  When this is in question, explore the requirements
+ for how long the resource needs to exist and if it forms part of the system of record in the supply chain.
+
+Most Services use JaVers to log changes to Resources. The audits logs for individual Resources should be exposed via 
+endpoints which look as follows:
 
 ```
 /api/someResources/{id}/auditLog
