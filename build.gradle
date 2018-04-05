@@ -41,7 +41,7 @@ dependencies {
     compile "org.postgresql:postgresql:9.4.1208"
     compile "com.github.tomakehurst:wiremock:1.58"
     compile "org.springframework:spring-test"
-    compile 'org.webjars:swagger-ui:2.2.6'
+    compile 'org.webjars.npm:api-console:3.0.17'
     compile 'org.openlmis:openlmis-service-util:3.0.0'
     compile 'org.apache.commons:commons-lang3:3.5'
     compile 'org.javers:javers-spring-boot-starter-sql:2.8.1'
@@ -214,13 +214,11 @@ test {
 }
 
 apply from: "documentation.gradle"
-integrationTest {
-    dependsOn ramlToSwagger
-}
+integrationTest.dependsOn copyRamlToBuild
 
 processResources {
-    // we want the generated swagger spec file included in the output jar
-    finalizedBy ramlToSwagger
+    // we want the generated HTML spec file included in the output jar
+    finalizedBy ramlToHtml
     // update version information in build
     filesMatching('**/version.properties') {
         expand(project.properties)
@@ -231,7 +229,6 @@ apply from: "registration.gradle"
 
 assemble {
     dependsOn ramlToHtml
-    dependsOn ramlToSwagger
     dependsOn copyRamlHtmlToBuild
     dependsOn copyConsulRegistrationToBuild
     dependsOn jacocoTestReport
@@ -239,7 +236,6 @@ assemble {
 
 check {
     dependsOn ramlToHtml
-    dependsOn ramlToSwagger
     dependsOn copyRamlHtmlToBuild
     dependsOn integrationTest
     dependsOn copyConsulRegistrationToBuild
