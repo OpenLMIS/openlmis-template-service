@@ -92,6 +92,10 @@ taken to design the endpoints in a way that makes sense for clients. Examples:
 * When giving names to resources in the APIs, if it is a UUID, its name should have a suffix of "Id"
 to show that. (e.g. `/api/users/{userId}/fulfillmentFacilities` has query parameter `rightId` to get
 by right UUID.)
+* If you are implementing [HTTP caching](http://docs.openlmis.org/en/latest/conventions/performanceTips.html#e-tag-and-if-none-match) 
+for an API and the response is a DTO, make sure the DTO implements equals() and hashCode() using 
+all its exposed properties. This is because of potential confusion of a property change without a 
+change of ETag.
 
 We use RAML (0.8) to document our RESTful APIs, which are then converted into HTML for static API
 documentation or Swagger UI for live documentation. Some guidelines for defining APIs in RAML:
