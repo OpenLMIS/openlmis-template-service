@@ -9,7 +9,7 @@ buildscript {
 
 plugins {
     id "org.flywaydb.flyway" version "4.2.0"
-    id "org.sonarqube" version "2.5"
+    id "org.sonarqube" version "2.6.2"
     id "com.moowork.node" version "1.2.0"
 }
 
@@ -178,6 +178,8 @@ sonarqube {
         property "sonar.projectName", "OpenLMIS Template Service"
         property "sonar.projectKey", "org.sonarqube:$rootProject.name"
         property "sonar.projectVersion", version
+        property "sonar.login", System.getenv("SONAR_LOGIN")
+        property "sonar.password", System.getenv("SONAR_PASSWORD")
         property "sonar.host.url", "http://sonar.openlmis.org"
         property "sonar.java.coveragePlugin", "jacoco"
         //Tells SonarQube where the unit tests execution reports are
