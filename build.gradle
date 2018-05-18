@@ -97,6 +97,12 @@ sourceSets {
         }
         resources.srcDir file('src/integration-test/resources')
     }
+
+    main {
+        resources {
+            srcDirs "src/main/resources", "build/data"
+        }
+    }
 }
 
 configurations {
@@ -144,6 +150,11 @@ task generateMigration << {
     def fullFileName = "${timestamp}__${fileName}.sql"
     def migrationFile = new File(sourceSets.main.resources.srcDirs.first(),'db/migration/'+fullFileName)
     migrationFile.createNewFile()
+}
+
+task demoDataSeed(type:Exec) {
+    executable "./demo-data/demo_seed.sh"
+    args "demo-data", "build/data/demo-data", "demo-data/generator.js"
 }
 
 task checkApiIsRaml(type:Exec) {
@@ -219,8 +230,11 @@ apply from: "documentation.gradle"
 integrationTest.dependsOn copyRamlToBuild
 
 processResources {
+    dependsOn demoDataSeed
+
     // we want the generated HTML spec file included in the output jar
     finalizedBy ramlToHtml
+
     // update version information in build
     filesMatching('**/version.properties') {
         expand(project.properties)

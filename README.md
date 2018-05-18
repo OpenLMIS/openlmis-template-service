@@ -216,6 +216,22 @@ This will set the similarly named environment variable and limit the profile in 
 expected use-case for this is when this service is deployed through the 
 [Reference Distribution](https://github.com/openlmis/openlmis-ref-distro).
 
+### Demo Data
+A basic set of demo data is included with this service, defined under `./demo-data/`.  This data may
+be optionally loaded by using the `demo-data` Spring Profile.  Setting this profile may be done by
+setting the `spring.profiles.active` environment variable.
+
+When building locally from the development environment, you may run:
+
+```shell
+$ export spring_profiles_active=demo-data
+$ gradle bootRun
+```
+
+To see how to set environment variables through Docker Compose, see the 
+[Reference Distribution](https://github.org/openlmis/openlmis-ref-distro)
+
+
 ## Environment variables
 
 The following environment variables are common to our services. They can be set either directly in compose files for images or provided as an environment file. See [docker-compose.yml](https://raw.githubusercontent.com/OpenLMIS/openlmis-ref-distro/master/docker-compose.yml) in the reference distribution for example usage. Also take a look at the sample [.env file](https://raw.githubusercontent.com/OpenLMIS/openlmis-config/master/.env) we provide. 
