@@ -5,16 +5,18 @@
  * This program is free software: you can redistribute it and/or modify it under the terms
  * of the GNU Affero General Public License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Affero General Public License for more details. You should have received a copy of
  * the GNU Affero General Public License along with this program. If not, see
- * http://www.gnu.org/licenses.  For additional information contact info@OpenLMIS.org. 
+ * http://www.gnu.org/licenses.  For additional information contact info@OpenLMIS.org.
  */
 
 package org.openlmis.template.web;
 
+import java.util.List;
+import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
 import org.javers.core.Javers;
 import org.javers.core.changelog.SimpleTextChangeLog;
@@ -25,9 +27,6 @@ import org.openlmis.template.util.Pagination;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.List;
-import java.util.UUID;
 
 @RequestMapping("/api")
 public abstract class BaseController {
@@ -119,7 +118,7 @@ public abstract class BaseController {
     Return JaVers changes for the specified type, optionally filtered by id, author, and property.
   */
   private List<Change> getChangesByType(Class type, UUID id, String author,
-                                        String changedPropertyName, Pageable page) {
+      String changedPropertyName, Pageable page) {
     QueryBuilder queryBuilder;
 
     if (id != null) {
@@ -133,10 +132,10 @@ public abstract class BaseController {
 
     queryBuilder = queryBuilder.withNewObjectChanges(true).skip(skip).limit(limit);
 
-    if ( StringUtils.isNotBlank(author) ) {
+    if (StringUtils.isNotBlank(author)) {
       queryBuilder = queryBuilder.byAuthor(author);
     }
-    if ( StringUtils.isNotBlank(changedPropertyName) ) {
+    if (StringUtils.isNotBlank(changedPropertyName)) {
       queryBuilder = queryBuilder.andProperty(changedPropertyName);
     }
 
