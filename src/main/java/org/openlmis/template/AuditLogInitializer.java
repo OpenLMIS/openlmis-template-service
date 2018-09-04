@@ -13,7 +13,6 @@
  * http://www.gnu.org/licenses.  For additional information contact info@OpenLMIS.org.
  */
 
-
 package org.openlmis.template;
 
 import static org.openlmis.template.util.Pagination.DEFAULT_PAGE_NUMBER;
@@ -25,6 +24,10 @@ import org.javers.core.metamodel.object.CdoSnapshot;
 import org.javers.repository.jql.QueryBuilder;
 import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.openlmis.template.domain.BaseEntity;
+import org.openlmis.template.i18n.MessageKeys;
+import org.openlmis.template.repository.BaseAuditableRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ApplicationContext;
@@ -32,9 +35,8 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * AuditLogInitializer runs after its associated Spring application has loaded.
@@ -44,14 +46,19 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-@Profile("!test")
+@Profile("refresh-db")
+@Transactional
 public class AuditLogInitializer implements CommandLineRunner {
+  private static final Logger LOGGER = LoggerFactory.getLogger(AuditLogInitializer.class);
 
-  @Autowired
   private ApplicationContext applicationContext;
+  private Javers javers;
 
   @Autowired
-  private Javers javers;
+  public AuditLogInitializer(ApplicationContext applicationContext, Javers javers) {
+    this.applicationContext = applicationContext;
+    this.javers = javers;
+  }
 
   /**
    * This method is part of CommandLineRunner and is called automatically by Spring.
@@ -64,19 +71,20 @@ public class AuditLogInitializer implements CommandLineRunner {
 
     //For each one...
     for (Object object : repositoryMap.values()) {
-      if (object instanceof PagingAndSortingRepository) {
-        createSnapshots((PagingAndSortingRepository<?, ?>) object);
-      } else if (object instanceof CrudRepository) {
-        createSnapshots((CrudRepository<?, ?>) object);
+      if (object instanceof BaseAuditableRepository) {
+        createSnapshots((BaseAuditableRepository<?, ?>) object);
+      } else {
+        LOGGER.warn("The repository should implement findAllWithoutSnapshots method"
+            + "from BaseAuditableRepository with appropriate query");
       }
     }
   }
 
-  private void createSnapshots(PagingAndSortingRepository<?, ?> repository) {
+  private void createSnapshots(BaseAuditableRepository<?, ?> repository) {
     Pageable pageable = new PageRequest(DEFAULT_PAGE_NUMBER, 2000);
 
     while (true) {
-      Page<?> page = repository.findAll(pageable);
+      Page<?> page = repository.findAllWithoutSnapshots(pageable);
 
       if (!page.hasContent()) {
         break;
@@ -86,11 +94,6 @@ public class AuditLogInitializer implements CommandLineRunner {
 
       pageable = pageable.next();
     }
-  }
-
-  private void createSnapshots(CrudRepository<?, ?> repository) {
-    //... retrieve all of its domain objects and...
-    repository.findAll().forEach(this::createSnapshot);
   }
 
   private void createSnapshot(Object object) {
@@ -105,7 +108,9 @@ public class AuditLogInitializer implements CommandLineRunner {
     //If there are no snapshots of the domain object, then take one
     if (snapshots.size() == 0) {
       javers.commit("System: AuditLogInitializer", baseEntity);
+    } else {
+      LOGGER.info(MessageKeys.ERROR_JAVERS_EXISTING_ENTRY,
+          baseEntity.getClass(), baseEntity.getId());
     }
   }
-
 }

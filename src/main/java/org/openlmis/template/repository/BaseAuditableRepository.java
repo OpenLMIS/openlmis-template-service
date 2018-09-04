@@ -15,33 +15,23 @@
 
 package org.openlmis.template.repository;
 
-import java.util.UUID;
-import org.javers.spring.annotation.JaversSpringDataAuditable;
-import org.openlmis.template.domain.Widget;
+import java.io.Serializable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-@JaversSpringDataAuditable
-public interface WidgetRepository extends PagingAndSortingRepository<Widget, UUID>,
-      BaseAuditableRepository<Widget,  UUID> {
+/**
+ * Extension of {@link PagingAndSortingRepository} to enable using generic parameters
+ * in creating Javers logs and provide additional methods to retrieve entities
+ * using the pagination and sorting abstraction to ensure.
+ */
+@NoRepositoryBean
+public interface BaseAuditableRepository<T, I extends Serializable>
+    extends PagingAndSortingRepository<T, I> {
 
-  @Query(value = "SELECT\n"
-      + "    w.*\n"
-      + "FROM\n"
-      + "    template.widget w\n"
-      + "WHERE\n"
-      + "    id NOT IN (\n"
-      + "        SELECT\n"
-      + "            id\n"
-      + "        FROM\n"
-      + "            template.widget w\n"
-      + "            INNER JOIN template.jv_global_id g "
-      + "ON CAST(w.id AS varchar) = SUBSTRING(g.local_id, 2, 36)\n"
-      + "            INNER JOIN template.jv_snapshot s  ON g.global_id_pk = s.global_id_fk\n"
-      + "    )\n"
-      + " ORDER BY ?#{#pageable}",
-      nativeQuery = true)
-  Page<Widget> findAllWithoutSnapshots(Pageable pageable);
+  /**
+   * Returns a {@link Page} of entities which there are no Javers logs created for.
+   */
+  Page<T> findAllWithoutSnapshots(Pageable pageable);
 }

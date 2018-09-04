@@ -22,6 +22,9 @@ public abstract class MessageKeys {
   public static final String ERROR_NOT_FOUND = ERROR_PREFIX
       + ".widgetNotFound";
 
+  public static final String ERROR_JAVERS_EXISTING_ENTRY = ERROR_PREFIX
+      + ".javers.entryAlreadyExists";
+
   private MessageKeys() {
     throw new UnsupportedOperationException();
   }
