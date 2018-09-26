@@ -13,26 +13,38 @@
  * http://www.gnu.org/licenses.  For additional information contact info@OpenLMIS.org.
  */
 
-package org.openlmis.template.repository;
+package org.openlmis.template;
 
-import java.io.Serializable;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.NoRepositoryBean;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import java.util.UUID;
+import org.openlmis.template.domain.Widget;
 
-/**
- * Extension of {@link PagingAndSortingRepository} to enable using generic parameters
- * in creating Javers logs and provide additional methods to retrieve entities
- * using the pagination and sorting abstraction to ensure.
- */
-@NoRepositoryBean
-public interface BaseAuditableRepository<T, I extends Serializable>
-    extends JpaRepository<T, I> {
+public class WidgetDataBuilder {
+  private UUID id = UUID.randomUUID();
+  private String name = "name";
+
+  public WidgetDataBuilder withName(String name) {
+    this.name = name;
+    return this;
+  }
 
   /**
-   * Returns a {@link Page} of entities which there are no Javers logs created for.
+   * Builds new instance of Widget (with id field).
    */
-  Page<T> findAllWithoutSnapshots(Pageable pageable);
+  public Widget build() {
+    Widget widget = buildAsNew();
+    widget.setId(id);
+
+    return widget;
+  }
+
+  /**
+   * Builds new instance of Widget as a new object (without id field).
+   */
+  public Widget buildAsNew() {
+    Widget widget = new Widget();
+    widget.setName(name);
+
+    return widget;
+  }
+
 }

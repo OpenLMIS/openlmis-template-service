@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:1.4.1.RELEASE"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:1.5.16.RELEASE"
     }
 }
 
@@ -34,23 +34,36 @@ repositories {
 }
 
 dependencies {
-    compile "org.springframework.boot:spring-boot-starter-web"
-    compile "org.springframework.boot:spring-boot-starter-data-rest"
-    compile "org.projectlombok:lombok:1.16.8"
     compile "org.springframework.boot:spring-boot-starter-data-jpa"
-    compile "org.postgresql:postgresql:9.4.1208"
-    compile "com.github.tomakehurst:wiremock:1.58"
-    compile "org.springframework:spring-test"
-    compile 'org.webjars.npm:api-console:3.0.17'
-    compile 'org.openlmis:openlmis-service-util:3.0.0'
-    compile 'org.apache.commons:commons-lang3:3.5'
-    compile 'org.javers:javers-spring-boot-starter-sql:2.8.1'
-    compile 'org.flywaydb:flyway-core:4.0.3'
+    compile "org.springframework.boot:spring-boot-starter-data-rest"
+    compile "org.springframework.boot:spring-boot-starter-web"
     compile "org.springframework.security.oauth:spring-security-oauth2"
+    compile "org.postgresql:postgresql:42.0.0"
+    compile "org.projectlombok:lombok:1.16.8"
+    compile "org.slf4j:slf4j-ext:1.7.25"
+    compile 'commons-io:commons-io:2.5'
+    compile 'org.apache.commons:commons-collections4:4.1'
+    compile 'org.apache.commons:commons-csv:1.4'
+    compile 'org.apache.commons:commons-lang3:3.5'
+    compile 'org.flywaydb:flyway-core:4.0.3'
+    compile 'org.javers:javers-spring-boot-starter-sql:2.8.1'
+    compile 'org.openlmis:openlmis-service-util:3.1.0'
+    compile 'org.webjars.npm:api-console:3.0.17'
 
     testCompile "junit:junit"
     testCompile "org.mockito:mockito-core:1.+"
     testCompile "org.springframework.boot:spring-boot-starter-test"
+    testCompile "org.springframework:spring-test"
+    testCompile "com.github.tomakehurst:wiremock:1.58"
+
+    testCompile "com.jayway.restassured:rest-assured:2.7.0"
+    testCompile "guru.nidi.raml:raml-tester:0.8.9"
+
+    testCompile "org.powermock:powermock-api-mockito:1.7.+"
+    testCompile "org.powermock:powermock-module-junit4:1.7.+"
+
+    testCompile "nl.jqno.equalsverifier:equalsverifier:2.4"
+    testCompile "be.joengenduvel.java.verifiers:to-string:1.0.2"
 }
 
 idea {
@@ -66,15 +79,6 @@ idea {
                 }
             }
         }
-    /*    iml.withXml { xmlFile ->
-            xmlFile.asNode().component.find { it.@name == 'NewModuleRootManager'}['Content'][0]
-                .addNode {
-                sourceFolder {
-                    profile(url: "file://$MODULE_DIR\$/src/integration-test/java", isTestSource:
-                            true)
-                }
-            }
-        }*/
     }
 }
 
@@ -97,28 +101,11 @@ sourceSets {
         }
         resources.srcDir file('src/integration-test/resources')
     }
-
-    main {
-        resources {
-            srcDirs "src/main/resources", "build/data"
-        }
-    }
 }
 
 configurations {
     integrationTestCompile.extendsFrom testCompile
     integrationTestRuntime.extendsFrom testRuntime
-}
-
-task flywayTest(type: Test) {
-    testClassesDir = sourceSets.integrationTest.output.classesDir
-    classpath = sourceSets.integrationTest.runtimeClasspath
-    testLogging {
-        events "passed", "skipped", "failed"
-        exceptionFormat = 'full'
-    }
-
-    include '**/migration/**'
 }
 
 task integrationTest(type: Test) {
@@ -130,8 +117,6 @@ task integrationTest(type: Test) {
     }
     mustRunAfter test
     environment 'BASE_URL', "http://localhost"
-
-    exclude '**/migration/**'
 }
 
 tasks.withType(Test) {
@@ -143,19 +128,17 @@ tasks.withType(Test) {
 //          Defaults to 'migration' as migration name
 // Example: gradle generateMigration -PmigrationName=add_column_to_users
 //          Will create a file in migration folder with name yyyyMMddHHmmssSSS_add_column_to_users.sql.
-task generateMigration << {
+task generateMigration {
     description 'Creates an empty new file within the src/main/resources/db/migration directory into which developers can add new SQL migration code.'
-    def fileName = project.hasProperty('migrationName') ? migrationName : 'migration'
-    def timestamp = new Date().format('yyyyMMddHHmmssSSS', TimeZone.getTimeZone('GMT'))
-    def fullFileName = "${timestamp}__${fileName}.sql"
-    def migrationFile = new File(sourceSets.main.resources.srcDirs.first(),'db/migration/'+fullFileName)
-    migrationFile.createNewFile()
+    doLast {
+        def fileName = project.hasProperty('migrationName') ? migrationName : 'migration'
+        def timestamp = new Date().format('yyyyMMddHHmmssSSS', TimeZone.getTimeZone('GMT'))
+        def fullFileName = "${timestamp}__${fileName}.sql"
+        def migrationFile = new File(sourceSets.main.resources.srcDirs.first(), 'db/migration/' + fullFileName)
+        migrationFile.createNewFile()
+    }
 }
 
-task demoDataSeed(type:Exec) {
-    executable "./demo-data/demo_seed.sh"
-    args "demo-data", "build/data/demo-data", "demo-data/generator.js"
-}
 
 task checkApiIsRaml(type:Exec) {
     executable "raml-cop"
@@ -186,12 +169,16 @@ checkstyle {
 //Usage: gradle sonarqube
 sonarqube {
     properties {
+        def branch = System.getenv("SONAR_BRANCH")
+        if (branch && branch != 'master') {
+            property "sonar.branch", branch
+        }
         property "sonar.projectName", "OpenLMIS Template Service"
         property "sonar.projectKey", "org.sonarqube:$rootProject.name"
-        property "sonar.projectVersion", version
+        property "sonar.host.url", "http://sonar.openlmis.org"
         property "sonar.login", System.getenv("SONAR_LOGIN")
         property "sonar.password", System.getenv("SONAR_PASSWORD")
-        property "sonar.host.url", "http://sonar.openlmis.org"
+        property "sonar.projectVersion", version
         property "sonar.java.coveragePlugin", "jacoco"
         //Tells SonarQube where the unit tests execution reports are
         property "sonar.junit.reportsPath", "build/test-results/test"
@@ -202,6 +189,8 @@ sonarqube {
         properties["sonar.tests"] += sourceSets.integrationTest.java
     }
 }
+
+project.tasks["sonarqube"].dependsOn integrationTest
 
 pmd {
     toolVersion = '5.4.0'
@@ -227,11 +216,11 @@ test {
 }
 
 apply from: "documentation.gradle"
-integrationTest.dependsOn copyRamlToBuild
+integrationTest {
+    dependsOn ramlToHtml
+}
 
 processResources {
-    dependsOn demoDataSeed
-
     // we want the generated HTML spec file included in the output jar
     finalizedBy ramlToHtml
 

@@ -18,9 +18,9 @@ package org.openlmis.template;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
+import javax.annotation.Resource;
 import org.javers.core.Javers;
 import org.javers.core.metamodel.object.CdoSnapshot;
 import org.javers.repository.jql.QueryBuilder;
@@ -32,17 +32,18 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openlmis.template.domain.Widget;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@Transactional
 @ActiveProfiles("test")
-@SpringApplicationConfiguration(Application.class)
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class JaVersIntegrationTest {
 
-  @Autowired
+  @Resource(name = "javersProvider")
   private Javers javers;
 
   private static DateTimeZone defaultZone;
@@ -59,7 +60,7 @@ public class JaVersIntegrationTest {
   }
 
   @Test
-  public void shouldAlwaysCommitWithUtcTimeZone() throws IOException {
+  public void shouldAlwaysCommitWithUtcTimeZone() {
 
     //given
     Widget widget = new Widget();
@@ -76,7 +77,7 @@ public class JaVersIntegrationTest {
 
     //then
     List<CdoSnapshot> snapshots = javers.findSnapshots(
-                                            QueryBuilder.byClass(Widget.class).build());
+        QueryBuilder.byClass(Widget.class).build());
     assertEquals(2, snapshots.size());
 
     LocalDateTime commitTime1 = snapshots.get(0).getCommitMetadata().getCommitDate();

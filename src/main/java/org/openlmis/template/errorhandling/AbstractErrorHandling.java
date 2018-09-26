@@ -18,7 +18,6 @@ package org.openlmis.template.errorhandling;
 import org.openlmis.template.exception.BaseMessageException;
 import org.openlmis.template.i18n.MessageService;
 import org.openlmis.template.util.Message;
-import org.openlmis.util.ErrorResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,28 +35,14 @@ public abstract class AbstractErrorHandling {
   private MessageService messageService;
 
   /**
-   * Logs an error message and returns an error response.
-   *
-   * @param message the error message
-   * @param ex      the exception to log. Message from the exception is used as the error
-   *                description.
-   * @return the error response that should be sent to the client
-   */
-  protected ErrorResponse logErrorAndRespond(String message, Exception ex) {
-    logger.error(message, ex);
-    return new ErrorResponse(message, ex.getMessage());
-  }
-
-  /**
    * Translate the Message in a BaseMessageException into a LocalizedMessage.
    *
    * @param exception is any BaseMessageException containing a Message
    * @return a LocalizedMessage translated by the MessageService bean
    */
-  protected final Message.LocalizedMessage getLocalizedMessage(
-      BaseMessageException exception) {
+  final Message.LocalizedMessage getLocalizedMessage(BaseMessageException exception) {
     Message.LocalizedMessage message = messageService.localize(exception.asMessage());
-    logger.error(message.toString());
+    logger.error("{}", message);
     return message;
   }
 

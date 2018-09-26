@@ -21,7 +21,7 @@ import org.openlmis.template.util.Message;
  * Base class for exceptions using Message.
  */
 public class BaseMessageException extends RuntimeException {
-  private final Message message;
+  private final transient Message message;
 
   public BaseMessageException(Message message) {
     this.message = message;

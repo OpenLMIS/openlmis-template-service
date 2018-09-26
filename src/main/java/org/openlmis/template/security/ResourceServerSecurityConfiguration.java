@@ -93,9 +93,14 @@ public class ResourceServerSecurityConfiguration implements ResourceServerConfig
         .antMatchers("/**").fullyAuthenticated();
   }
 
+  /**
+   * Access Token Converter initializer.
+   */
   @Bean
   public AccessTokenConverter accessTokenConverter() {
-    return new DefaultAccessTokenConverter();
+    DefaultAccessTokenConverter defaultAccessTokenConverter = new DefaultAccessTokenConverter();
+    defaultAccessTokenConverter.setUserTokenConverter(new CustomUserAuthenticationConverter());
+    return defaultAccessTokenConverter;
   }
 
   /**
@@ -109,9 +114,9 @@ public class ResourceServerSecurityConfiguration implements ResourceServerConfig
   @Bean
   @Autowired
   public RemoteTokenServices remoteTokenServices(@Value("${auth.server.url}") String checkTokenUrl,
-                                                 @Value("${auth.server.clientId}") String clientId,
-                                                 @Value("${auth.server.clientSecret}")
-                                                     String clientSecret) {
+      @Value("${auth.server.clientId}") String clientId,
+      @Value("${auth.server.clientSecret}")
+          String clientSecret) {
     final RemoteTokenServices remoteTokenServices = new RemoteTokenServices();
     remoteTokenServices.setCheckTokenEndpointUrl(checkTokenUrl);
     remoteTokenServices.setClientId(clientId);

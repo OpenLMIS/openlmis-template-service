@@ -16,7 +16,7 @@
 package org.openlmis.template;
 
 import java.util.Locale;
-import org.flywaydb.core.Flyway;
+import org.flywaydb.core.api.callback.FlywayCallback;
 import org.javers.core.Javers;
 import org.javers.core.MappingStyle;
 import org.javers.core.diff.ListCompareAlgorithm;
@@ -28,7 +28,6 @@ import org.javers.repository.sql.SqlRepositoryBuilder;
 import org.javers.spring.auditable.AuthorProvider;
 import org.javers.spring.boot.sql.JaversProperties;
 import org.javers.spring.jpa.TransactionalJaversBuilder;
-import org.openlmis.template.domain.BaseEntity;
 import org.openlmis.template.i18n.ExposedMessageSourceImpl;
 import org.openlmis.template.security.UserNameProvider;
 import org.slf4j.Logger;
@@ -38,26 +37,21 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
-import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.Profile;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 
 @SpringBootApplication
-@ImportResource("applicationContext.xml")
-@EntityScan(basePackageClasses = BaseEntity.class, basePackages = "org.openlmis.util.converter")
 public class Application {
-
-  private Logger logger = LoggerFactory.getLogger(Application.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
 
   @Value("${defaultLocale}")
   private Locale locale;
 
   @Autowired
-  DialectName dialectName;
+  private DialectName dialectName;
 
   @Autowired
   private JaversProperties javersProperties;
@@ -91,16 +85,17 @@ public class Application {
   @Bean
   @Profile("!production")
   public FlywayMigrationStrategy cleanMigrationStrategy() {
-    FlywayMigrationStrategy strategy = new FlywayMigrationStrategy() {
-      @Override
-      public void migrate(Flyway flyway) {
-        logger.info("Using clean-migrate flyway strategy -- production profile not active");
-        flyway.clean();
-        flyway.migrate();
-      }
+    return flyway -> {
+      LOGGER.info("Using clean-migrate flyway strategy -- production profile not active");
+      flyway.setCallbacks(flywayCallback());
+      flyway.clean();
+      flyway.migrate();
     };
+  }
 
-    return strategy;
+  @Bean
+  public FlywayCallback flywayCallback() {
+    return new ExportSchemaFlywayCallback();
   }
 
   /**
@@ -136,7 +131,7 @@ public class Application {
    * JaversSqlAutoConfiguration.java</a> for the default configuration upon which this code is based
    */
   @Bean
-  public Javers javersProvidor(ConnectionProvider connectionProvider,
+  public Javers javersProvider(ConnectionProvider connectionProvider,
                                PlatformTransactionManager transactionManager) {
     JaversSqlRepository sqlRepository = SqlRepositoryBuilder
             .sqlRepository()

@@ -16,6 +16,7 @@
 package org.openlmis.template.i18n;
 
 public abstract class MessageKeys {
+
   private static final String SERVICE_PREFIX = "template";
   private static final String ERROR_PREFIX = SERVICE_PREFIX + ".error";
 
@@ -24,6 +25,8 @@ public abstract class MessageKeys {
 
   public static final String ERROR_JAVERS_EXISTING_ENTRY = ERROR_PREFIX
       + ".javers.entryAlreadyExists";
+
+  public static final String ERROR_ID_MISMATCH = ERROR_PREFIX + ".idMismatch";
 
   private MessageKeys() {
     throw new UnsupportedOperationException();

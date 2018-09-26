@@ -13,45 +13,35 @@
  * http://www.gnu.org/licenses.  For additional information contact info@OpenLMIS.org.
  */
 
-package org.openlmis.template.domain;
+package org.openlmis.template;
 
-import java.util.UUID;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
+import static org.mockito.Mockito.verify;
 
-@MappedSuperclass
-@EqualsAndHashCode
-@ToString
-public abstract class BaseEntity {
+import java.io.IOException;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.openlmis.template.util.Resource2Db;
+import org.springframework.core.io.Resource;
 
-  private static final String UUID_TYPE = "pg-uuid";
+@RunWith(MockitoJUnitRunner.class)
+public class TestDataInitializerTest {
 
-  @Id
-  @GeneratedValue(generator = "uuid-gen")
-  @GenericGenerator(name = "uuid-gen",
-      strategy = "org.openlmis.template.domain.ConditionalUuidGenerator")
-  @Type(type = UUID_TYPE)
-  @Getter
-  @Setter
-  private UUID id;
+  @Mock
+  private Resource widgetResource;
 
-  public interface BaseExporter {
+  @Mock
+  private Resource2Db loader;
 
-    void setId(UUID id);
+  @InjectMocks
+  private TestDataInitializer initializer = new TestDataInitializer(loader);
 
+  @Test
+  public void shouldLoadData() throws IOException {
+    initializer.run();
+
+    verify(loader).insertToDbFromCsv("template.widget", widgetResource);
   }
-
-  public interface BaseImporter {
-
-    UUID getId();
-
-  }
-
 }

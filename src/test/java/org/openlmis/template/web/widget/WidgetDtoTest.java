@@ -13,45 +13,28 @@
  * http://www.gnu.org/licenses.  For additional information contact info@OpenLMIS.org.
  */
 
-package org.openlmis.template.domain;
+package org.openlmis.template.web.widget;
 
-import java.util.UUID;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
+import org.junit.Test;
+import org.openlmis.template.ToStringTestUtils;
 
-@MappedSuperclass
-@EqualsAndHashCode
-@ToString
-public abstract class BaseEntity {
+public class WidgetDtoTest {
 
-  private static final String UUID_TYPE = "pg-uuid";
-
-  @Id
-  @GeneratedValue(generator = "uuid-gen")
-  @GenericGenerator(name = "uuid-gen",
-      strategy = "org.openlmis.template.domain.ConditionalUuidGenerator")
-  @Type(type = UUID_TYPE)
-  @Getter
-  @Setter
-  private UUID id;
-
-  public interface BaseExporter {
-
-    void setId(UUID id);
-
+  @Test
+  public void equalsContract() {
+    EqualsVerifier
+        .forClass(WidgetDto.class)
+        .withRedefinedSuperclass()
+        .suppress(Warning.NONFINAL_FIELDS)
+        .verify();
   }
 
-  public interface BaseImporter {
-
-    UUID getId();
-
+  @Test
+  public void shouldImplementToString() {
+    WidgetDto widget = new WidgetDto();
+    ToStringTestUtils.verify(WidgetDto.class, widget);
   }
 
 }

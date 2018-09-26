@@ -13,45 +13,19 @@
  * http://www.gnu.org/licenses.  For additional information contact info@OpenLMIS.org.
  */
 
-package org.openlmis.template.domain;
+package org.openlmis.template.web;
 
 import java.util.UUID;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
+import org.openlmis.template.domain.BaseEntity;
 
-@MappedSuperclass
+@Getter
+@Setter
 @EqualsAndHashCode
 @ToString
-public abstract class BaseEntity {
-
-  private static final String UUID_TYPE = "pg-uuid";
-
-  @Id
-  @GeneratedValue(generator = "uuid-gen")
-  @GenericGenerator(name = "uuid-gen",
-      strategy = "org.openlmis.template.domain.ConditionalUuidGenerator")
-  @Type(type = UUID_TYPE)
-  @Getter
-  @Setter
+public abstract class BaseDto implements BaseEntity.BaseExporter, BaseEntity.BaseImporter {
   private UUID id;
-
-  public interface BaseExporter {
-
-    void setId(UUID id);
-
-  }
-
-  public interface BaseImporter {
-
-    UUID getId();
-
-  }
-
 }

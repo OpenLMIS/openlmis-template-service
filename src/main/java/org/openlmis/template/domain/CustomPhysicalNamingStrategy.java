@@ -13,21 +13,16 @@
  * http://www.gnu.org/licenses.  For additional information contact info@OpenLMIS.org.
  */
 
-package org.openlmis.template.util;
+package org.openlmis.template.domain;
 
-import java.io.Serializable;
-import org.hibernate.engine.spi.SessionImplementor;
-import org.hibernate.id.UUIDGenerator;
-import org.openlmis.template.domain.BaseEntity;
+import org.hibernate.boot.model.naming.Identifier;
+import org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl;
+import org.hibernate.engine.jdbc.env.spi.JdbcEnvironment;
 
-public class ConditionalUuidGenerator extends UUIDGenerator {
+public class CustomPhysicalNamingStrategy extends PhysicalNamingStrategyStandardImpl {
 
   @Override
-  public Serializable generate(SessionImplementor session, Object object) {
-    if ((((BaseEntity) object).getId()) == null) {
-      return super.generate(session, object);
-    } else {
-      return ((BaseEntity) object).getId();
-    }
+  public Identifier toPhysicalColumnName(Identifier name, JdbcEnvironment jdbcEnvironment) {
+    return jdbcEnvironment.getIdentifierHelper().toIdentifier(name.getText().replaceAll("_", ""));
   }
 }

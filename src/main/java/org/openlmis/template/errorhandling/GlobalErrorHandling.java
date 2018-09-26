@@ -16,6 +16,7 @@
 package org.openlmis.template.errorhandling;
 
 import org.openlmis.template.exception.NotFoundException;
+import org.openlmis.template.exception.ValidationMessageException;
 import org.openlmis.template.util.Message;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -33,7 +34,20 @@ public class GlobalErrorHandling extends AbstractErrorHandling {
   @ExceptionHandler(NotFoundException.class)
   @ResponseStatus(HttpStatus.NOT_FOUND)
   @ResponseBody
-  public Message.LocalizedMessage handleAuthenticationException(NotFoundException ex) {
+  public Message.LocalizedMessage handleNotFoundException(NotFoundException ex) {
+    return getLocalizedMessage(ex);
+  }
+
+  /**
+   * Handles Message exceptions and returns status 400 Bad Request.
+   *
+   * @param ex the ValidationMessageException to handle
+   * @return the error response for the user
+   */
+  @ExceptionHandler(ValidationMessageException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ResponseBody
+  public Message.LocalizedMessage handleMessageException(ValidationMessageException ex) {
     return getLocalizedMessage(ex);
   }
 }

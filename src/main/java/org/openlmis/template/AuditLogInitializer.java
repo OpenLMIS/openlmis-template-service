@@ -106,7 +106,7 @@ public class AuditLogInitializer implements CommandLineRunner {
     List<CdoSnapshot> snapshots = javers.findSnapshots(jqlQuery.build());
 
     //If there are no snapshots of the domain object, then take one
-    if (snapshots.size() == 0) {
+    if (snapshots.isEmpty()) {
       javers.commit("System: AuditLogInitializer", baseEntity);
     } else {
       LOGGER.info(MessageKeys.ERROR_JAVERS_EXISTING_ENTRY,

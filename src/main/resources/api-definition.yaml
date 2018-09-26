@@ -6,138 +6,214 @@ baseUri: "@baseUrl@"
 protocols: [ HTTP, HTTPS ]
 
 documentation:
-    - title: Getting Started
-      content: Welcome to the OpenLMIS template-service documentation. This minimal API is intended for illustrative purposes.
+- title: Getting Started
+  content: Welcome to the OpenLMIS template-service documentation. This minimal API is intended for illustrative purposes.
 
 schemas:
-  - auditLogEntry: !include schemas/auditLogEntry.json
+- auditLogEntry: !include schemas/auditLogEntry.json
 
-  - auditLogEntryArray: |
-      {
-          "type": "array",
-          "items": { "type": "object", "$ref": "schemas/auditLogEntry.json" }
-      }
+- auditLogEntryArray: |
+    {
+        "type": "array",
+        "items": { "type": "object", "$ref": "schemas/auditLogEntry.json" }
+    }
 
-  - version: !include schemas/version.json
+
+- localizedErrorResponse: !include schemas/localizedErrorResponse.json
+
+- version: !include schemas/version.json
+
+- widget: !include schemas/widget.json
+- widgetPage: !include schemas/widgetPage.json
 
 traits:
-    - paginated:
-          queryParameters:
-              page:
-                  description: The page number which should be displayed. Note that the first page is numbered zero rather than one. Additionally, negative and undefined valued are interpreted as zero.
-                  type: integer
-                  required: false
-                  repeat: false
-              size:
-                  description: The desired size of each page. This specifies the maximum number of values that should be returned by the server. Zero, undefined, and negative values should result in all possible values being returned.
-                  type: integer
-                  required: false
-                  repeat: false
-    - secured:
-          queryParameters:
-              access_token:
-                  displayName: access_token
-                  description: OAuth2 access token
-                  type: string
-                  required: false
-                  repeat: false
-          headers:
-              Authorization:
-                  displayName: Authorization
-                  description: OAuth2 authorization token header. Takes the form of 'Bearer <token>'.
-                  type: string
-                  required: false
-                  repeat: false
-resourceTypes:
-    - auditLog:
-        description: This represents the audit log for all <<resourcePathName|!singularize>> resources.
-        get:
-          description: Returns all or part of the resource's audit log
-          # Although /auditLog endpoints support "page" and "number" query parameters for pagination,
-          # they don’t return the response body and set of pagination-related values expected to be
-          # returned for core domain resources.
-          is: [ paginated ]
-          queryParameters:
-              author:
-                  displayName: author
-                  description: Name of the author of changes which should be returned. By default, all changes are returned regardless of author.
-                  type: string
-                  required: false
-                  repeat: false
-              changedPropertyName:
-                  displayName: changedPropertyName
-                  description: The name of the property about which changes should be returned. If null or empty, changes associated with any and all properties are returned.
-                  type: string
-                  required: false
-                  repeat: false
-          responses:
-              200:
-                body:
-                  application/json:
-                    schema: auditLogEntryArray
-                    example: |
-                      [
-                        {
-                          "changeType": "ValueChange",
-                          "globalId": {
-                            "entity": "org.openlmis.SomeClass",
-                            "cdoId": 1
-                          },
-                          "commitMetadata": {
-                            "author": "SomeUserName",
-                            "properties": [],
-                            "commitDate": "2016-12-17T19:39:57.621",
-                            "id": 3
-                          },
-                          "property": "PropertyName",
-                          "left": "OldValue",
-                          "right": "NewValue"
-                        }
-                      ]
-              404:
-                description: The specified <<resourcePathName|!singularize>> does not exist.
+- secured:
+    queryParameters:
+      access_token:
+        displayName: access_token
+        description: OAuth2 access token
+        type: string
+        required: false
+        repeat: false
+    headers:
+      Authorization:
+        displayName: Authorization
+        description: OAuth2 authorization token header. Takes the form of 'Bearer <token>'.
+        type: string
+        required: false
+        repeat: false
 
-    - instanceAuditLog:
-        description: This represents the audit log for a specified instance of the <<resourcePathName|!singularize>> resource.
-        type: auditLog
-        uriParameters:
-            id:
-                type: string
-                required: true
-                repeat: false
-/template:
-    displayName: Version
+- paginated:
+    queryParameters:
+      page:
+        description: The page number which should be displayed. Note that the first page is numbered zero rather than one. Additionally, negative and undefined values are interpreted as zero.
+        type: integer
+        required: false
+        repeat: false
+      size:
+        description: The desired size of each page. This specifies the maximum number of values that should be returned by the server. Zero, undefined, and negative values should result in all possible values being returned.
+        type: integer
+        required: false
+        repeat: false
+- sorted:
+    queryParameters:
+      sort:
+        description: Sorting criteria in the format "property(,asc|desc)". Default sort order is ascending. Multiple sort criteria are supported.
+        type: string
+        required: false
+        repeat: true
+resourceTypes:
+- auditLog:
+    description: This represents the audit log for all <<resourcePathName|!singularize>> resources.
     get:
-        description: Get version
+      description: Returns all or part of the resource's audit log
+      # Although /auditLog endpoints support "page" and "number" query parameters for pagination,
+      # they don’t return the response body and set of pagination-related values expected to be
+      # returned for core domain resources.
+      is: [ paginated ]
+      queryParameters:
+        author:
+          displayName: author
+          description: Name of the author of changes which should be returned. By default, all changes are returned regardless of author.
+          type: string
+          required: false
+          repeat: false
+        changedPropertyName:
+          displayName: changedPropertyName
+          description: The name of the property about which changes should be returned. If null or empty, changes associated with any and all properties are returned.
+          type: string
+          required: false
+          repeat: false
+      responses:
+        200:
+          body:
+            application/json:
+              schema: auditLogEntryArray
+              example: |
+                [
+                  {
+                    "changeType": "ValueChange",
+                    "globalId": {
+                      "entity": "org.openlmis.SomeClass",
+                      "cdoId": 1
+                    },
+                    "commitMetadata": {
+                      "author": "SomeUserName",
+                      "properties": [],
+                      "commitDate": "2016-12-17T19:39:57.621",
+                      "id": 3
+                    },
+                    "property": "PropertyName",
+                    "left": "OldValue",
+                    "right": "NewValue"
+                  }
+                ]
+        404:
+          description: The specified <<resourcePathName|!singularize>> does not exist.
+
+- instanceAuditLog:
+    description: This represents the audit log for a specified instance of the <<resourcePathName|!singularize>> resource.
+    type: auditLog
+    uriParameters:
+      id:
+        type: string
+        required: true
+        repeat: false
+/template:
+  displayName: Version
+  get:
+    description: Get version
+    responses:
+      200:
+        description: Returns version information.
+        headers:
+        body:
+          application/json:
+            schema: version
+
+/api:
+  /widgets:
+    displayName: widgets
+    get:
+      is: [ secured, paginated, sorted ]
+      description: Get all widgets that match the given parameters.
+      responses:
+        200:
+          body:
+            application/json:
+              schema: widgetPage
+        401:
+          body:
+            application/json:
+    post:
+      is: [ secured ]
+      description: Creates given widget if possible.
+      body:
+        application/json:
+          schema: widget
+      responses:
+        201:
+          body:
+            application/json:
+              schema: widget
+        401:
+          body:
+            application/json:
+    /{id}:
+      uriParameters:
+        id:
+          displayName: id
+          type: string
+          required: true
+          repeat: false
+      get:
+        is: [ secured ]
+        description: Get chosen widget.
         responses:
           200:
-            description: Returns version information.
-            headers:
-              X-Content-Type-Options:
-              X-XSS-Protection:
             body:
               application/json:
-                schema: version
-
-    /widgets:
-      displayName: widgets
-      get:
+                schema: widget
+          404:
+            body:
+              application/json:
+                schema: localizedErrorResponse
+          401:
+            body:
+              application/json:
+      put:
+        is: [ secured ]
+        description: Update existing widget.
+        body:
+          application/json:
+            schema: widget
         responses:
           200:
-      /{id}:
-        uriParameters:
-          id:
-            displayName: id
-            type: string
-            required: true
-            repeat: false
-        delete:
-          responses:
-        get:
-          responses:
-        put:
-          responses:
-        post:
-          responses:
-      /{id}/auditLog:
-        type: instanceAuditLog
+            body:
+              application/json:
+                schema: widget
+          400:
+            body:
+              application/json:
+                schema: localizedErrorResponse
+          404:
+            body:
+              application/json:
+                schema: localizedErrorResponse
+          401:
+            body:
+              application/json:
+      delete:
+        is: [ secured ]
+        description: "[AVOID USING] Completely removes widget. This action is not recoverable."
+        responses:
+          204:
+          404:
+            body:
+              application/json:
+                schema: localizedErrorResponse
+          401:
+            body:
+              application/json:
+    /{id}/auditLog:
+      type: instanceAuditLog

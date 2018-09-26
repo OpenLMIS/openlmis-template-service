@@ -15,24 +15,26 @@
 
 package org.openlmis.template.repository;
 
-import java.io.Serializable;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.NoRepositoryBean;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import java.util.UUID;
+import org.openlmis.template.WidgetDataBuilder;
+import org.openlmis.template.domain.Widget;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 
-/**
- * Extension of {@link PagingAndSortingRepository} to enable using generic parameters
- * in creating Javers logs and provide additional methods to retrieve entities
- * using the pagination and sorting abstraction to ensure.
- */
-@NoRepositoryBean
-public interface BaseAuditableRepository<T, I extends Serializable>
-    extends JpaRepository<T, I> {
+public class WidgetRepositoryIntegrationTest extends BaseCrudRepositoryIntegrationTest<Widget> {
 
-  /**
-   * Returns a {@link Page} of entities which there are no Javers logs created for.
-   */
-  Page<T> findAllWithoutSnapshots(Pageable pageable);
+  @Autowired
+  private WidgetRepository widgetRepository;
+
+  @Override
+  CrudRepository<Widget, UUID> getRepository() {
+    return widgetRepository;
+  }
+
+  @Override
+  Widget generateInstance() {
+    return new WidgetDataBuilder()
+        .withName("name" + getNextInstanceNumber())
+        .buildAsNew();
+  }
 }

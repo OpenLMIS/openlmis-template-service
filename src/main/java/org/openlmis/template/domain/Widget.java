@@ -18,15 +18,19 @@ package org.openlmis.template.domain;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.javers.core.metamodel.annotation.TypeName;
 
 @Entity
 @TypeName("Widget")
 @Table(name = "widget", schema = "template")
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class Widget extends BaseEntity {
   private static final String TEXT = "text";
 
@@ -34,6 +38,39 @@ public class Widget extends BaseEntity {
   @Getter
   @Setter
   private String name;
+
+  /**
+   * Creates new instance based on data from the importer.
+   */
+  public static Widget newInstance(Importer importer) {
+    Widget widget = new Widget();
+    widget.setId(importer.getId());
+    widget.updateFrom(importer);
+
+    return widget;
+  }
+
+  public void updateFrom(Importer importer) {
+    name = importer.getName();
+  }
+
+  public void export(Exporter exporter) {
+    exporter.setId(getId());
+    exporter.setName(name);
+  }
+
+
+  public interface Exporter extends BaseExporter {
+
+    void setName(String name);
+
+  }
+
+  public interface Importer extends BaseImporter {
+
+    String getName();
+
+  }
 
 
 }
