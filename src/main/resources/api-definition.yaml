@@ -110,6 +110,12 @@ resourceTypes:
                 ]
         404:
           description: The specified <<resourcePathName|!singularize>> does not exist.
+          body:
+            application/json:
+              schema: localizedErrorResponse
+        401:
+          body:
+            application/json:
 
 - instanceAuditLog:
     description: This represents the audit log for a specified instance of the <<resourcePathName|!singularize>> resource.

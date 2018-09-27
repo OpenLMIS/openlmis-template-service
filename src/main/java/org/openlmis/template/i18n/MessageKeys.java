@@ -15,20 +15,39 @@
 
 package org.openlmis.template.i18n;
 
+import java.util.Arrays;
+
 public abstract class MessageKeys {
+  private static final String DELIMITER = ".";
 
   private static final String SERVICE_PREFIX = "template";
-  private static final String ERROR_PREFIX = SERVICE_PREFIX + ".error";
+  private static final String ERROR = "error";
 
-  public static final String ERROR_NOT_FOUND = ERROR_PREFIX
-      + ".widgetNotFound";
+  private static final String WIDGET = "widget";
+  private static final String JAVERS = "javers";
 
-  public static final String ERROR_JAVERS_EXISTING_ENTRY = ERROR_PREFIX
-      + ".javers.entryAlreadyExists";
+  private static final String ID = "id";
+  private static final String CODE = "code";
 
-  public static final String ERROR_ID_MISMATCH = ERROR_PREFIX + ".idMismatch";
+  private static final String MISMATCH = "mismatch";
+  private static final String NOT_FOUND = "notFound";
+  private static final String DUPLICATED = "duplicated";
+
+  private static final String ERROR_PREFIX = join(SERVICE_PREFIX, ERROR);
+
+  public static final String ERROR_WIDGET_NOT_FOUND = join(ERROR_PREFIX, WIDGET, NOT_FOUND);
+  public static final String ERROR_WIDGET_ID_MISMATCH = join(ERROR_PREFIX, WIDGET, ID, MISMATCH);
+  public static final String ERROR_WIDGET_CODE_DUPLICATED =
+      join(ERROR_PREFIX, WIDGET, CODE, DUPLICATED);
+
+  public static final String ERROR_JAVERS_EXISTING_ENTRY =
+      join(ERROR_PREFIX, JAVERS, "entryAlreadyExists");
 
   private MessageKeys() {
     throw new UnsupportedOperationException();
+  }
+
+  private static String join(String... params) {
+    return String.join(DELIMITER, Arrays.asList(params));
   }
 }

@@ -100,7 +100,6 @@ public class Resource2Db {
     try (InputStreamReader isReader = new InputStreamReader(resource.getInputStream())) {
       lines = new BufferedReader(isReader).lines().collect(Collectors.toList());
     }
-    assert null != lines;
 
     XLOGGER.exit("SQL lines read: " + lines.size());
     return lines;

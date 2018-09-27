@@ -15,9 +15,14 @@
 
 package org.openlmis.template.errorhandling;
 
+import java.util.HashMap;
+import java.util.Map;
+import org.hibernate.exception.ConstraintViolationException;
 import org.openlmis.template.exception.NotFoundException;
 import org.openlmis.template.exception.ValidationMessageException;
+import org.openlmis.template.i18n.MessageKeys;
 import org.openlmis.template.util.Message;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -30,6 +35,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  */
 @ControllerAdvice
 public class GlobalErrorHandling extends AbstractErrorHandling {
+
+  private static final Map<String, String> CONSTRAINT_MAP = new HashMap<>();
+
+  static {
+    CONSTRAINT_MAP.put("unq_widget_code", MessageKeys.ERROR_WIDGET_CODE_DUPLICATED);
+  }
 
   @ExceptionHandler(NotFoundException.class)
   @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -49,5 +60,25 @@ public class GlobalErrorHandling extends AbstractErrorHandling {
   @ResponseBody
   public Message.LocalizedMessage handleMessageException(ValidationMessageException ex) {
     return getLocalizedMessage(ex);
+  }
+
+  /**
+   * Handles data integrity violation exception.
+   * @param ex the data integrity exception
+   * @return the user-oriented error message.
+   */
+  @ExceptionHandler(DataIntegrityViolationException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ResponseBody
+  public Message.LocalizedMessage handleDataIntegrityViolation(DataIntegrityViolationException ex) {
+    if (ex.getCause() instanceof ConstraintViolationException) {
+      ConstraintViolationException cause = (ConstraintViolationException) ex.getCause();
+      String messageKey = CONSTRAINT_MAP.get(cause.getConstraintName());
+      if (messageKey != null) {
+        return getLocalizedMessage(new Message(messageKey));
+      }
+    }
+
+    return getLocalizedMessage(new Message(ex.getMessage()));
   }
 }

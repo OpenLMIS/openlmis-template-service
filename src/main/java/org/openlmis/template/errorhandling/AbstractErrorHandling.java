@@ -35,6 +35,16 @@ public abstract class AbstractErrorHandling {
   private MessageService messageService;
 
   /**
+   * Translate a Message into a LocalizedMessage.
+   *
+   * @param message a Message to translate
+   * @return a LocalizedMessage translated by the MessageService bean
+   */
+  final Message.LocalizedMessage getLocalizedMessage(Message message) {
+    return messageService.localize(message);
+  }
+
+  /**
    * Translate the Message in a BaseMessageException into a LocalizedMessage.
    *
    * @param exception is any BaseMessageException containing a Message

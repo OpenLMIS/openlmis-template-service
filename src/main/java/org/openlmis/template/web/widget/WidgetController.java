@@ -84,7 +84,7 @@ public class WidgetController extends BaseController {
   @ResponseBody
   public WidgetDto saveWidget(@PathVariable("id") UUID id, @RequestBody WidgetDto widget) {
     if (null != widget.getId() && !Objects.equals(widget.getId(), id)) {
-      throw new ValidationMessageException(MessageKeys.ERROR_ID_MISMATCH);
+      throw new ValidationMessageException(MessageKeys.ERROR_WIDGET_ID_MISMATCH);
     }
 
     LOGGER.debug("Updating widget");
@@ -92,7 +92,7 @@ public class WidgetController extends BaseController {
     Widget db = widgetRepository.findOne(id);
 
     if (null == db) {
-      throw new NotFoundException(MessageKeys.ERROR_NOT_FOUND);
+      throw new NotFoundException(MessageKeys.ERROR_WIDGET_NOT_FOUND);
     }
 
     db.updateFrom(widget);
@@ -109,7 +109,7 @@ public class WidgetController extends BaseController {
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void deleteWidget(@PathVariable("id") UUID id) {
     if (!widgetRepository.exists(id)) {
-      throw new NotFoundException(MessageKeys.ERROR_NOT_FOUND);
+      throw new NotFoundException(MessageKeys.ERROR_WIDGET_NOT_FOUND);
     }
 
     widgetRepository.delete(id);
@@ -142,7 +142,7 @@ public class WidgetController extends BaseController {
     Widget widget = widgetRepository.findOne(id);
 
     if (widget == null) {
-      throw new NotFoundException(MessageKeys.ERROR_NOT_FOUND);
+      throw new NotFoundException(MessageKeys.ERROR_WIDGET_NOT_FOUND);
     }
 
     return WidgetDto.newInstance(widget);
@@ -161,23 +161,17 @@ public class WidgetController extends BaseController {
   @GetMapping(value = "/{id}/auditLog")
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
-  public ResponseEntity<String> getFacilityOperatorAuditLog(
-      @PathVariable("id") UUID id,
+  public ResponseEntity<String> getWidgetAuditLog(@PathVariable("id") UUID id,
       @RequestParam(name = "author", required = false, defaultValue = "") String author,
       @RequestParam(name = "changedPropertyName", required = false, defaultValue = "")
-          String changedPropertyName,
-      //Because JSON is all we formally support, returnJSON is excluded from our JavaDoc
-      @RequestParam(name = "returnJSON", required = false, defaultValue = "true")
-          boolean returnJson,
-      Pageable page) {
+          String changedPropertyName, Pageable page) {
 
     //Return a 404 if the specified instance can't be found
     if (!widgetRepository.exists(id)) {
-      throw new NotFoundException(MessageKeys.ERROR_NOT_FOUND);
+      throw new NotFoundException(MessageKeys.ERROR_WIDGET_NOT_FOUND);
     }
 
-    return getAuditLogResponse(Widget.class, id, author, changedPropertyName, page,
-        returnJson);
+    return getAuditLogResponse(Widget.class, id, author, changedPropertyName, page);
   }
 
 }

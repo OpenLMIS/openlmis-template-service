@@ -32,6 +32,7 @@ import org.openlmis.template.web.BaseDto;
 @ToString(callSuper = true)
 public final class WidgetDto extends BaseDto implements Widget.Importer, Widget.Exporter {
   private String name;
+  private String code;
 
   /**
    * Creates new instance based on domain object.

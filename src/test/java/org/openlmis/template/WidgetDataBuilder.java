@@ -16,14 +16,21 @@
 package org.openlmis.template;
 
 import java.util.UUID;
+import org.apache.commons.lang.RandomStringUtils;
 import org.openlmis.template.domain.Widget;
 
 public class WidgetDataBuilder {
   private UUID id = UUID.randomUUID();
   private String name = "name";
+  private String code = RandomStringUtils.randomAlphanumeric(10);
 
   public WidgetDataBuilder withName(String name) {
     this.name = name;
+    return this;
+  }
+
+  public WidgetDataBuilder withCode(String code) {
+    this.code = code;
     return this;
   }
 
@@ -43,6 +50,7 @@ public class WidgetDataBuilder {
   public Widget buildAsNew() {
     Widget widget = new Widget();
     widget.setName(name);
+    widget.setCode(code);
 
     return widget;
   }

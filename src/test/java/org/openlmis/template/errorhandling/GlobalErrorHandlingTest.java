@@ -20,6 +20,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
 import java.util.Locale;
+import org.hibernate.exception.ConstraintViolationException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,10 +29,12 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.openlmis.template.exception.NotFoundException;
 import org.openlmis.template.exception.ValidationMessageException;
+import org.openlmis.template.i18n.MessageKeys;
 import org.openlmis.template.i18n.MessageService;
 import org.openlmis.template.util.Message;
 import org.openlmis.template.util.Message.LocalizedMessage;
 import org.springframework.context.MessageSource;
+import org.springframework.dao.DataIntegrityViolationException;
 
 @RunWith(MockitoJUnitRunner.class)
 public class GlobalErrorHandlingTest {
@@ -55,6 +58,53 @@ public class GlobalErrorHandlingTest {
           Message message = invocation.getArgumentAt(0, Message.class);
           return message.localMessage(messageSource, ENGLISH_LOCALE);
         });
+  }
+
+  @Test
+  public void shouldHandleDataIntegrityViolation() {
+    // given
+    String constraintName = "unq_widget_code";
+    ConstraintViolationException constraintViolation = new ConstraintViolationException(
+        null, null, constraintName);
+    DataIntegrityViolationException exp = new DataIntegrityViolationException(
+        null, constraintViolation);
+
+    // when
+    mockMessage(MessageKeys.ERROR_WIDGET_CODE_DUPLICATED);
+    LocalizedMessage message = errorHandler.handleDataIntegrityViolation(exp);
+
+    // then
+    assertMessage(message, MessageKeys.ERROR_WIDGET_CODE_DUPLICATED);
+  }
+
+  @Test
+  public void shouldHandleDataIntegrityViolationEvenIfMessageKeyNotExist() {
+    // given
+    String constraintName = "unq_widget_code_def";
+    ConstraintViolationException constraintViolation = new ConstraintViolationException(
+        null, null, constraintName);
+    DataIntegrityViolationException exp = new DataIntegrityViolationException(
+        null, constraintViolation);
+
+    // when
+    mockMessage(exp.getMessage());
+    LocalizedMessage message = errorHandler.handleDataIntegrityViolation(exp);
+
+    // then
+    assertMessage(message, exp.getMessage());
+  }
+
+  @Test
+  public void shouldHandleDataIntegrityViolationEvenIfCauseNotExist() {
+    // given
+    DataIntegrityViolationException exp = new DataIntegrityViolationException(ERROR_MESSAGE, null);
+
+    // when
+    mockMessage(exp.getMessage());
+    LocalizedMessage message = errorHandler.handleDataIntegrityViolation(exp);
+
+    // then
+    assertMessage(message, exp.getMessage());
   }
 
   @Test

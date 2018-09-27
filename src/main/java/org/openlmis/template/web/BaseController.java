@@ -20,7 +20,6 @@ import java.util.UUID;
 import javax.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.javers.core.Javers;
-import org.javers.core.changelog.SimpleTextChangeLog;
 import org.javers.core.diff.Change;
 import org.javers.core.json.JsonConverter;
 import org.javers.repository.jql.QueryBuilder;
@@ -41,35 +40,13 @@ public abstract class BaseController {
   private Javers javers;
 
   protected ResponseEntity<String> getAuditLogResponse(Class type, UUID id, String author,
-      String changedPropertyName,
-      Pageable page, boolean returnJson) {
-    String auditLogs = getAuditLog(type, id, author, changedPropertyName, page, returnJson);
-
-    MediaType contentType = returnJson ? MediaType.APPLICATION_JSON : MediaType.TEXT_PLAIN;
+      String changedPropertyName, Pageable page) {
+    String auditLogs = getAuditLogJson(type, id, author, changedPropertyName, page);
 
     HttpHeaders headers = new HttpHeaders();
-    headers.setContentType(contentType);
+    headers.setContentType(MediaType.APPLICATION_JSON);
 
     return new ResponseEntity<>(auditLogs, headers, HttpStatus.OK);
-  }
-
-  /**
-   * <p>
-   * Convenience method intended to return audit log information via either JSON or raw text,
-   * based on the value of the returnJson argument.
-   * </p><p>
-   * For testing and development, it’s useful to set this to false in order to retrieve a
-   * human-readable response. For production, however, JSON should exclusively be returned.
-   * </p>
-   * See getAuditedChanges() for a list and explanation of the available parameters.
-   */
-  private String getAuditLog(Class type, UUID id, String author, String changedPropertyName,
-      Pageable page, boolean returnJson) {
-    if (returnJson) {
-      return getAuditLogJson(type, id, author, changedPropertyName, page);
-    } else {
-      return getAuditLogText(type, id, author, changedPropertyName, page);
-    }
   }
 
   /**
@@ -91,16 +68,6 @@ public abstract class BaseController {
     return jsonConverter.toJson(changes);
   }
 
-
-  /**
-   * Return a list of changes as a log (in other words, as a series of line entries).
-   * The available parameters and their means are the same as for the getChangesByClass() method.
-   */
-  private String getAuditLogText(Class type, UUID id, String author,
-      String changedPropertyName, Pageable page) {
-    List<Change> changes = getChangesByType(type, id, author, changedPropertyName, page);
-    return javers.processChangeList(changes, new SimpleTextChangeLog());
-  }
 
   /*
     Return JaVers changes for the specified type, optionally filtered by id, author, and property.

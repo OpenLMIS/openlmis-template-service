@@ -15,10 +15,14 @@
 
 package org.openlmis.template.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.UUID;
+import org.junit.Test;
 import org.openlmis.template.WidgetDataBuilder;
 import org.openlmis.template.domain.Widget;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.repository.CrudRepository;
 
 public class WidgetRepositoryIntegrationTest extends BaseCrudRepositoryIntegrationTest<Widget> {
@@ -35,6 +39,36 @@ public class WidgetRepositoryIntegrationTest extends BaseCrudRepositoryIntegrati
   Widget generateInstance() {
     return new WidgetDataBuilder()
         .withName("name" + getNextInstanceNumber())
+        .withName("code" + getNextInstanceNumber())
         .buildAsNew();
+  }
+
+  @Test
+  public void shouldAllowForSeveralWidgetsWithoutCode() {
+    long count = widgetRepository.count();
+
+    Widget widget1 = new WidgetDataBuilder()
+        .withName("name" + getNextInstanceNumber())
+        .withCode(null)
+        .buildAsNew();
+    Widget widget2 = new WidgetDataBuilder()
+        .withName("name" + getNextInstanceNumber())
+        .withCode(null)
+        .buildAsNew();
+
+    widgetRepository.saveAndFlush(widget1);
+    widgetRepository.saveAndFlush(widget2);
+
+    assertThat(widgetRepository.count()).isEqualTo(count + 2);
+  }
+
+  @Test(expected = DataIntegrityViolationException.class)
+  public void shouldNotAllowForSeveralWidgetsWithSameCode() {
+    Widget widget1 = generateInstance();
+    Widget widget2 = generateInstance();
+    widget2.setCode(widget1.getCode());
+
+    widgetRepository.saveAndFlush(widget1);
+    widgetRepository.saveAndFlush(widget2);
   }
 }

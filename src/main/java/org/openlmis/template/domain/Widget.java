@@ -39,6 +39,11 @@ public class Widget extends BaseEntity {
   @Setter
   private String name;
 
+  @Column(unique = true, columnDefinition = TEXT)
+  @Getter
+  @Setter
+  private String code;
+
   /**
    * Creates new instance based on data from the importer.
    */
@@ -52,11 +57,16 @@ public class Widget extends BaseEntity {
 
   public void updateFrom(Importer importer) {
     name = importer.getName();
+    code = importer.getCode();
   }
 
+  /**
+   * Exports data to the exporter.
+   */
   public void export(Exporter exporter) {
     exporter.setId(getId());
     exporter.setName(name);
+    exporter.setCode(code);
   }
 
 
@@ -64,11 +74,15 @@ public class Widget extends BaseEntity {
 
     void setName(String name);
 
+    void setCode(String code);
+
   }
 
   public interface Importer extends BaseImporter {
 
     String getName();
+
+    String getCode();
 
   }
 
