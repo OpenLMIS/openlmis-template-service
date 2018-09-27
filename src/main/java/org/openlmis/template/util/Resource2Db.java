@@ -96,13 +96,15 @@ public class Resource2Db {
   private List<String> resourceToStrings(final Resource resource) throws IOException {
     XLOGGER.entry(resource.getDescription());
 
-    List<String> lines;
-    try (InputStreamReader isReader = new InputStreamReader(resource.getInputStream())) {
-      lines = new BufferedReader(isReader).lines().collect(Collectors.toList());
-    }
+    InputStreamReader isReader = new InputStreamReader(resource.getInputStream());
 
-    XLOGGER.exit("SQL lines read: " + lines.size());
-    return lines;
+    try {
+      List<String> lines = new BufferedReader(isReader).lines().collect(Collectors.toList());
+      XLOGGER.exit("SQL lines read: " + lines.size());
+      return lines;
+    } finally {
+      isReader.close();
+    }
   }
 
   /*
@@ -115,8 +117,9 @@ public class Resource2Db {
     XLOGGER.entry(resource.getDescription());
 
     // parse CSV
-    try (InputStreamReader isReader = new InputStreamReader(
-        new BOMInputStream(resource.getInputStream(), ByteOrderMark.UTF_8))) {
+    InputStreamReader isReader = new InputStreamReader(
+        new BOMInputStream(resource.getInputStream(), ByteOrderMark.UTF_8));
+    try {
       CSVParser parser = CSVFormat.DEFAULT.withHeader().withNullString("").parse(isReader);
 
       // read header row
@@ -138,6 +141,8 @@ public class Resource2Db {
 
       XLOGGER.exit("Records read: " + readData.getRight().size());
       return readData;
+    } finally {
+      isReader.close();
     }
   }
 
@@ -151,7 +156,7 @@ public class Resource2Db {
       return;
     }
 
-    int[] updateCounts = template.batchUpdate(sqlLines.toArray(new String[sqlLines.size()]));
+    int[] updateCounts = template.batchUpdate(sqlLines.toArray(new String[0]));
     XLOGGER.exit("Total db updates: " + Arrays.stream(updateCounts).sum());
   }
 
@@ -163,13 +168,11 @@ public class Resource2Db {
    *                       is an array of rows to insert, where each row is similarly ordered as
    *                       the columns in pair.left.
    */
-  public void insertToDbFromBatchedPair(String tableName,
-                                        Pair<List<String>, List<Object[]>> dataWithHeader) {
+  private void insertToDbFromBatchedPair(String tableName,
+      Pair<List<String>, List<Object[]>> dataWithHeader) {
     XLOGGER.entry(tableName);
 
-    String columnDesc = dataWithHeader.getLeft()
-        .stream()
-        .collect(joining(","));
+    String columnDesc = String.join(",", dataWithHeader.getLeft());
     String valueDesc = dataWithHeader.getLeft()
         .stream()
         .map(s -> "?")

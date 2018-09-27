@@ -74,13 +74,7 @@ public abstract class BaseController {
   */
   private List<Change> getChangesByType(Class type, UUID id, String author,
       String changedPropertyName, Pageable page) {
-    QueryBuilder queryBuilder;
-
-    if (id != null) {
-      queryBuilder = QueryBuilder.byInstanceId(id, type);
-    } else {
-      queryBuilder = QueryBuilder.byClass(type);
-    }
+    QueryBuilder queryBuilder = QueryBuilder.byInstanceId(id, type);
 
     int skip = Pagination.getPageNumber(page);
     int limit = Pagination.getPageSize(page);
@@ -90,6 +84,7 @@ public abstract class BaseController {
     if (StringUtils.isNotBlank(author)) {
       queryBuilder = queryBuilder.byAuthor(author);
     }
+
     if (StringUtils.isNotBlank(changedPropertyName)) {
       queryBuilder = queryBuilder.andProperty(changedPropertyName);
     }

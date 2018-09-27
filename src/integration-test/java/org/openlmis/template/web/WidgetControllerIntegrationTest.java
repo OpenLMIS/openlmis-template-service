@@ -330,6 +330,35 @@ public class WidgetControllerIntegrationTest extends BaseWebIntegrationTest {
   }
 
   @Test
+  public void shouldRetrieveAuditLogsWithParameters() {
+    given(widgetRepository.exists(widgetDto.getId())).willReturn(true);
+    willReturn(Lists.newArrayList(change)).given(javers).findChanges(any(JqlQuery.class));
+
+    restAssured
+        .given()
+        .header(HttpHeaders.AUTHORIZATION, getTokenHeader())
+        .pathParam(ID, widgetDto.getId().toString())
+        .queryParam("author", commitMetadata.getAuthor())
+        .queryParam("changedPropertyName", change.getPropertyName())
+        .when()
+        .get(AUDIT_LOG_URL)
+        .then()
+        .statusCode(HttpStatus.SC_OK)
+        .body("", hasSize(1))
+        .body("changeType", hasItem(change.getClass().getSimpleName()))
+        .body("globalId.valueObject", hasItem(Widget.class.getSimpleName()))
+        .body("commitMetadata.author", hasItem(commitMetadata.getAuthor()))
+        .body("commitMetadata.properties", hasItem(hasSize(0)))
+        .body("commitMetadata.commitDate", hasItem(commitMetadata.getCommitDate().toString()))
+        .body("commitMetadata.id", hasItem(commitId.valueAsNumber().floatValue()))
+        .body("property", hasItem(change.getPropertyName()))
+        .body("left", hasItem(change.getLeft().toString()))
+        .body("right", hasItem(change.getRight().toString()));
+
+    assertThat(RAML_ASSERT_MESSAGE, restAssured.getLastReport(), RamlMatchers.hasNoViolations());
+  }
+
+  @Test
   public void shouldReturnNotFoundMessageIfWidgetDoesNotExistForAuditLogEndpoint() {
     given(widgetRepository.exists(widgetDto.getId())).willReturn(false);
 
