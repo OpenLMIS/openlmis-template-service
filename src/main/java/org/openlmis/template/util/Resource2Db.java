@@ -20,6 +20,7 @@ import static java.util.stream.Collectors.joining;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -96,14 +97,10 @@ public class Resource2Db {
   private List<String> resourceToStrings(final Resource resource) throws IOException {
     XLOGGER.entry(resource.getDescription());
 
-    InputStreamReader isReader = new InputStreamReader(resource.getInputStream());
-
-    try {
+    try (InputStreamReader isReader = new InputStreamReader(resource.getInputStream())) {
       List<String> lines = new BufferedReader(isReader).lines().collect(Collectors.toList());
       XLOGGER.exit("SQL lines read: " + lines.size());
       return lines;
-    } finally {
-      isReader.close();
     }
   }
 
