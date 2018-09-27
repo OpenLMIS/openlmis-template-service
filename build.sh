@@ -8,4 +8,4 @@
 
 
 # Run Gradle build
-gradle clean build
+gradle clean build flywayTest
