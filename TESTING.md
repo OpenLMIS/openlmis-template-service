@@ -574,6 +574,8 @@ These are not contract tests, which are more oriented towards business requireme
 * Where: Reside inside separate repository:  [openlmis-contract-tests](http://github.com/openlmis/openlmis-contract-tests).
 * Why:  Tests multiple services working together, testing contracts that a Service both provides as well as the requirements a dependant has.
 
+**Ideally, single scenario checks single endpoint. In specific cases, like requisition workflow, when it's impossible to check something without using other endpoints, it can omitted.**
+
 The main difference between contract and integration tests:
 In contract tests, all the services under test are *real*, meaning that they will be processing requests and sending responses.
 Test doubles, mocking, stubbing should not be a part of contract tests.
@@ -587,6 +589,8 @@ Refer to [this doc](https://github.com/OpenLMIS/openlmis-contract-tests/blob/mas
 * When: Ran in CI.
 * Where: Resides in seperate repository.
 * Why: Ensures all the pieces are working together to carry-out a business scenario.  Helps ensure end-users can achieve their goals.
+
+**Single feature should cover only one (related) UI screen.**
 
 ## Testing services dependent on external APIs
 OpenLMIS is using WireMock for mocking web services. An example integration test can be found here:
