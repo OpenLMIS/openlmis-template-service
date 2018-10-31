@@ -76,6 +76,43 @@ Developers (all teams):
 
 Weekly meetings are scheduled to discuss QA topics and the daily communication is completed in the #QA slack channel for OpenLMIS. The weekly meeting notes are maintained in [QA Weekly meeting notes](https://openlmis.atlassian.net/wiki/spaces/OP/pages/114170699/QA+Weekly+meeting+notes).
 
+## QA Testing Workflow within a Sprint
+
+The Testing process in OpenLMIS project is divided into three areas: manual testing, automatic testing and regression. This section covers manual and regression testing using Zephyr test cases and test cycles. 
+
+**Step 1: Test Cases**
+
+When a new feature ticket is assigned to a sprint, the QA lead or tester must create a test case and link the new test case to the Jira ticket. This can happen in parallel to the development of the ticket.
+Test Cases must be created for each JIRA ticket that is assigned to a sprint that has to be tested manually - one mustn't create test cases for API changes, as contract tests are to be used for this kind of changes.
+It's advised to create test cases before a sprint begins, but this can also be done once a sprint has started. Note that sometimes a given feature might be interrelated with the already existing ones, which increases the risk of regression.
+In such situations, the developer working on the ticket should recommend the test cases that should be run in parallel to the testing of a given feature.
+If this proves impossible, they should inform the tester on the possible influence of the changes to the other parts of the system.
+
+In JIRA, click on Create. Select the Project, in this case the project is OpenLMIS General. Then select the Issue Type as Test.
+The Summary, Components, and Description can be copied from the ticket to keep consistency, or help in rewriting the test case in the next steps. Note that every valid test case has to have the To Do status and Minor priority.
+The test case's name should be in accordance with the following convention: "Screen: Tested feature" (e.g. Users: Searching for users). After entering all data, click Create and a JIRA notification will pop up with the Test Case number.
+
+![Create test case](./src/main/resources/static/template/images/create-lest-case.png)
+
+Click on the test case number and it will bring you to this page to add the test steps and make required associations. The Labels help when querying for test cases to add to regression test cycles.
+For the example below, a suggested label would be Stock Management or Vaccines. When the tested ticket concerns UI changes and contains a mock-up, the mock-up should be added as an attachment to the ticket with the test case.
+
+The Fix Version/s is an association that organizes the test cases. This is used to report test case execution in the Test Metrics Dashboard. If the Fix Version is not known at the time of creating the test, then select "Unscheduled".
+When the JIRA ticket is assigned to the sprint, the test case must be updated with the correct Fix Version or it will not appear in the Test Metrics Dashboard.
+The Test Steps provide a step by step guide to any tester on how to complete proper validation of the JIRA ticket. The steps should explain in enough detail to the tester: the actions to make, and a description of the outcome of those steps.
+
+![Entering steps in test case](./src/main/resources/static/template/images/entering-test-case-steps.png)
+
+Here is an example of some Test Steps:
+
+![Test steps example](./src/main/resources/static/template/images/test-steps.png)
+
+Once the test case has been created, it needs to be associated to the JIRA ticket, as the example below:
+
+![Linked JIRA Ticket](./src/main/resources/static/template/images/linked-jira-ticket.png)
+
+![Linked Test Case](./src/main/resources/static/template/images/linked-test-case.png)
+
 ## Test Case Best Practices
 
 ### Creating a Test Case for an Edge Case or Unhappy Path Scenario
@@ -119,6 +156,65 @@ When one is familiarizing oneself with the project or when one already knows the
 It can be also considered as a form of informal regression testing, as frequently, bugs resulting from regression are found during it. While performing this kind of tests, it is advisable to be as creative as possible – to experiment with testing techniques and test steps, and not to follow the happy path but the edge cases, or to try to find the latter.
 
 Exploratory testing in the UI will focus on testing edge cases and causing errors related to the following categories: Functional issues, UI to Server failure, Configuration issues, Visual inconsistencies, and Presentational issues.
+
+**Step 2: Test Cycles**
+
+Once the test case is written it needs to be associated to a Test Cycle. Click on the Add to Test Cycle button and it will bring you to this screen:
+
+![Adding Test Cycle](./src/main/resources/static/template/images/adding-test-cycle.png)
+
+The Version should be the version that is associated with the JIRA ticket. The test cycle will be either the current sprint test cycle, or the current feature regression test cycle. If you are executing the test, or know who will be executing the test you can assign it here.
+
+Typically the QA lead or someone designated will create the test cycles for each sprint and they will only need to be linked. If there are no test cycles to select then these are the fields you must enter to create a new test cycle. The following are two examples of test cycles created for a sprint.
+The Test Cycles must have the Version, Name, Description, and Environment because these are used in queries for reporting and tracking Test Metrics.
+
+Version |          Name         |             Description             | Build (not required) |    Environment    | From (not required) | To (not required)
+------- | --------------------- | ----------------------------------- | -------------------- | ----------------- | --------------------| -----------------
+3.2     | Test Cycle for Sprint 31 | Test Cycle for Sprint 31         |                      | test.openlmis.org | 2017-07-19          | 2017-08-02
+3.2     | Test Cycle for Sprint 31 | Regression testing for Sprint 31 |                      | test.openlmis.org | 2017-07-19          | 2017-08-02
+
+**Step 3: Execute tests within a Test Cycle**
+
+Once test cases have been assigned to a Test Cycle the execution of these tests is tracked in Zephyr.
+When a test is ready to execute, open the test case and navigate to the bottom of the page where the Test Execution links are shown. Click on the "E" button to begin execution.
+
+![Start Test Execution](./src/main/resources/static/template/images/start-test-execution.png)
+
+The Test Execution page appears that details the test case and each test step. Select Text Execution Status of WIP, this means that the test case is in progress. Zephyr will assign you as the person executing the test and automatically assign the start date and time.
+Assign the test execution to yourself and you are ready to begin testing. Each step has a status, comments, attachments, and bugs field.
+
+While completing each step, if the expected result matches the actual result, change the status to Pass. If the step does not match, then the status is Failed. If for some reason the step cannot be executed, such as the system is down, then the status would be Blocked.
+Once a test is completed the status can be updated to reflect whether it Passed or Failed, and the status of the test execution will be saved to the test case as shown in the above screenshot. This status also appears in the Test Metrics Dashboard.
+
+![Test Execution Steps](./src/main/resources/static/template/images/test-execution-steps.png)
+
+**Once the test execution is complete, the Test Case should be marked as Done.**
+
+**Step 4: Enter Bugs**
+
+During testing, if a test step fails and there is a different result, or an error appears that is not expected, then a bug must be entered. Click on the bugs Column and Create New Issue.
+
+The Issue Type is Bug, and the Summary, Description, Priority, Environment, and original linked JIRA ticket should all be added. The Summary is a short description of the bug, while the Description is a detailed step by step explanation of how to recreate the bug,
+and what the expected result is per the test case step. It’s helpful to have the test case open in a separate window so that you can copy those details if needed. The Environment should be either test or uat, and you should provide as much detail about the environment
+that would help a developer when reproducing the bug, such as in which browser you tested. 
+
+![Create Defect Part 1](./src/main/resources/static/template/images/create-defect-part-1.png)
+
+The new bug should be linked to the JIRA ticket that is linked to the test case.
+
+![Create Defect Part 2](./src/main/resources/static/template/images/create-defect-part-2.png)
+
+When a bug is created it will automatically get sent to the "Roadmap" status. It should stay in this status until it has been triaged and reproduced - only then its status can be changed to "To Do" and when it happens, the bug becomes visible in the product backlog. 
+In summary, each of these steps completes the QA workflow process for a sprint.
+
+**Test Coverage:**
+For each Sprint's Test Cycle, the QA lead must assign appropriate test cases so they can be executed during the sprint. These test cases will be selected based on the tickets assigned to the sprint after Sprint Planning.
+The QA lead must determine if test cases are missing for the tickets assigned to the sprint, and create those test cases to ensure complete test coverage. New features require new test cases, while bugs or regression test cycles may rerun existing test cases.
+
+### Sprint Grooming and Planning Workflow
+
+QA is responsible for adding test cases to support all testing within the sprint. At the end of each sprint, the QA lead is expected to showcase the test cycle for each sprint. This should include: showing the test plan and test cycle, the execution metrics, # of added test cases (if any),
+and the final status of bugs found in the sprint (bug tracking). When regression testing is completed during a sprint, this should be discussed during the showcase as well, with separate metrics of the regression test cycle presented to the team.
 
 ### Bug Tracking
 
@@ -170,6 +266,26 @@ returns with changes to QA, as soon as possible QA should complete testing task 
 
 Additionally tickets in the [Sprint table]( https://openlmis.atlassian.net/secure/RapidBoard.jspa?rapidView=46 ) in QA column should be prioritized. Tickets with high priority (ie. Blocker or Critical) should be located on top of the QA column.
 Every morning QA Lead should set task in QA column in the correct order.
+
+### QA Regression Testing Workflow
+
+Regression Testing for OpenLMIS is organized by each of the features (Requisition, Stock Management, Fulfillment, CCE, Administration etc.) and the test cases are labeled with the feature name for planning regression testing cycles.
+Regression tests are managed by creating a Regression Test Cycle and assigning the cycle to a scheduled sprint. The test cases that are labeled with the feature should only include workflow scenarios for that feature,
+and any edge cases that have been identified as required for the regression test. 
+
+When creating the regression test cycle, the QA lead will search for the feature label and assign all tests to the regression test cycle.
+
+![Add Tests to Test Cycle](./src/main/resources/static/template/images/add-tests-to-cycle.png)
+
+Regular manual regression should be executed every second sprint (i.e. once a month). This kind of regression testing is focused on specific services, it doesn't entail testing the entire system.
+QAs decide what services the regular, focused regression testing is to cover during the QA meetings, and their decision is based on the most-recent changes in the system. For instance, if many changes had been recently introduced in requisitions,
+the regression testing will consist in the execution of all test cases concerning the requisition service.
+
+Big, full manual regression, consisting in manual tests of the whole system and the execution of all valid test cases, is held one or two weeks before the Release Candidate process. The latter is further described in the
+[Versioning and Releasing](http://docs.openlmis.org/en/latest/conventions/versioningReleasing.html#release-process) document.
+
+When bugs are found during regression testing they are labeled with the Regression label. Regression testing related bugs are considered either Critical or Blocker priorities that must be resolved within the next sprint.
+These bugs are also reviewed in the weekly bug triage meeting for completeness and to ensure communication of any concerns to stakeholders.
 
 ### Workflow for Blocked Tickets
 
