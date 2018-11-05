@@ -92,7 +92,7 @@ In JIRA, click on Create. Select the Project, in this case the project is OpenLM
 The Summary, Components, and Description can be copied from the ticket to keep consistency, or help in rewriting the test case in the next steps. Note that every valid test case has to have the To Do status and Minor priority.
 The test case's name should be in accordance with the following convention: "Screen: Tested feature" (e.g. Users: Searching for users). After entering all data, click Create and a JIRA notification will pop up with the Test Case number.
 
-.. image:: https://github.com/OpenLMIS/openlmis-template-service/blob/master/src/main/resources/static/template/images/create-test-case.png)
+![Create Test Case](https://github.com/OpenLMIS/openlmis-template-service/blob/master/src/main/resources/static/template/images/create-test-case.png)
 
 Click on the test case number and it will bring you to this page to add the test steps and make required associations. The Labels help when querying for test cases to add to regression test cycles.
 For the example below, a suggested label would be Stock Management or Vaccines. When the tested ticket concerns UI changes and contains a mock-up, the mock-up should be added as an attachment to the ticket with the test case.
@@ -101,17 +101,17 @@ The Fix Version/s is an association that organizes the test cases. This is used 
 When the JIRA ticket is assigned to the sprint, the test case must be updated with the correct Fix Version or it will not appear in the Test Metrics Dashboard.
 The Test Steps provide a step by step guide to any tester on how to complete proper validation of the JIRA ticket. The steps should explain in enough detail to the tester: the actions to make, and a description of the outcome of those steps.
 
-![Entering steps in test case](https://github.com/OpenLMIS/openlmis-template-service/blob/master/src/main/resources/static/template/images/entering-test-case-steps.png)
+![Entering steps in test case](https://raw.githubusercontent.com/OpenLMIS/openlmis-template-service/master/src/main/resources/static/template/images/entering-test-case-steps.png)
 
 Here is an example of some Test Steps:
 
-![Test steps example](https://github.com/OpenLMIS/openlmis-template-service/blob/master/src/main/resources/static/template/images/test-steps.png)
+![Test steps example](https://raw.githubusercontent.com/OpenLMIS/openlmis-template-service/master/src/main/resources/static/template/images/test-steps.png)
 
 Once the test case has been created, it needs to be associated to the JIRA ticket, as the example below:
 
-![Linked JIRA Ticket](https://github.com/OpenLMIS/openlmis-template-service/blob/master/src/main/resources/static/template/images/linked-jira-ticket.png)
+![Linked JIRA Ticket](https://raw.githubusercontent.com/OpenLMIS/openlmis-template-service/master/src/main/resources/static/template/images/linked-jira-ticket.png)
 
-![Linked Test Case](https://github.com/OpenLMIS/openlmis-template-service/blob/master/src/main/resources/static/template/images/linked-test-case.png)
+![Linked Test Case](https://raw.githubusercontent.com/OpenLMIS/openlmis-template-service/master/src/main/resources/static/template/images/linked-test-case.png)
 
 ## Test Case Best Practices
 
@@ -161,7 +161,7 @@ Exploratory testing in the UI will focus on testing edge cases and causing error
 
 Once the test case is written it needs to be associated to a Test Cycle. Click on the Add to Test Cycle button and it will bring you to this screen:
 
-![Adding Test Cycle](https://github.com/OpenLMIS/openlmis-template-service/blob/master/src/main/resources/static/template/images/adding-test-cycle.png)
+![Adding Test Cycle](https://raw.githubusercontent.com/OpenLMIS/openlmis-template-service/master/src/main/resources/static/template/images/adding-test-cycle.png)
 
 The Version should be the version that is associated with the JIRA ticket. The test cycle will be either the current sprint test cycle, or the current feature regression test cycle. If you are executing the test, or know who will be executing the test you can assign it here.
 
@@ -181,7 +181,7 @@ The Test Cycles must have the Version, Name, Description, and Environment becaus
 Once test cases have been assigned to a Test Cycle the execution of these tests is tracked in Zephyr.
 When a test is ready to execute, open the test case and navigate to the bottom of the page where the Test Execution links are shown. Click on the "E" button to begin execution.
 
-![Start Test Execution](https://github.com/OpenLMIS/openlmis-template-service/blob/master/src/main/resources/static/template/images/start-test-execution.png)
+![Start Test Execution](https://raw.githubusercontent.com/OpenLMIS/openlmis-template-service/master/src/main/resources/static/template/images/start-test-execution.png)
 
 The Test Execution page appears that details the test case and each test step. Select Text Execution Status of WIP, this means that the test case is in progress. Zephyr will assign you as the person executing the test and automatically assign the start date and time.
 Assign the test execution to yourself and you are ready to begin testing. Each step has a status, comments, attachments, and bugs field.
@@ -189,7 +189,7 @@ Assign the test execution to yourself and you are ready to begin testing. Each s
 While completing each step, if the expected result matches the actual result, change the status to Pass. If the step does not match, then the status is Failed. If for some reason the step cannot be executed, such as the system is down, then the status would be Blocked.
 Once a test is completed the status can be updated to reflect whether it Passed or Failed, and the status of the test execution will be saved to the test case as shown in the above screenshot. This status also appears in the Test Metrics Dashboard.
 
-![Test Execution Steps](https://github.com/OpenLMIS/openlmis-template-service/blob/master/src/main/resources/static/template/images/test-execution-steps.png)
+![Test Execution Steps](https://raw.githubusercontent.com/OpenLMIS/openlmis-template-service/master/src/main/resources/static/template/images/test-execution-steps.png)
 
 **Once the test execution is complete, the Test Case should be marked as Done.**
 
@@ -201,11 +201,11 @@ The Issue Type is Bug, and the Summary, Description, Priority, Environment, and 
 and what the expected result is per the test case step. It’s helpful to have the test case open in a separate window so that you can copy those details if needed. The Environment should be either test or uat, and you should provide as much detail about the environment
 that would help a developer when reproducing the bug, such as in which browser you tested. 
 
-![Create Defect Part 1](https://github.com/OpenLMIS/openlmis-template-service/blob/master/src/main/resources/static/template/images/create-defect-part-1.png)
+![Create Defect Part 1](https://raw.githubusercontent.com/OpenLMIS/openlmis-template-service/master/src/main/resources/static/template/images/create-defect-part-1.png)
 
 The new bug should be linked to the JIRA ticket that is linked to the test case.
 
-![Create Defect Part 2](https://github.com/OpenLMIS/openlmis-template-service/blob/master/src/main/resources/static/template/images/create-defect-part-2.png)
+![Create Defect Part 2](https://raw.githubusercontent.com/OpenLMIS/openlmis-template-service/master/src/main/resources/static/template/images/create-defect-part-2.png)
 
 When a bug is created it will automatically get sent to the "Roadmap" status. It should stay in this status until it has been triaged and reproduced - only then its status can be changed to "To Do" and when it happens, the bug becomes visible in the product backlog. 
 In summary, each of these steps completes the QA workflow process for a sprint.
@@ -278,7 +278,7 @@ and any edge cases that have been identified as required for the regression test
 
 When creating the regression test cycle, the QA lead will search for the feature label and assign all tests to the regression test cycle.
 
-![Add Tests to Test Cycle](https://github.com/OpenLMIS/openlmis-template-service/blob/master/src/main/resources/static/template/images/add-tests-to-cycle.png)
+![Add Tests to Test Cycle](https://raw.githubusercontent.com/OpenLMIS/openlmis-template-service/master/src/main/resources/static/template/images/add-tests-to-cycle.png)
 
 Regular manual regression should be executed every second sprint (i.e. once a month). This kind of regression testing is focused on specific services, it doesn't entail testing the entire system.
 QAs decide what services the regular, focused regression testing is to cover during the QA meetings, and their decision is based on the most-recent changes in the system. For instance, if many changes had been recently introduced in requisitions,
