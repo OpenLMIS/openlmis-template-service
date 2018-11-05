@@ -168,10 +168,15 @@ The Version should be the version that is associated with the JIRA ticket. The t
 Typically the QA lead or someone designated will create the test cycles for each sprint and they will only need to be linked. If there are no test cycles to select then these are the fields you must enter to create a new test cycle. The following are two examples of test cycles created for a sprint.
 The Test Cycles must have the Version, Name, Description, and Environment because these are used in queries for reporting and tracking Test Metrics.
 
-| Version | Name                     | Description                      | Build (not required) | Environment       | From (not required) | To (not required) |
-|:------- |:------------------------ |:-------------------------------- |:-------------------- |:----------------- |:------------------- |:----------------- |
-| 3.2     | Test Cycle for Sprint 31 | Test Cycle for Sprint 31         |                      | test.openlmis.org | 2017-07-19          | 2017-08-02        |
-| 3.2     | Test Cycle for Sprint 31 | Regression testing for Sprint 31 |                      | test.openlmis.org | 2017-07-19          | 2017-08-02        |
+i.e.
+```
+* Version - 3.2
+* Name - Test Cycle for Sprint 31
+* Description - Test Cycle for Sprint 31
+* Environment - test.openlmis.org
+* From (not required) - 2017-07-19
+* To (not required) - 2017-08-02
+```
 
 **Step 3: Execute tests within a Test Cycle**
 
