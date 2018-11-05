@@ -92,7 +92,7 @@ In JIRA, click on Create. Select the Project, in this case the project is OpenLM
 The Summary, Components, and Description can be copied from the ticket to keep consistency, or help in rewriting the test case in the next steps. Note that every valid test case has to have the To Do status and Minor priority.
 The test case's name should be in accordance with the following convention: "Screen: Tested feature" (e.g. Users: Searching for users). After entering all data, click Create and a JIRA notification will pop up with the Test Case number.
 
-![Create test case](https://github.com/OpenLMIS/openlmis-template-service/blob/master/src/main/resources/static/template/images/create-test-case.png)
+.. image:: https://github.com/OpenLMIS/openlmis-template-service/blob/master/src/main/resources/static/template/images/create-test-case.png)
 
 Click on the test case number and it will bring you to this page to add the test steps and make required associations. The Labels help when querying for test cases to add to regression test cycles.
 For the example below, a suggested label would be Stock Management or Vaccines. When the tested ticket concerns UI changes and contains a mock-up, the mock-up should be added as an attachment to the ticket with the test case.
@@ -168,12 +168,12 @@ The Version should be the version that is associated with the JIRA ticket. The t
 Typically the QA lead or someone designated will create the test cycles for each sprint and they will only need to be linked. If there are no test cycles to select then these are the fields you must enter to create a new test cycle. The following are two examples of test cycles created for a sprint.
 The Test Cycles must have the Version, Name, Description, and Environment because these are used in queries for reporting and tracking Test Metrics.
 
-+---------+--------------------------+----------------------------------+----------------------+-------------------+---------------------+-------------------+
-| Version | Name                     | Description                      | Build (not required) | Environment       | From (not required) | To (not required) |
-+=========+==========================+==================================+======================+===================+=====================+===================+
-| 3.2     | Test Cycle for Sprint 31 | Test Cycle for Sprint 31         |                      | test.openlmis.org | 2017-07-19          | 2017-08-02        |
-+---------+--------------------------+----------------------------------+----------------------+-------------------+---------------------+-------------------+ 
-| 3.2     | Test Cycle for Sprint 31 | Regression testing for Sprint 31 |                      | test.openlmis.org | 2017-07-19          | 2017-08-02        |
++---------+--------------------------+----------------------------------+----------------------+-------------------+---------------------+-------------------+\
+| Version | Name                     | Description                      | Build (not required) | Environment       | From (not required) | To (not required) |\
++=========+==========================+==================================+======================+===================+=====================+===================+\
+| 3.2     | Test Cycle for Sprint 31 | Test Cycle for Sprint 31         |                      | test.openlmis.org | 2017-07-19          | 2017-08-02        |\
++---------+--------------------------+----------------------------------+----------------------+-------------------+---------------------+-------------------+\
+| 3.2     | Test Cycle for Sprint 31 | Regression testing for Sprint 31 |                      | test.openlmis.org | 2017-07-19          | 2017-08-02        |\
 +---------+--------------------------+----------------------------------+----------------------+-------------------+---------------------+-------------------+
 
 **Step 3: Execute tests within a Test Cycle**
