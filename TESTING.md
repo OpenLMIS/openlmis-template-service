@@ -595,6 +595,10 @@ Refer to [this doc](https://github.com/OpenLMIS/openlmis-contract-tests/blob/mas
 
 **Single feature should cover only one (related) UI screen.**
 
+Both contract and end-to-end tests should follow the same convention:
+* scenarios should be like _<user_name> should be able to <action_description>_
+* features should be like e.g. _Adding reasons_ in reason adding test.
+
 ## Testing services dependent on external APIs
 OpenLMIS is using WireMock for mocking web services. An example integration test can be found here:
 https://github.com/OpenLMIS/openlmis-example/blob/master/src/test/java/org/openlmis/example/WeatherServiceTest.java
