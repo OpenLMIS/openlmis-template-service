@@ -170,8 +170,8 @@ The Test Cycles must have the Version, Name, Description, and Environment becaus
 
 Version |           Name           |             Description             | Build (not required) |    Environment    | From (not required) | To (not required)
 ------- | ------------------------ | ----------------------------------- | -------------------- | ----------------- | --------------------| -----------------
-3.2     | Test Cycle for Sprint 31 | Test Cycle for Sprint 31         |                      | test.openlmis.org | 2017-07-19          | 2017-08-02
-3.2     | Test Cycle for Sprint 31 | Regression testing for Sprint 31 |                      | test.openlmis.org | 2017-07-19          | 2017-08-02
+3.2     | Test Cycle for Sprint 31 | Test Cycle for Sprint 31            |                      | test.openlmis.org | 2017-07-19          | 2017-08-02
+3.2     | Test Cycle for Sprint 31 | Regression testing for Sprint 31    |                      | test.openlmis.org | 2017-07-19          | 2017-08-02
 
 **Step 3: Execute tests within a Test Cycle**
 
