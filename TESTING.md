@@ -574,7 +574,7 @@ These are not contract tests, which are more oriented towards business requireme
 * Where: Reside inside separate repository:  [openlmis-contract-tests](http://github.com/openlmis/openlmis-contract-tests).
 * Why:  Tests multiple services working together, testing contracts that a Service both provides as well as the requirements a dependant has.
 
-**Ideally, single scenario checks single endpoint. In specific cases, like requisition workflow, when it's impossible to check something without using other endpoints, it can omitted.**
+**Ideally, single scenario checks single endpoint. In specific cases, like requisition workflow, when it's impossible to check something without using other endpoints, it can be omitted.**
 
 The main difference between contract and integration tests:
 In contract tests, all the services under test are *real*, meaning that they will be processing requests and sending responses.
