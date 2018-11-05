@@ -168,10 +168,10 @@ The Version should be the version that is associated with the JIRA ticket. The t
 Typically the QA lead or someone designated will create the test cycles for each sprint and they will only need to be linked. If there are no test cycles to select then these are the fields you must enter to create a new test cycle. The following are two examples of test cycles created for a sprint.
 The Test Cycles must have the Version, Name, Description, and Environment because these are used in queries for reporting and tracking Test Metrics.
 
-Version | Name | Description | Build (not required) | Environment | From (not required) | To (not required)
---- | --- | --- | --- | --- | --- | ---
-3.2 | Test Cycle for Sprint 31 | Test Cycle for Sprint 31 | | test.openlmis.org  | 2017-07-19 | 2017-08-02
-3.2 | Test Cycle for Sprint 31 | Regression testing for Sprint 31  | | test.openlmis.org  | 2017-07-19 | 2017-08-02
+Version |           Name           |             Description             | Build (not required) |    Environment    | From (not required) | To (not required)
+------- | ------------------------ | ----------------------------------- | -------------------- | ----------------- | --------------------| -----------------
+3.2     | Test Cycle for Sprint 31 | Test Cycle for Sprint 31         |                      | test.openlmis.org | 2017-07-19          | 2017-08-02
+3.2     | Test Cycle for Sprint 31 | Regression testing for Sprint 31 |                      | test.openlmis.org | 2017-07-19          | 2017-08-02
 
 **Step 3: Execute tests within a Test Cycle**
 
@@ -574,7 +574,7 @@ These are not contract tests, which are more oriented towards business requireme
 * Where: Reside inside separate repository:  [openlmis-contract-tests](http://github.com/openlmis/openlmis-contract-tests).
 * Why:  Tests multiple services working together, testing contracts that a Service both provides as well as the requirements a dependant has.
 
-**Ideally, single scenario checks single endpoint. In specific cases, like requisition workflow, when it's impossible to check something without using other endpoints, it can be omitted.**
+**Ideally, single scenario checks single endpoint. In specific cases, like requisition workflow, when it's impossible to check something without using other endpoints, it can omitted.**
 
 The main difference between contract and integration tests:
 In contract tests, all the services under test are *real*, meaning that they will be processing requests and sending responses.
