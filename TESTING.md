@@ -92,7 +92,7 @@ In JIRA, click on Create. Select the Project, in this case the project is OpenLM
 The Summary, Components, and Description can be copied from the ticket to keep consistency, or help in rewriting the test case in the next steps. Note that every valid test case has to have the To Do status and Minor priority.
 The test case's name should be in accordance with the following convention: "Screen: Tested feature" (e.g. Users: Searching for users). After entering all data, click Create and a JIRA notification will pop up with the Test Case number.
 
-![Create Test Case](https://github.com/OpenLMIS/openlmis-template-service/blob/master/src/main/resources/static/template/images/create-test-case.png)
+![Create Test Case](https://raw.githubusercontent.com/OpenLMIS/openlmis-template-service/master/src/main/resources/static/template/images/create-test-case.png)
 
 Click on the test case number and it will bring you to this page to add the test steps and make required associations. The Labels help when querying for test cases to add to regression test cycles.
 For the example below, a suggested label would be Stock Management or Vaccines. When the tested ticket concerns UI changes and contains a mock-up, the mock-up should be added as an attachment to the ticket with the test case.
