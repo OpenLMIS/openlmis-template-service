@@ -587,7 +587,7 @@ Test doubles, mocking, stubbing should not be a part of contract tests.
 
 Contract tests should follow the convention below:
 * the scenario should be like _<user_name> should be able to <action_description>_
-* the feature's should consist of infinitive + noun in plural e.g. _Adding reasons_ for testing reason adding screen/endpoint.
+* the feature's should consist of infinitive + noun in plural e.g. _Creating facility type approved products_ for testing FTAP creating screen/endpoint.
 
 ```
 @FacilityTypeApprovedProductTests
