@@ -139,6 +139,8 @@ If it proves impossible to contain all workflows in one test case, the happy pat
 One also has to write separate test cases if the happy path and the edge case(s) contain contradictory steps or pre-conditions;
 e.g. the former concerns approving a newly-created requisition and the latter e.g. approving an already-existing old one, not meeting the currently-tested, new requirement.
 
+Finally, one needs to remember that also the expected results have to be specific but not too specific - for instance, it is not recommended to provide exact text of messages and notifications. As an example of this, one shouldn't write e.g.: "The <<Requisition has been deleted!>> notification should appear". Instead, one should write: "The notification that the requisition had been deleted should appear".
+
 ### Updating a Test Case for a Bug
 
 When one has to test a bug, one needs to browse through the existing test cases to check whether one that covers the actions performed when testing the bug fix already exists. In virtually all cases, this will be the case. If it is so, one needs to update the test case if necessary and link it to the ticket with the bug.
