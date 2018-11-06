@@ -585,6 +585,24 @@ The main difference between contract and integration tests:
 In contract tests, all the services under test are *real*, meaning that they will be processing requests and sending responses.
 Test doubles, mocking, stubbing should not be a part of contract tests.
 
+Contract tests should follow the convention below:
+* the scenario should be like _<user_name> should be able to <action_description>_
+* the feature's should consist of infinitive + noun in plural e.g. _Adding reasons_ for testing reason adding screen/endpoint.
+
+```
+@FacilityTypeApprovedProductTests
+Feature: Creating facility type approved products
+
+  Scenario: Administrator should be able to create FTAP
+    Given I have logged in as admin
+
+    When I try to create a FTAP:
+    | orderable.id                            | program.id                              | facilityType.id                         | maxPeriodsOfStock | minPeriodsOfStock | emergencyOrderPoint |
+    | 2400e410-b8dd-4954-b1c0-80d8a8e785fc    | dce17f2e-af3e-40ad-8e00-3496adef44c3    | ac1d268b-ce10-455f-bf87-9c667da8f060    | 3                 | 1                 | 1                   |
+    Then I should get response with created FTAP's id
+    And I logout
+```
+
 Refer to [this doc](https://github.com/OpenLMIS/openlmis-contract-tests/blob/master/README.md) for examples of how to write contract tests.
 
 ### End-to-End Tests <a name="e2e"></a>
@@ -597,9 +615,34 @@ Refer to [this doc](https://github.com/OpenLMIS/openlmis-contract-tests/blob/mas
 
 **Single feature should cover only one (related) UI screen.**
 
-Both contract and end-to-end tests should follow the same convention:
-* scenarios should be like _<user_name> should be able to <action_description>_
-* features should be like e.g. _Adding reasons_ in reason adding test.
+End-to-end tests should follow the convention below:
+* the scenario should be like _<user_name> should be able to <action_description>_
+* the feature's name should consist of infinitive + noun in plural e.g. _Adding reasons_ for testing reason adding screen/endpoint.
+
+```
+Feature: Adding reasons
+
+    Background:
+        Given I have logged with username "administrator" and password "password"
+        Given I have navigated to the reason list page
+
+    Scenario: Administrator should be able to add new reason
+        When I click on the "Add Reason" button
+        Then I should be brought to the reason creation page
+
+        When I select "Family Planning" from the "Program" list
+        And I select "Warehouse" from the "Facility Type" list
+        And I click on the "Add" button
+        Then I should see assignment for "Family Planning" program and "Warehouse" facility type
+
+        When I enter "Functional Test Reason" as "Name"
+        And I select "Transfer" from the "Category" list
+        And I select "Debit" as "Type"
+        And I enter "adjustment" as "Tags"
+        And I click on the "Add New Reason" button
+        Then I should see a successful notification saying "Reason saved successfully"
+        And I should see a reason with "Functional Test Reason" name, "Transfer" category and "Debit" type inside the table
+```
 
 ## Testing services dependent on external APIs
 OpenLMIS is using WireMock for mocking web services. An example integration test can be found here:
