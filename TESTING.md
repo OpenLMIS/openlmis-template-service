@@ -557,7 +557,7 @@ The following test categories have been identified for use in OpenLMIS.  As illu
 * What: Test basic operation of a service to persistent storage or a service to another service.  When another service is required, a test-double should be used, not the actual service.
 * When: As explicitly asked for, these tests are typically slower and therefore need to be kept separate from build to not slow development.  Will be run in CI on every change.
 * Where: Reside inside a service, separated from other types of tests/code.
-* Why:  Ensures that the basic pathways to a service's external run-time dependancies work.  e.g. that a db schema supports the ORM, or a non-responsive service call is gracefully handled.
+* Why:  Ensures that the basic pathways to a service's external run-time dependencies work. e.g. that a db schema supports the ORM, or a non-responsive service call is gracefully handled.
 
 For testing controllers, they are divided up into unit and integration tests. The controller unit tests will be testing the logic in the controller, while the integration tests will be mostly testing serialization/deserialization (and therefore do not need to test all code paths). In both cases, the underlying services and repositories are mocked.
 
@@ -607,12 +607,17 @@ Feature: Creating facility type approved products
 
 Refer to [this doc](https://github.com/OpenLMIS/openlmis-contract-tests/blob/master/README.md) for examples of how to write contract tests.
 
+Contract tests should:
+* cover checking email templates (but appropriate patterns are required for email verification, no test present at the moment)
+* cover checking uploading files
+  * [ISA values upload](https://github.com/OpenLMIS/openlmis-contract-tests/blob/master/src/cucumber/resources/org/openlmis/contract_tests/referencedata_tests/IdealStockAmountTests.feature#L7)
+
 ### End-to-End Tests <a name="e2e"></a>
 
 * Who: QA / developer with input from BA.
 * What: Typical/core business scenarios.
 * When: Ran in CI.
-* Where: Resides in seperate repository.
+* Where: Resides in separate repository.
 * Why: Ensures all the pieces are working together to carry-out a business scenario.  Helps ensure end-users can achieve their goals.
 
 **Single feature should cover only one (related) UI screen.**
@@ -645,6 +650,50 @@ Feature: Adding reasons
         Then I should see a successful notification saying "Reason saved successfully"
         And I should see a reason with "Functional Test Reason" name, "Transfer" category and "Debit" type inside the table
 ```
+
+E2E tests should:
+* cover workflow's happy paths
+  * basic requisition workflow
+  * basic ordering workflow
+  * sending stock events
+* not cover edge cases which require multiple steps from different microservices
+  * sending data from requisition to stockmanagement service
+* cover checking functionalities depending on user’s rights
+  * presence of elements in navigation bar
+  * visibility of action buttons
+  * editable fields in forms
+* check UI differences depending on choosing given options
+  * how requisition product grid screen behaves for emergency and regular requisitions
+  * differences between stock based and non-stock based requisitions
+  * differences between working with home and supervised facility
+* not check any specific UI details
+  * order of the columns in table
+  * exact label naming
+  * the exact placement of inputs
+  * color of elements if it is not significant
+
+## Manual tests
+
+Manual tests should:
+* cover edge cases rather than happy paths
+  * drag and drop mechanism (i.e. [Changing order of requisition columns](https://openlmis.atlassian.net/browse/OLMIS-1951))
+  * disabling/enabling requisition columns
+  * blank mandatory fields
+  * deactivation of different entities (programs, facilities etc.)
+  * running out of periods for requisition workflow
+* verify email messages are sent (until there are appropriate automated patterns for this)
+  * [Mails for storeroom manager after requisition status changes](https://openlmis.atlassian.net/browse/OLMIS-2824)
+* cover checking reports (until we have automated pattern)
+  * [Printing Requisition](https://openlmis.atlassian.net/browse/OLMIS-2271)
+  * [Stock Based Requisition reports](https://openlmis.atlassian.net/browse/OLMIS-4826)
+* not check whether modal or notification contain exact text instead but rather verify if it gives a user all important information and context
+  * "An error message implying the orderable was not found is displayed to the user" instead of checking exact message (The following error message is displayed to the user: "Orderable with code XYZ was not found")
+  * "A question asking about changing requisition status to Submitted" instead of checking exact message (The following error message is displayed to the user: "Are you sure you want to submit this R&R?")
+* not check any UI specific details
+  * order of the columns in table
+  * exact label naming
+  * the exact placement of inputs
+  * color of elements if it is not significant (not notifications, buttons or validations)
 
 ## Testing services dependent on external APIs
 OpenLMIS is using WireMock for mocking web services. An example integration test can be found here:
