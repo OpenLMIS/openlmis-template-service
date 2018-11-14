@@ -608,6 +608,11 @@ Feature: Creating facility type approved products
 Refer to [this doc](https://github.com/OpenLMIS/openlmis-contract-tests/blob/master/README.md) for examples of how to write contract tests.
 
 Contract tests should:
+* cover contract between services
+  * reasons from stock management provided for requisition service [Stock reasons contract tests](https://github.com/OpenLMIS/openlmis-contract-tests/blob/master/src/cucumber/resources/org/openlmis/contract_tests/stockmanagement_tests/StockReasonsTests.feature)
+  * converting requisitions to order [Fulfillment contract tests](https://github.com/OpenLMIS/openlmis-contract-tests/blob/master/src/cucumber/resources/org/openlmis/contract_tests/fulfillment_tests/FulfillmentTests.feature)
+  * dependencies between user resources in different services [Users contract tests](https://github.com/OpenLMIS/openlmis-contract-tests/blob/master/src/cucumber/resources/org/openlmis/contract_tests/referencedata_tests/UserTests.feature) [Contact details contract tests](https://github.com/OpenLMIS/openlmis-contract-tests/blob/master/src/cucumber/resources/org/openlmis/contract_tests/notification_tests/VerificationTests.feature)
+  * information provided to UI covered by contract tests
 * cover checking email templates (but appropriate patterns are required for email verification, no test present at the moment)
 * cover checking uploading files
   * [ISA values upload](https://github.com/OpenLMIS/openlmis-contract-tests/blob/master/src/cucumber/resources/org/openlmis/contract_tests/referencedata_tests/IdealStockAmountTests.feature#L7)
@@ -676,8 +681,8 @@ E2E tests should:
 
 Manual tests should:
 * cover edge cases rather than happy paths
-  * drag and drop mechanism (i.e. [Changing order of requisition columns](https://openlmis.atlassian.net/browse/OLMIS-1951))
-  * disabling/enabling requisition columns
+  * changing column order in requisition template should not affect existing requisitions (i.e. [Changing order of requisition columns](https://openlmis.atlassian.net/browse/OLMIS-1951))
+  * disabling/enabling requisition columns should not affect existing requisitions
   * blank mandatory fields
   * deactivation of different entities (programs, facilities etc.)
   * running out of periods for requisition workflow
