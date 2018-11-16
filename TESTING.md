@@ -50,6 +50,31 @@ In other words, OpenLMIS developers and team members may be using Mac and Linux 
 
 We have asked for different OpenLMIS implementations to share their google analytics to better inform how we prioritize and invest in browser and device support going forward.
 
+#### Strategy for testing UI specific elements
+
+* Filter buttons should be checked by E2E tests (no need to test alignment in a separate ticket).
+* Sort buttons should be checked by E2E tests (no need to test alignment in a separate ticket).
+* We should include checking some component, like the filter button, in the E2E test for the specific screen rather than create a specific manual test case for all occurrences.
+* Checking whether the given screen is accessible for a user with or without proper rights should be checked by E2E tests.
+* Placing UI elements should not be tested.
+* Resizing input boxes should be checked by a E2E test.
+* The colors of the rows in the tables should not be tested.
+* Redirecting to the login form after token expiration should be checked by E2E tests.
+* Product grid/stockmanagement validations should be checked by E2E tests.
+* Toggles should be checked by a E2E test.
+* There is no need to have a test case for the background of the application.
+* The order of the items in the navigation bar should be checked by a E2E test.
+* Offline actions should be checked by E2E tests.
+* Filter button’s color should be checked by a E2E test.
+* The pagination component should not be checked separately because it is checked in the other E2E tests (i.e. submitting requisition).
+* The order of facilities within drop-downs has a unit test, so there is no need to check it manually.
+* Auto-save should be checked by a E2E test.
+* Table horizontal scrollbar should be tested manually.
+* Sticky columns should be tested manually.
+* Sticky headers should be tested manually.
+* Breadcrumbs should be tested manually.
+* Datepickers should be tested manually.
+
 ### Supported Devices
 
 OpenLMIS 3.0 is only officially supporting desktop browsers with use of a pointer (mouse, trackpad, etc). The UI will not necessarily support touch interfaces without a mouse pointer, such as iPad or other tablets. For now, we do not need to conduct testing or file bugs for tablets, smart watches, or other devices.
@@ -699,31 +724,6 @@ Manual tests should:
   * exact label naming
   * the exact placement of inputs
   * color of elements if it is not significant (not notifications, buttons or validations)
-  
-## UI Testing
-
-* Filter buttons should be checked by E2E tests (no need to test alignment in a separate ticket).
-* Sort buttons should be checked by E2E tests (no need to test alignment in a separate ticket).
-* We should include checking some component, like the filter button, in the E2E test for the specific screen rather than create a specific manual test case for all occurrences.
-* Checking whether the given screen is accessible for a user with or without proper rights should be checked by E2E tests.
-* Placing UI elements should not be tested.
-* Resizing input boxes should be checked by a E2E test.
-* The colors of the rows in the tables should not be tested.
-* Redirecting to the login form after token expiration should be checked by E2E tests.
-* Product grid/stockmanagement validations should be checked by E2E tests.
-* Toggles should be checked by a E2E test.
-* There is no need to have a test case for the background of the application.
-* The order of the items in the navigation bar should be checked by a E2E test.
-* Offline actions should be checked by E2E tests.
-* Filter button’s color should be checked by a E2E test.
-* The pagination component should not be checked separately because it is checked in the other E2E tests (i.e. submitting requisition).
-* The order of facilities within drop-downs has a unit test, so there is no need to check it manually.
-* Auto-save should be checked by a E2E test.
-* Table horizontal scrollbar should be tested manually.
-* Sticky columns should be tested manually.
-* Sticky headers should be tested manually.
-* Breadcrumbs should be tested manually.
-* Datepickers should be tested manually.
 
 ## Testing services dependent on external APIs
 OpenLMIS is using WireMock for mocking web services. An example integration test can be found here:
