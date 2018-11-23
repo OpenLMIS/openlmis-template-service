@@ -299,55 +299,21 @@ When bugs are found during regression testing, they are labeled with the “Regr
 
 Sometimes during testing, one might come across blocked tickets. This is a situation in which, because of external faults (not related to the content of the task), the tester cannot test a particular ticket. In such a case, one has to change the ticket’s status to “In Progress” and assign it to the developer who implemented the ticket. It is important to describe the problem accurately in a comment.
 
-## Testing Environments
+## Test Environments
 
-Final testing of all features should happen on the [UAT server](https://uat.openlmis.org/). Some testing may also happen on the [test server](https://test.openlmis.org/), in case the UAT server is temporarily unavailable.
-The UAT server's rebuilding is triggered manually. In order to rebuild it, and thus perform the test on the latest changes, one has to log into [Jenkins](http://build.openlmis.org/) and schedule a build of the OpenLMIS-3.x-deploy-to-uat job.
-One needs to do it when no other jobs are in the build queue, so to to ensure that the server contains the latest changes. After the build is successful, one has to wait for a several minutes and then, it is possible to start testing.
-Several minutes before scheduling the re-deploy to UAT, one has to inform others on the #qa Slack channel that one intends to do so because others might be using the server and after the re-deploy, all data they entered will be wiped.
-The test server always contains the latest changes but its use is not normally recommended, as it is very frequently rebuilt (after the rebuilding, all data entered during testing are erased) because it is used for development work.
-In order to be sure that one contains the most-recent changes, one has to log into the application and look at the upper-right corner, where information on when the software had last been updated is visible.
-If only the e.g. Software last updated on 17/05/2018 text is visible, the software is up to date. As soon as it becomes outdated, information that there are updates available appear next to the text concerning the date of the last update.
+Final tests of all features should be conducted on the [UAT server](https://uat.openlmis.org/). Some testing may also happen on the [test server](https://test.openlmis.org/), in case the UAT server is temporarily unavailable. The UAT server’s rebuilding is triggered manually. In order to rebuild it, and thus perform the test on the latest changes, one has to log into [Jenkins](http://build.openlmis.org/) and schedule a build of the OpenLMIS-3.x-deploy-to-uat job. One needs to do it when no other jobs are in the build queue, so to to ensure that the server contains the latest changes. After the build is successful, one has to wait for several minutes and then, it is possible to start testing. The test server always contains the latest changes but its use is not normally recommended, as it is very frequently rebuilt (after the rebuilding, all data entered during testing are erased) because it is used for development work. In order to be sure that the server contains the most-recent changes, one has to log into the application and look at the upper-right corner, where information on when the software had last been updated is visible. If only the e.g. “Software last updated on XX/XX/XXXX” text is visible, the software is up to date. As soon as it becomes outdated, information that there are updates available appears next to the text concerning the date of the last update.
 
 ## Updating Test Data
 
-Before a big regression test, QA must update the test users and scenarios to support each of the features that are part of the big regression test.
-It is also important to note that a few test cases entail changing the permissions of demo data users. Before executing such a test case, one needs to inform others on the #qa Slack channel that one is going to change these permissions.
-Having executed the test case, one has to restore the user's permissions to the default ones manually or by scheduling a re-deploy to UAT. In both cases, one also has to inform users on #qa that one is changing the user's permissions back to normal.
-In general, one should avoid changing the permissions of demo data users if it can be avoided. Instead, one can create a new user and assign suitable rights to them.
+Before big regression testing, the tester has to update the test users and scenarios to support each of the features that are part of the big regression testing. It is also important to note that several test cases entail changing the permissions of demo-data users. Before executing such a test case, one needs to inform others on the #qa Slack channel that one is going to change these permissions. Having executed the test case, one has to restore the user’s permissions to the default ones manually or by scheduling a re-deploy to UAT. In both cases, one has to inform users on #qa that one is changing the user’s permissions back to normal. In general, one should avoid changing the permissions of demo-data users if it can be avoided. Instead, one can create a new user and assign suitable rights to them.
 
 ## Translation Testing
 
-While OpenLMIS 3.0 supports a robust multi-lingual tool set, English is the only language officially provided with the product itself. The translation tools will allow subsequent implementations to easily provide a translation for Portuguese, French, Spanish, etc.
-QA testing activities should verify that message keys are being used everywhere in the UI and in error messages so that every string can be translated, with no hard coding.
-The v3 UI is so similar to v2 that QA staff could also apply the Portuguese translation strings from v2 to confirm that translations apply everywhere in v3.
-
-## Tools
-
-* Cucumber and InteliJ - for contract tests
-* Browsers - Chrome 52+ (test on Chrome 52 and Chrome latest) and Firefox 48+ (test on Firefox 48 and Firefox latest)
-* Rest Clients - Postman and REST Client
-* JIRA - issue, task, bug tracking
-* Zephyr - test case and test cycle creation
-* Confluence - test case templates, testing standards
-* Reference Distribution
-* Docker 1.11+
-* Docker Compose 1.6+
-
-## Requirements Traceability
-
-* Define how to update test cases to ensure requirements traceability (future QA weekly meeting topic)
-* Define testing metrics and review process for showcases (future QA weekly meeting topic)
-
-## Product Testing
-
-Product testing is scheduled for each sprint and includes testing for new features or other ad hoc test scenarios. This testing will be tracked using Test Sessions in Zephyr.
+While OpenLMIS 3.0 supports a robust multi-lingual tool set, English is the only language officially provided with the product itself. The translation tools will allow subsequent implementations to easily provide a translation to Portuguese, French, Spanish, etc. Test activities should verify that message keys are being used everywhere on the UI and in error messages so that every string can be translated, with no hard coding. The v3 UI is so similar to v2 that testers could also apply the Portuguese translation strings from v2 to confirm that translations apply everywhere in v3.
 
 ## Performance Testing
 
-Apart from the usual manual testing, each ticket with the NeedsPerformanceCheck label has to undergo performance testing. The instructions on how to perform this kind of tests are available in the How do I record more test runs?
-and Release testing for 3.3 sections on the [Performance Metrics](https://openlmis.atlassian.net/wiki/spaces/OP/pages/116949318/Performance+Metrics) page, only one has to use the UAT server and the credentials of users available at that instance.
-One has to pay attention especially to the CPU throttling (**6x slowdown**) and Network (**Slow 3G**) settings, as they are vital in this kind of testing and render the results of different users comparable.
+Apart from the usual manual testing, each ticket with the “NeedsPerformanceCheck” label has to undergo performance testing. The instructions on how to perform this kind of tests are available in the “How do I record more test runs?” and “Release testing for 3.3” sections on the ["Performance Metrics"](https://openlmis.atlassian.net/wiki/spaces/OP/pages/116949318/Performance+Metrics) page, only one has to use the UAT server and the credentials of users available at that instance. One has to pay attention especially to the CPU throttling (**6x slowdown**) and Network (**Slow 3G**) settings, as they are vital in this kind of testing and render the results of different users comparable.
 
 ## Types of Automated Tests
 The following test categories have been identified for use in OpenLMIS.  As illustrated in this great [slide deck](http://martinfowler.com/articles/microservice-testing/), we expect the effort/number of tests in each category to reflect the [test pyramid](http://martinfowler.com/articles/microservice-testing/#conclusion-test-pyramid):
@@ -685,6 +651,15 @@ For instructions on how to create them please refer to http://wiremock.org/recor
 
 ## Testing Tools
 
+* Cucumber and InteliJ - for contract tests
+* Browsers - Chrome 52+ (test on Chrome 52 and Chrome latest) and Firefox 48+ (test on Firefox 48 and Firefox latest)
+* Rest Clients - Postman and REST Client
+* JIRA - issue, task, bug tracking
+* Zephyr - test case and test cycle creation
+* Confluence - test case templates, testing standards
+* Reference Distribution
+* Docker 1.11+
+* Docker Compose 1.6+
 * spring-boot-starter-test
   * Spring Boot Test
   * JUnit
