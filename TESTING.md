@@ -17,7 +17,7 @@ The document describes the following issues:
 * Automated tests;
 * Tools: What tools are used for testing OpenLMIS.
 
-## Manual tests
+## Manual Tests
 
 Manual tests should:
 * Cover edge cases rather than happy paths:
@@ -73,30 +73,30 @@ In other words, OpenLMIS developers and team members may be using Mac and Linux 
 
 We asked different OpenLMIS implementations to share their Google analytics so that we can prioritize browser and device support in the future.
 
-#### Strategy for testing UI specific elements
+#### Strategy for Testing UI-specific Elements
 
-* Filter buttons should be checked by E2E tests (no need to test alignment in a separate ticket).
-* Sort buttons should be checked by E2E tests (no need to test alignment in a separate ticket).
-* We should include checking some component, like the filter button, in the E2E test for the specific screen rather than create a specific manual test case for all occurrences.
-* Checking whether the given screen is accessible for a user with or without proper rights should be checked by E2E tests.
-* Placing UI elements should not be tested.
-* Resizing input boxes should be checked by a E2E test.
-* The colors of the rows in the tables should not be tested.
-* Redirecting to the login form after token expiration should be checked by E2E tests.
-* Product grid/stockmanagement validations should be checked by E2E tests.
-* Toggles should be checked by a E2E test.
-* There is no need to have a test case for the background of the application.
-* The order of the items in the navigation bar should be checked by a E2E test.
-* Offline actions should be checked by E2E tests.
-* Filter button’s color should be checked by a E2E test.
-* The pagination component should not be checked separately because it is checked in the other E2E tests (i.e. submitting requisition).
-* The order of facilities within drop-downs has a unit test, so there is no need to check it manually.
-* Auto-save should be checked by a E2E test.
-* Table horizontal scrollbar should be tested manually.
-* Sticky columns should be tested manually.
-* Sticky headers should be tested manually.
-* Breadcrumbs should be tested manually.
-* Datepickers should be tested manually.
+* The filter buttons should be checked by E2E tests (no need to test alignment in a separate ticket);
+* The sort buttons should be checked by E2E tests (no need to test alignment in a separate ticket);
+* We should include checking some component, like the filter button, in the E2E test for a specific screen, rather than create a specific manual test case for all occurrences;
+* Checking whether a given screen is accessible for a user with or without proper rights should be checked by E2E tests;
+* The situation of UI elements should not be tested;
+* Resizing input boxes should be checked by an E2E test;
+* Colors of rows in tables should not be tested;
+* Redirecting to the login form after token expiration should be checked by E2E tests;
+* The product grid/stockmanagement validations should be checked by E2E tests;
+* Toggles should be checked by an E2E test;
+* There is no need to have a test case for the background of the application;
+* The order of the items on the navigation bar should be checked by an E2E test;
+* Offline actions should be checked by E2E tests;
+* The filter button’s color should be checked by an E2E test;
+* The pagination component should not be checked separately because it is checked in other E2E tests (e.g. one concerning requisition submission);
+* The order of facilities within drop-downs has a unit test, so there is no need to check it manually;
+* The auto-save should be checked by an E2E test;
+* The table horizontal scrollbar should be tested manually;
+* The sticky columns should be tested manually;
+* The sticky headers should be tested manually;
+* The breadcrumbs should be tested manually;
+* The datepickers should be tested manually.
 
 ### Supported Devices
 
