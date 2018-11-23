@@ -643,7 +643,7 @@ E2E tests should:
 ## Testing Services Dependent on External APIs
 OpenLMIS uses WireMock to mock web services. An example integration test can be found [here](https://github.com/OpenLMIS/openlmis-example/blob/master/src/test/java/org/openlmis/example/WeatherServiceTest.java).
 
-The stub mappings which are served by the WireMock’s HTTP server are placed under the _src/test/resources/mappings_ and _src/test/resources/__files_
+The stub mappings which are served by the WireMock’s HTTP server are available under _src/test/resources/mappings_ and  _src/test/resources/files_.
 For instructions on how to create them, please refer to http://wiremock.org/record-playback.html.
 
 ## Testing Tools
