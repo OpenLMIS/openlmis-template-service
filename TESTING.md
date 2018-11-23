@@ -120,38 +120,31 @@ Developers (all teams):
 
 QA meetings are scheduled to discuss testing-related topics, and the daily communication is held on the #QA slack channel for OpenLMIS. The meeting notes are maintained on the [QA Weekly meeting notes](https://openlmis.atlassian.net/wiki/spaces/OP/pages/114170699/QA+Weekly+meeting+notes) page.
 
-## QA Testing Workflow within a Sprint
+## Testing Workflow within a Sprint
 
-The Testing process in OpenLMIS project is divided into three areas: manual testing, automatic testing and regression. This section covers manual and regression testing using Zephyr test cases and test cycles. 
+The testing process in the OpenLMIS project is divided into three areas: Manual testing, automated testing and regression testing. This section covers manual and regression testing performed with the use of Zephyr test cases and test cycles.
 
 **Step 1: Test Cases**
 
-When a new feature ticket is assigned to a sprint, the QA lead or tester must create a test case and link the new test case to the Jira ticket. This can happen in parallel to the development of the ticket.
-Test Cases must be created for each JIRA ticket that is assigned to a sprint that has to be tested manually - one mustn't create test cases for API changes, as contract tests are to be used for this kind of changes.
-It's advised to create test cases before a sprint begins, but this can also be done once a sprint has started. Note that sometimes a given feature might be interrelated with the already existing ones, which increases the risk of regression.
-In such situations, the developer working on the ticket should recommend the test cases that should be run in parallel to the testing of a given feature.
-If this proves impossible, they should inform the tester on the possible influence of the changes to the other parts of the system.
+When a new feature ticket that does not concern the API is assigned to a sprint, the QA lead or the tester has to create a test case and link it to the Jira ticket. This can happen in parallel to the development of the ticket. Test cases have to be created for each JIRA ticket that is assigned to a sprint and has to be tested manually; one mustn’t create test cases for API changes, as contract tests are used for their verification. It’s advised to create test cases before a sprint begins, but this can also be done once a sprint has started. Note that sometimes a given feature might be interrelated with the already-existing ones, which increases the risk of regression. In such situations, the developer working on the ticket should recommend the test cases that should be run in parallel to the testing of a given feature. If this proves impossible, they should inform the tester on the possible influence of the changes on other parts of the system.
 
-In JIRA, click on Create. Select the Project, in this case the project is OpenLMIS General. Then select the Issue Type as Test.
-The Summary, Components, and Description can be copied from the ticket to keep consistency, or help in rewriting the test case in the next steps. Note that every valid test case has to have the To Do status and Minor priority.
-The test case's name should be in accordance with the following convention: "Screen: Tested feature" (e.g. Users: Searching for users). After entering all data, click Create and a JIRA notification will pop up with the Test Case number.
+Each new test case has to be reviewed (i.e. its content should be assessed; it should also be determined whether it concerns a feature that is vital to the system – if so, it has to be assigned the “CoreRegression” label), and thus its status should be “QA”. After the review, the test case’s status should be changed to “To Do”. Every 2 or 3 sprints, the test cases concerning the features that had been impacted by the most-recent changes should be reviewed, so as to ensure that they are still valid and that the test steps they include are not outdated.
+
+In JIRA, click on “Create”. Select the project, in this case the project is “OpenLMIS General”. Then, select the “Issue Type” as Test. The “Summary”, “Components”, and “Description” can be copied from the ticket to keep consistency, or help in rewriting the test case in the next steps. Note that every valid test case has to have the “To Do” status and “Minor” priority. The test case’s name should be in accordance with the following convention: “Screen: Tested feature” (e.g. “Users: Searching for users”). After entering all data, click the “Create” button and a JIRA notification will pop up with the test case's number.
 
 ![Create Test Case](https://raw.githubusercontent.com/OpenLMIS/openlmis-template-service/master/src/main/resources/static/template/images/create-test-case.png)
 
-Click on the test case number and it will bring you to this page to add the test steps and make required associations. The Labels help when querying for test cases to add to regression test cycles.
-For the example below, a suggested label would be Stock Management or Vaccines. When the tested ticket concerns UI changes and contains a mock-up, the mock-up should be added as an attachment to the ticket with the test case.
+Click the test case's number, and it will bring you to the page enabling one to add the test steps and make required associations. Labels help when querying for test cases to add to regression test cycles. For the example below, a suggested label would be “Stock Management” or “Vaccines”. When the tested ticket concerns UI changes and contains a mock-up, the mock-up should be added as an attachment to the ticket with the test case.
 
-The Fix Version/s is an association that organizes the test cases. This is used to report test case execution in the Test Metrics Dashboard. If the Fix Version is not known at the time of creating the test, then select "Unscheduled".
-When the JIRA ticket is assigned to the sprint, the test case must be updated with the correct Fix Version or it will not appear in the Test Metrics Dashboard.
-The Test Steps provide a step by step guide to any tester on how to complete proper validation of the JIRA ticket. The steps should explain in enough detail to the tester: the actions to make, and a description of the outcome of those steps.
+The fix version/s is an association that organizes the test cases. This is used to report test case execution on the Test Metrics Dashboard. If the fix version is not known at the time of creating the test, select “Unscheduled”. When the JIRA ticket is assigned to a sprint, the test case must be updated with a correct fix version or it will not appear on the Test Metrics Dashboard. The test steps provide a step by step guide to any tester on how to complete proper validation of the JIRA ticket. The steps should explain in enough detail the actions to take, as well as the expected outcome of those steps.
 
 ![Entering steps in test case](https://raw.githubusercontent.com/OpenLMIS/openlmis-template-service/master/src/main/resources/static/template/images/entering-test-case-steps.png)
 
-Here is an example of some Test Steps:
+Here is an example of some test steps:
 
 ![Test steps example](https://raw.githubusercontent.com/OpenLMIS/openlmis-template-service/master/src/main/resources/static/template/images/test-steps.png)
 
-Once the test case has been created, it needs to be associated to the JIRA ticket, as the example below:
+Once the test case had been created, it needs to be associated with the JIRA ticket, as in the example below:
 
 ![Linked JIRA Ticket](https://raw.githubusercontent.com/OpenLMIS/openlmis-template-service/master/src/main/resources/static/template/images/linked-jira-ticket.png)
 
@@ -161,60 +154,42 @@ Once the test case has been created, it needs to be associated to the JIRA ticke
 
 ### Creating a Test Case for an Edge Case or Unhappy Path Scenario
 
-One needs to add several types of details in the test case description. These include pre-conditions, i.e. conditions that need to be met before the test case can be executed (e.g. At least one approved requisition needs to be created in the system; Logging into the application), the acceptance criteria from the ticket, a description of
-the scenario/workflow (i.e. whether it is a happy-path-one or an edge case, and what the workflow looks like; e.g. User X authorizes a requisition, User Y rejects it, User X authorizes the requisition again, etc.), and of the test case itself (e.g. Tests whether it is possible to edit an approved requisition; Tests whether authorized users
-can approve requisitions). In order to facilitate the execution of test cases concerning requisitions, one has to include the link to the [Requisition States and Workflow](https://openlmis.atlassian.net/wiki/spaces/OP/pages/113973375/Requisition+States+and+Workflow) diagram in the pre-conditions of such test cases.
+One needs to add several types of details in the test case’s description. These include pre-conditions, i.e. conditions that need to be met before the test case can be executed (e.g. “At least one approved requisition needs to be created in the system”; “Logging into the application”), the acceptance criteria from the ticket, a description of the scenario/workflow (i.e. whether it is a happy-path one or an edge case, and what the workflow looks like; e.g. “User X authorizes a requisition, User Y rejects it, User X authorizes the requisition again”, etc.), and of the test case itself (e.g. “Tests whether it is possible to edit an approved requisition”; “Tests whether authorized users can approve requisitions”). In order to facilitate the execution of test cases concerning requisitions, one has to include the link to the [Requisition States and Workflow](https://openlmis.atlassian.net/wiki/spaces/OP/pages/113973375/Requisition+States+and+Workflow) diagram in the pre-conditions of such test cases.
 
-If possible, one should not include too detailed data in the test case, e.g. user, facility or program names, as they may vary, depending on the implementation. So one should write e.g.: Choose any program (e.g. Family Planning); Knowing the credentials of any Stock Manager (e.g. srmanager2); Knowing the credentials of any user authorized
-to approve requisitions (e.g. administrator), instead of: Choose the Family Planning program or Knowing the password of srmanager2. Information on user names, roles and rights is available [here](https://github.com/OpenLMIS/openlmis-referencedata/tree/master/src/main/resources/db/demo-data#roles-users-and-rights).
-Providing example test data can be especially helpful for users who are not very familiar with the system. One also has to remember to include the test data that are indispensable for the execution of the test case in the "Test Data" column for a given test step. In principle, all data that are necessary to execute the test case
-should be included in it (e.g. mock-ups) - one should write the test case in such a way that it's not necessary to go to the tested ticket in order to test it. 
+If possible, one should not include too detailed data in the test case, e.g. user, facility or program names, as they may vary, depending on the implementation. So one should write e.g.: “Choose any program (e.g. Family Planning)”; “Knowing the credentials of any Stock Manager (e.g. srmanager2)”; “Knowing the credentials of any user authorized to approve requisitions (e.g. administrator)”, instead of: “Choose the Family Planning program” or “Knowing the password of srmanager2”. Information on user names, roles and rights is available [here](https://github.com/OpenLMIS/openlmis-referencedata/tree/master/src/main/resources/db/demo-data#roles-users-and-rights).
+Providing example test data can be especially helpful for users who are not very familiar with the system. One also has to remember to include the test data that are indispensable for the execution of the test case in the “Test Data” column for a given step. In principle, all data that are necessary to execute the test case should be included in it (e.g. mock-ups): One should write the test case in such a way that it’s not necessary to go to the tested ticket in order to test it.
 
-Ideally, a test case should contain up to 40 steps at most. One can usually diminish their number by describing test actions in a more general manner, e.g.: Approve the requisition, instead of writing: Go to Requisitions > Approve, and describing the rest of the actions necessary for the achievement of the desired goal. Adding suitable pre-conditions,
-such as: Initiating, submitting and authorizing a requisition, instead of adding steps describing all of these actions in detail, also results in a shorter test case. Ideally, one should include all actions that are not verifying a given feature/bug fix in the pre-conditions. If it is not possible to keep the test case within the above-mentioned limit,
-one should consider creating more than one for a given ticket. Sometimes, splitting the testing of the ticket into more than one test case will prove impossible, though.
+Ideally, a test case should contain up to 40 steps at most. One can usually diminish their number by describing test actions in a more general manner, e.g.: “Approve the requisition”, instead of writing: “Go to Requisitions > Approve”, and describing the rest of the actions necessary for the achievement of the desired goal. Adding suitable pre-conditions, such as: “Initiating, submitting and authorizing a requisition”, instead of adding steps describing all of these actions in detail, also results in a shorter test case. Ideally, one should include all actions that are not verifying a given feature/bug fix in the pre-conditions. If it is not possible to keep the test case within the above-mentioned limit, one should consider creating more than one for a given ticket. Sometimes, splitting the testing of the ticket into more than one test case will prove impossible, though.
 
-If this won’t result in a too long test case, one should include both the test steps describing positive testing (happy path scenario) and those concerning negative testing (edge case/unhappy path scenario) in one test case. A happy path scenario or positive testing consists in using a given feature in the default, most usual way,
-e.g. when there is a form with required and optional fields, one can first complete all of them or only the required ones and check what happens when one tries to save it. An edge case or negative testing will consist, in this example, in checking what happens when trying to save the form when one or more of the required fields are blank.
-It is advisable to test the happy path first and then, the edge cases, as the happy path is the most likely scenario and will be most frequently followed by users. Edge cases are the less usual and, frequently, not obvious scenarios, which are not likely to occur often but still need to be tested
-in order to prevent failures in the application from happening. They are taken into account because of software complexity (many possible variants of its utilization and thus situations that might occur), and because users, like all people, vary and can make use of the application in different ways.
+If this won’t result in a too long test case, one should include both the test steps describing positive testing (happy path scenario) and those concerning negative testing (edge case/unhappy path scenario) in one test case. A happy path scenario or positive testing consists in using a given feature in the default, most usual way, e.g. when there is a form with required and optional fields, one can first complete all of them or only the required ones and check what happens when one tries to submit it. An edge case or negative testing will consist, in this example, in checking what happens when trying to save the form when one or more of the required fields are blank. It is advisable to test the happy path first and then, the edge cases, as the happy path is the most likely scenario and will be most-frequently followed by users. Edge cases are the less usual and, frequently, not obvious scenarios, which are not likely to occur often but still need to be tested in order to prevent failures in the application from happening. They are taken into account because of software complexity (many possible variants of its utilization and thus situations that might occur), and because users, like all people, vary and can make use of the application in different ways.
 
-If it proves impossible to contain all workflows in one test case, the happy path and the edge case(s) have to be described in separate ones, e.g. there should be one test case describing the testing of the happy path and one for each edge case.
-One also has to write separate test cases if the happy path and the edge case(s) contain contradictory steps or pre-conditions;
-e.g. the former concerns approving a newly-created requisition and the latter e.g. approving an already-existing old one, not meeting the currently-tested, new requirement.
+If it proves impossible to contain all workflows in one test case, the happy path and the edge case(s) have to be described in separate ones, e.g. there should be one test case describing the testing of the happy path and one for each edge case. One also has to write separate test cases if the happy path and the edge case(s) contain contradictory steps or pre-conditions; e.g. the former concerns approving a newly-created requisition and the latter e.g. approving an already-existing old one, not meeting the currently-tested, new requirement.
 
-Finally, one needs to remember that also the expected results have to be specific but not too specific - for instance, it is not recommended to provide exact text of messages and notifications. As an example of this, one shouldn't write e.g.: "The <<Requisition has been deleted!>> notification should appear". Instead, one should write: "The notification that the requisition had been deleted should appear".
+Finally, one needs to remember that also the expected results have to be specific but not too specific: For instance, it is not recommended to provide exact text of messages and notifications. As an example of this, one shouldn’t write e.g.: “The <<Requisition has been deleted!>> notification should appear”. Instead, one should write: “The notification that the requisition had been deleted should appear”.
 
 ### Updating a Test Case for a Bug
 
-When one has to test a bug, one needs to browse through the existing test cases to check whether one that covers the actions performed when testing the bug fix already exists. In virtually all cases, this will be the case. If it is so, one needs to update the test case if necessary and link it to the ticket with the bug.
-Writing new test cases for bugs is not recommended and has to be avoided. Some bugs are found during the execution of already-existing test cases. In such a situation, the test case will already be linked to the ticket with the bug. One then needs to review it, and if there is a need for it, update it.
-In most cases, this will not be necessary. Note that sometimes, the bug may in fact not be related to the test case during the execution of which it had been discovered, or it might occur by the end of a given test case, and the preceding steps might not be necessary in its reproduction.
-In both of these situations, one needs to find the test case that is most likely to cover the feature that the bug concerns and update it accordingly. One also has to keep in mind that test cases have to support and test the functionality, as well as provide a way to ensure that the bug has been fixed.
+When one has to test a bug, one needs to browse through the existing test cases to check whether one that covers the actions performed when testing the bug fix already exists. In virtually all cases, this will be the case. If it is so, one needs to update the test case if necessary and link it to the ticket with the bug. Writing new test cases for bugs is not recommended and has to be avoided. Some bugs are found during the execution of already-existing test cases. In such a situation, the test case will already be linked to the ticket with the bug. One then needs to review it, and if there is a need for it, update it. In most cases, this will not be necessary. Note that sometimes, the bug may in fact not be related to the test case during the execution of which it had been discovered, or it might occur by the end of a given test case, and the preceding steps might not be necessary in its reproduction. In both of these situations, one needs to find the test case that is most likely to cover the feature that the bug concerns and update it accordingly. One also has to keep in mind that test cases have to support and test the functionality, as well as provide a way to ensure that the bug had been fixed.
 
-If the bug wasn’t found during the execution of any test case, one still needs to check whether there is one containing steps enabling one to reproduce the bug. In order to do so, one needs to go to Tests > Search Tests in the top menu on Jira. Then, one is able to browse through all test cases in the project.
-Since there might be many of them, it is advisable to use a filter. The first option is to enter word(s) that in one’s opinion might occur in the test case in the Contains text input field and press Enter. The second one is clicking on More and choosing the criteria. Those that are most likely to prove helpful are Label and Component.
-One can also use already-existing global filters, which can be found by choosing the "Manage filters" option from the main Jira menu. Then, it'll be possible to search for and use the desired filter(s). They include e.g. Administration tests or Stock Management test cases, and might prove especially useful when searching for test cases.
+If the bug wasn’t found during the execution of any test case, one still needs to check whether there is one containing steps enabling one to reproduce the bug. In order to do so, one needs to go to “Tests > Search Tests” in the top menu on Jira. Then, one is able to browse through all test cases in the project. Since there might be many of them, it is advisable to use a filter. The first option is to enter word(s) that in one’s opinion might occur in the test case in the “Contains text” input field and press “Enter”. The second one is clicking on “More” and choosing the criteria. Those that are most likely to prove helpful are “Label” and “Component”. One can also use already-existing global filters, which can be found by choosing the “Manage filters” option from the main Jira menu. Then, it’ll be possible to search for and use the desired filter(s). They include e.g. “Administration tests” or “Stock Management test cases”, and might prove especially useful when searching for test cases.
 
 ### Exploratory Testing
 
-When one is familiarizing oneself with the project or when one already knows the application but there are no tickets currently to test, one can perform exploratory testing. This kind of testing is not related to any ticket. It consists in testing the application without any previous plan, exploring it, in a way.
-It can be also considered as a form of informal regression testing, as frequently, bugs resulting from regression are found during it. While performing this kind of tests, it is advisable to be as creative as possible – to experiment with testing techniques and test steps, and not to follow the happy path but the edge cases, or to try to find the latter.
+When one is familiarizing oneself with the project or when one already knows the application but there are no tickets currently to test, one can perform exploratory testing. This kind of testing is not related to any ticket. It consists in testing the application without any previous plan, exploring it, in a way. It can be also considered as a form of informal regression testing, as frequently, bugs resulting from regression are found during it. While performing this kind of tests, it is advisable to be as creative as possible – to experiment with testing techniques and test steps, and not to follow the happy path but the edge cases, or to try to find the latter.
 
-Exploratory testing in the UI will focus on testing edge cases and causing errors related to the following categories: Functional issues, UI to Server failure, Configuration issues, Visual inconsistencies, and Presentational issues.
+Exploratory testing in the UI will focus on testing edge cases and causing errors related to the following categories: Functional issues, UI to server failure, configuration issues, visual inconsistencies, and presentational issues.
 
 **Step 2: Test Cycles**
 
-Once the test case is written it needs to be associated to a Test Cycle. Click on the Add to Test Cycle button and it will bring you to this screen:
+Once the test case is written, it needs to be added to a test cycle. Click the “Add to Test Cycle(s)” button, and it will bring you to this screen:
 
 ![Adding Test Cycle](https://raw.githubusercontent.com/OpenLMIS/openlmis-template-service/master/src/main/resources/static/template/images/adding-test-cycle.png)
 
-The Version should be the version that is associated with the JIRA ticket. The test cycle will be either the current sprint test cycle, or the current feature regression test cycle. If you are executing the test, or know who will be executing the test you can assign it here.
+The version should be the version that is associated with the JIRA ticket. The test cycle will be either the current sprint test cycle, or the current feature regression test cycle. If you are executing the test or know who will be executing it, you can assign it here.
 
-Typically the QA lead or someone designated will create the test cycles for each sprint and they will only need to be linked. If there are no test cycles to select then these are the fields you must enter to create a new test cycle. The following are two examples of test cycles created for a sprint.
-The Test Cycles must have the Version, Name, Description, and Environment because these are used in queries for reporting and tracking Test Metrics.
+Typically, the QA lead or someone designated will create the test cycles for each sprint and they will only need to be linked. If there are no test cycles to select, then these are the fields you must enter to create a new test cycle. The following are two examples of test cycles created for a sprint. The test cycles must have the version, name, description, and environment because they are used in queries for reporting and tracking test metrics.
 
-i.e.
+e.g.
 ```
 * Version - 3.2
 * Name - Test Cycle for Sprint 31
@@ -224,30 +199,23 @@ i.e.
 * To (not required) - 2017-08-02
 ```
 
-**Step 3: Execute tests within a Test Cycle**
+**Step 3: Execute Tests within a Test Cycle**
 
-Once test cases have been assigned to a Test Cycle the execution of these tests is tracked in Zephyr.
-When a test is ready to execute, open the test case and navigate to the bottom of the page where the Test Execution links are shown. Click on the "E" button to begin execution.
+Once test cases have been assigned to a test cycle, their execution is tracked in Zephyr. When a test is ready to be executed, open the test case and navigate to the bottom of the page where the “Test Execution” links are shown. Click the “E” button to begin execution.
 
 ![Start Test Execution](https://raw.githubusercontent.com/OpenLMIS/openlmis-template-service/master/src/main/resources/static/template/images/start-test-execution.png)
 
-The Test Execution page appears that details the test case and each test step. Select Text Execution Status of WIP, this means that the test case is in progress. Zephyr will assign you as the person executing the test and automatically assign the start date and time.
-Assign the test execution to yourself and you are ready to begin testing. Each step has a status, comments, attachments, and bugs field.
+The “Test Execution” page appears that details the test case and each test step. Select the “WIP” test execution status, which means that the test case is in progress. Zephyr will assign you as the person executing the test and automatically assign the start date and time. Assign the test execution to yourself, and you are ready to begin testing. Each step has “Status”, “Comment”, “Attachments” and “Defects” fields.
 
-While completing each step, if the expected result matches the actual result, change the status to Pass. If the step does not match, then the status is Failed. If for some reason the step cannot be executed, such as the system is down, then the status would be Blocked.
-Once a test is completed the status can be updated to reflect whether it Passed or Failed, and the status of the test execution will be saved to the test case as shown in the above screenshot. This status also appears in the Test Metrics Dashboard.
+While completing each step, if the expected result matches the actual one, change the status to “Pass”. If the step execution does not match expectations, then the status is “Failed”. If for some reason the step cannot be executed, such as the system is down, then the status would be “Blocked”. Once the test is completed, its status can be updated to reflect whether it passed or failed, and the status of the test execution will be saved in the test case as shown on the above screenshot. This status also appears in the Test Metrics Dashboard.
 
 ![Test Execution Steps](https://raw.githubusercontent.com/OpenLMIS/openlmis-template-service/master/src/main/resources/static/template/images/test-execution-steps.png)
 
-**Once the test execution is complete, the Test Case should be marked as Done.**
-
 **Step 4: Enter Bugs**
 
-During testing, if a test step fails and there is a different result, or an error appears that is not expected, then a bug must be entered. Click on the bugs Column and Create New Issue.
+During testing, if a test step fails and there is a different result, or an error appears that is not expected, then a bug must be entered. Click on the “Defects” column and “Create New Issue”.
 
-The Issue Type is Bug, and the Summary, Description, Priority, Environment, and original linked JIRA ticket should all be added. The Summary is a short description of the bug, while the Description is a detailed step by step explanation of how to recreate the bug,
-and what the expected result is per the test case step. It’s helpful to have the test case open in a separate window so that you can copy those details if needed. The Environment should be either test or uat, and you should provide as much detail about the environment
-that would help a developer when reproducing the bug, such as in which browser you tested. 
+The issue type is “Bug”, and the summary, description, priority, environment, and the original linked JIRA ticket should all be added. The summary is a short description of the bug, while the description is a detailed step by step explanation of how to recreate the bug, and what the expected result is per the test case step. It’s helpful to have the test case open in a separate window so that you can copy those details if needed. The environment should be either test or UAT, and you should provide as much detail about the environment that would help the developer when reproducing the bug, such as in which browser you tested.
 
 ![Create Defect Part 1](https://raw.githubusercontent.com/OpenLMIS/openlmis-template-service/master/src/main/resources/static/template/images/create-defect-part-1.png)
 
@@ -255,29 +223,25 @@ The new bug should be linked to the JIRA ticket that is linked to the test case.
 
 ![Create Defect Part 2](https://raw.githubusercontent.com/OpenLMIS/openlmis-template-service/master/src/main/resources/static/template/images/create-defect-part-2.png)
 
-When a bug is created it will automatically get sent to the "Roadmap" status. It should stay in this status until it has been triaged and reproduced - only then its status can be changed to "To Do" and when it happens, the bug becomes visible in the product backlog. 
-In summary, each of these steps completes the QA workflow process for a sprint.
+When a bug is created, it will automatically get sent to the “Roadmap” status. It should stay in this status until it has been triaged and reproduced – only then its status can be changed to “To Do” and when it happens, the bug becomes visible in the product backlog. In summary, each of these steps completes the QA workflow process for a sprint.
 
 **Test Coverage:**
-For each Sprint's Test Cycle, the QA lead must assign appropriate test cases so they can be executed during the sprint. These test cases will be selected based on the tickets assigned to the sprint after Sprint Planning.
-The QA lead must determine if test cases are missing for the tickets assigned to the sprint, and create those test cases to ensure complete test coverage. New features require new test cases, while bugs or regression test cycles may rerun existing test cases.
+For each sprint’s test cycle, the QA lead must assign appropriate test cases so that they can be executed during the sprint. These test cases will be selected based on the tickets assigned to the sprint after the Sprint Planning. The QA lead must determine if test cases are missing for the tickets assigned to the sprint, and create those test cases to ensure complete test coverage. New features require new test cases, while bugs or regression test cycles may rerun existing ones.
 
 ### Sprint Grooming and Planning Workflow
 
-QA is responsible for adding test cases to support all testing within the sprint. At the end of each sprint, the QA lead is expected to showcase the test cycle for each sprint. This should include: showing the test plan and test cycle, the execution metrics, # of added test cases (if any),
-and the final status of bugs found in the sprint (bug tracking). When regression testing is completed during a sprint, this should be discussed during the showcase as well, with separate metrics of the regression test cycle presented to the team.
+The tester is responsible for adding test cases to support all testing within the sprint. At the end of each sprint in which regression testing was performed, the QA lead is expected to showcase the results. This should include: Showing the test cycle, the execution metrics, # of added test cases and the final status of bugs found in the sprint (bug tracking).
 
 ### Bug Tracking
 
-It is important to track the bugs introduced during each sprint. This process helps identify test scenarios that may need more attention or business process clarification. Bug tracking also helps identify delays with ticket completion.
-* When a test case fails, a bug must be created and linked to the ticket. This bug must be resolved before the ticket can be marked as done.
-* The same test case associated with the sprint's test cycle should be run (previous practice was to create a new test cycle but that makes the status of the test case in the reporting as failed and then a separate row shows as passed, very confusing)
-* If bug is created for a test case, it must be resolved before the test is executed again with the sprint cycle. 
+It is important to track the bugs introduced during each sprint. This process helps to identify test scenarios that may need more attention or business process clarification. Bug tracking also helps to identify delays in ticket completion.
+* When a test case fails, a bug must be created and linked to the ticket. This bug has to be resolved before the ticket can be marked as done;
+* The same test case associated with the sprint’s test cycle should be run;
+* If a bug is created for the test case, it has to be resolved before the test is executed again in the sprint cycle. 
 
 ### Bug Triage During the Sprint
 
-The bug triage meeting is held twice every sprint - i.e. once a week. Before the meeting, bugs with the "Roadmap" status are attempted to be reproduced and if they still occur, their status is changed to "To Do". If not, they are moved to "Dead".
-During the meeting, the bugs reported are analyzed in terms of their significance to the project, their final priority is set and the acceptance criteria are updated.
+The bug triage meeting is held twice every sprint, i.e. once a week. Before the meeting, bugs with the “Roadmap” status are attempted to be reproduced and if they still occur, their status is changed to “To Do”. If not, they are moved to “Dead”. During the meeting, the bugs reported are analyzed in terms of their significance to the project, their final priority is set and the acceptance criteria are updated.
 
 ### Manual Testing Workflow
 
