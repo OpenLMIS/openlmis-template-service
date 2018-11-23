@@ -40,16 +40,16 @@ Manual tests should:
   * Exact placement of inputs;
   * Colors of elements if they are not significant (not notifications, buttons or validations).
 
-## Manual Testing vs Automated Testing
+## Manual Testing Standards
 
 Testing Standards:
-* Follows UI guidelines
-* Internationalization
-* Form Entry and Errors
-* Loading Performance
-* Offline Performance
-* Role Based Access Control
-* Exception Scenarios
+* UI guidelines;
+* Internationalization;
+* Form entry and errors;
+* Loading performance;
+* Offline performance;
+* Role based access control (RBAC);
+* Exception scenarios.
 
 ### UI Testing
 
