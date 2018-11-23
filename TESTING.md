@@ -640,29 +640,28 @@ E2E tests should:
   * Exact placement of inputs;
   * Colors of elements if they are not significant.
 
-## Testing services dependent on external APIs
-OpenLMIS is using WireMock for mocking web services. An example integration test can be found here:
-https://github.com/OpenLMIS/openlmis-example/blob/master/src/test/java/org/openlmis/example/WeatherServiceTest.java
+## Testing Services Dependent on External APIs
+OpenLMIS uses WireMock to mock web services. An example integration test can be found [here](https://github.com/OpenLMIS/openlmis-example/blob/master/src/test/java/org/openlmis/example/WeatherServiceTest.java).
 
-The stub mappings which are served by WireMock's HTTP server are placed under _src/test/resources/mappings_ and _src/test/resources/__files_
-For instructions on how to create them please refer to http://wiremock.org/record-playback.html
+The stub mappings which are served by the WireMock’s HTTP server are placed under the _src/test/resources/mappings_ and _src/test/resources/__files_
+For instructions on how to create them, please refer to http://wiremock.org/record-playback.html.
 
 ## Testing Tools
 
-* Cucumber and InteliJ - for contract tests
-* Browsers - Chrome 52+ (test on Chrome 52 and Chrome latest) and Firefox 48+ (test on Firefox 48 and Firefox latest)
-* Rest Clients - Postman and REST Client
-* JIRA - issue, task, bug tracking
-* Zephyr - test case and test cycle creation
-* Confluence - test case templates, testing standards
-* Reference Distribution
-* Docker 1.11+
-* Docker Compose 1.6+
-* spring-boot-starter-test
-  * Spring Boot Test
-  * JUnit
-  * Mockito
-  * Hamcrest
-* [WireMock](http://wiremock.org)
-* [REST Assured](http://rest-assured.io)
-* [raml-tester](https://github.com/nidi3/raml-tester)
+* Cucumber and IntelliJ: For contract tests;
+* Browsers: Chrome (the latest version) and Firefox (the latest version);
+* REST clients: Postman, API Console and REST Client;
+* JIRA: Issue-, task- and bug tracking;
+* Zephyr: Test case and test cycle creation;
+* Confluence: Project documentation, e.g. various guides and meeting notes;
+* Reference Distribution;
+* Docker 1.11+;
+* Docker Compose 1.6+;
+* Spring-boot-starter-test:
+  * Spring Boot Test;
+  * JUnit;
+  * Mockito;
+  * Hamcrest;
+* [WireMock](http://wiremock.org);
+* [REST Assured](http://rest-assured.io);
+* [raml-tester](https://github.com/nidi3/raml-tester).
