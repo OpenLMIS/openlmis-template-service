@@ -17,6 +17,29 @@ The document describes the following issues:
 * Automated tests;
 * Tools: What tools are used for testing OpenLMIS.
 
+## Manual tests
+
+Manual tests should:
+* Cover edge cases rather than happy paths:
+  * Changing the column order in the requisition template should not affect existing requisitions (i.e. [change the order of the requisition columns](https://openlmis.atlassian.net/browse/OLMIS-1951));
+  * Disabling/enabling requisition columns should not affect existing requisitions;
+  * Blank mandatory fields;
+  * Deactivation of different entities (programs, facilities etc.);
+  * Running out of periods for the requisition workflow;
+* Verify email messages are sent (until there are appropriate automated patterns for this):
+  * [Emails to the storeroom manager after requisition status changes](https://openlmis.atlassian.net/browse/OLMIS-2824);
+* Cover checking reports (until we have an automated pattern):
+  * [Printing requisitions](https://openlmis.atlassian.net/browse/OLMIS-2271);
+  * [Stock-Based requisition reports](https://openlmis.atlassian.net/browse/OLMIS-4826);
+* Not check whether a modal or a notification contains an exact text, but rather verify if it gives the user all important information and context:
+  * “An error message implying the orderable was not found is displayed to the user”, instead of checking the exact message (The following error message is displayed to the user: “Orderable with code XYZ was not found”);
+  * “A question asking about changing requisition status to Submitted”, instead of checking the exact message (The following error message is displayed to the user: “Are you sure you want to submit this R&R?”);
+* Not check any UI-specific details:
+  * The order of the columns in a table;
+  * Exact label names;
+  * Exact placement of inputs;
+  * Colors of elements if they are not significant (not notifications, buttons or validations).
+
 ## Manual Testing vs Automated Testing
 
 Testing Standards:
@@ -701,29 +724,6 @@ E2E tests should:
   * exact label naming
   * the exact placement of inputs
   * color of elements if it is not significant
-
-## Manual tests
-
-Manual tests should:
-* cover edge cases rather than happy paths
-  * changing column order in requisition template should not affect existing requisitions (i.e. [Changing order of requisition columns](https://openlmis.atlassian.net/browse/OLMIS-1951))
-  * disabling/enabling requisition columns should not affect existing requisitions
-  * blank mandatory fields
-  * deactivation of different entities (programs, facilities etc.)
-  * running out of periods for requisition workflow
-* verify email messages are sent (until there are appropriate automated patterns for this)
-  * [Mails for storeroom manager after requisition status changes](https://openlmis.atlassian.net/browse/OLMIS-2824)
-* cover checking reports (until we have automated pattern)
-  * [Printing Requisition](https://openlmis.atlassian.net/browse/OLMIS-2271)
-  * [Stock Based Requisition reports](https://openlmis.atlassian.net/browse/OLMIS-4826)
-* not check whether modal or notification contain exact text instead but rather verify if it gives a user all important information and context
-  * "An error message implying the orderable was not found is displayed to the user" instead of checking exact message (The following error message is displayed to the user: "Orderable with code XYZ was not found")
-  * "A question asking about changing requisition status to Submitted" instead of checking exact message (The following error message is displayed to the user: "Are you sure you want to submit this R&R?")
-* not check any UI specific details
-  * order of the columns in table
-  * exact label naming
-  * the exact placement of inputs
-  * color of elements if it is not significant (not notifications, buttons or validations)
 
 ## Testing services dependent on external APIs
 OpenLMIS is using WireMock for mocking web services. An example integration test can be found here:
