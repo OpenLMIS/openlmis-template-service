@@ -518,43 +518,41 @@ The following test categories have been identified for use in OpenLMIS. As illus
 
 ### Integration Tests <a name="integration"></a>
 
-* Who: Code author during implementation
-* What: Test basic operation of a service to persistent storage or a service to another service.  When another service is required, a test-double should be used, not the actual service.
-* When: As explicitly asked for, these tests are typically slower and therefore need to be kept separate from build to not slow development.  Will be run in CI on every change.
+* Who: The code’s author during the implementation.
+* What: Test basic operation of the service to persistent storage or a service to another service. When another service is required, a test double should be used, not the actual service.
+* When: As explicitly asked for, these tests are typically slower and therefore need to be kept separate from the build in order not to slow the development down. Are run on the CI on every change.
 * Where: Reside inside a service, separated from other types of tests/code.
-* Why:  Ensures that the basic pathways to a service's external run-time dependencies work. e.g. that a db schema supports the ORM, or a non-responsive service call is gracefully handled.
+* Why: Ensure that basic pathways to a service’s external run-time dependencies work, e.g. that a db schema supports the ORM, or that a non-responsive service call is gracefully handled.
 
-For testing controllers, they are divided up into unit and integration tests. The controller unit tests will be testing the logic in the controller, while the integration tests will be mostly testing serialization/deserialization (and therefore do not need to test all code paths). In both cases, the underlying services and repositories are mocked.
+As far as testing controllers is concerned, tests are divided into unit and integration tests. Controller unit tests test the logic in the controller, and integration tests test serialization/deserialization (and therefore do not need to test all code paths). In both cases, the underlying services and repositories are mocked.
 
 ### Component Tests <a name="component"></a>
 
-* Who: Code author during implementation
-* What: Test more complex operations in a service.  When another service is required, a test-double should be used, not the actual service.
-* When: As explicitly asked for, these tests are typically slower and therefore need to be kept separate from build to not slow development.  Will be run in CI on every change.
+* Who: The code’s author during the implementation.
+* What: Test more complex operations in the service. When another service is required, a test double should be used, not the actual service.
+* When: As explicitly asked for, these tests are typically slower and therefore need to be kept separate from the build to not slow the development down. Will be run on the CI on every change.
 * Where: Reside inside a service, separated from other types of tests/code.
-* Why:  Tests interactions between components in a service are working as expected.
+* Why: Test whether interactions between components in the service work as expected.
 
-These are not integration tests, which strictly test the integration between the service and an external dependency. These test the interactions between components in a service are working correctly. While integration tests just test the basic pathways are working, component tests verify that, based on input, the output matches what is expected.
+These are not integration tests, which strictly test the integration between the service and an external dependency. These test whether the interactions between the components in the service are correct. While integration tests verify only whether the basic pathways work, component tests verify whether, based on the input, the output matches expectations.
 
-These are not contract tests, which are more oriented towards business requirements, but are more technical in nature. The contract tests will make certain assumptions about components, and these tests make sure those assumptions are tested.
+They are not contract tests, which are more oriented towards business requirements, but are more technical in nature. The contract tests will make certain assumptions about components, and these tests make sure those assumptions are tested.
 
 ### Contract Tests <a name="contract"></a>
 
-* Who: Code author during implementation, with input from BA/QA.
-* What: Enforces contracts between and to services.
-* When: Ran in CI.
-* Where: Reside inside separate repository:  [openlmis-contract-tests](http://github.com/openlmis/openlmis-contract-tests).
-* Why:  Tests multiple services working together, testing contracts that a Service both provides as well as the requirements a dependant has.
+* Who: The code’s author during the implementation, with the BA/QA’s input.
+* What: Enforce contracts between and to services.
+* When: Run on the CI.
+* Where: Reside inside a separate repository: openlmis-contract-tests.
+* Why: Test multiple services working together, testing contracts that the service both provides, as well as the requirements a dependency has.
 
-**Ideally, single scenario checks single endpoint. In specific cases, like requisition workflow, when it's impossible to check something without using other endpoints, it can be omitted.**
+**Ideally, a single scenario checks a single endpoint. In specific cases, like the requisition workflow, when it’s impossible to check something without using other endpoints, it can be omitted.**
 
-The main difference between contract and integration tests:
-In contract tests, all the services under test are *real*, meaning that they will be processing requests and sending responses.
-Test doubles, mocking, stubbing should not be a part of contract tests.
+The main difference between contract and integration tests: In contract tests, all services under test are real, meaning that they will be processing requests and sending responses. Test doubles, mocking, stubbing should not be part of contract tests.
 
 Contract tests should follow the convention below:
-* the scenario should be like _<user_name> should be able to <action_description>_
-* the feature's should consist of infinitive + noun in plural e.g. _Creating facility type approved products_ for testing FTAP creating screen/endpoint.
+* The scenario should be like _<user_name> should be able to <action_description>_;
+* The feature’s name should consist of infinitive + noun in plural, e.g. _Creating facility type approved products_ or testing the FTAP creating screen/endpoint.
 
 ```
 @FacilityTypeApprovedProductTests
@@ -570,31 +568,31 @@ Feature: Creating facility type approved products
     And I logout
 ```
 
-Refer to [this doc](https://github.com/OpenLMIS/openlmis-contract-tests/blob/master/README.md) for examples of how to write contract tests.
+Refer to [this doc](https://github.com/OpenLMIS/openlmis-contract-tests/blob/master/README.md) for examples on how to write contract tests.
 
 Contract tests should:
-* cover contract between services
-  * reasons from stock management provided for requisition service [Stock reasons contract tests](https://github.com/OpenLMIS/openlmis-contract-tests/blob/master/src/cucumber/resources/org/openlmis/contract_tests/stockmanagement_tests/StockReasonsTests.feature)
-  * converting requisitions to order [Fulfillment contract tests](https://github.com/OpenLMIS/openlmis-contract-tests/blob/master/src/cucumber/resources/org/openlmis/contract_tests/fulfillment_tests/FulfillmentTests.feature)
-  * dependencies between user resources in different services [Users contract tests](https://github.com/OpenLMIS/openlmis-contract-tests/blob/master/src/cucumber/resources/org/openlmis/contract_tests/referencedata_tests/UserTests.feature) [Contact details contract tests](https://github.com/OpenLMIS/openlmis-contract-tests/blob/master/src/cucumber/resources/org/openlmis/contract_tests/notification_tests/VerificationTests.feature)
-  * information provided to UI covered by contract tests
-* cover checking email templates (but appropriate patterns are required for email verification, no test present at the moment)
-* cover checking uploading files
-  * [ISA values upload](https://github.com/OpenLMIS/openlmis-contract-tests/blob/master/src/cucumber/resources/org/openlmis/contract_tests/referencedata_tests/IdealStockAmountTests.feature#L7)
+* Cover the contract between services:
+  * Reasons from Stock Management provided for the requisition service: [Stock reasons contract tests](https://github.com/OpenLMIS/openlmis-contract-tests/blob/master/src/cucumber/resources/org/openlmis/contract_tests/stockmanagement_tests/StockReasonsTests.feature);
+  * Converting requisitions to orders: [Fulfillment contract tests](https://github.com/OpenLMIS/openlmis-contract-tests/blob/master/src/cucumber/resources/org/openlmis/contract_tests/fulfillment_tests/FulfillmentTests.feature);
+  * The dependencies between the user resources in different services: [Users contract tests](https://github.com/OpenLMIS/openlmis-contract-tests/blob/master/src/cucumber/resources/org/openlmis/contract_tests/referencedata_tests/UserTests.feature); [Contact details contract tests](https://github.com/OpenLMIS/openlmis-contract-tests/blob/master/src/cucumber/resources/org/openlmis/contract_tests/notification_tests/VerificationTests.feature);
+  * The information provided to the UI;
+* Cover checking the email templates (but appropriate patterns are required for email verification, there are no tests present at the moment);
+* Cover checking file upload:
+  * [ISA values upload](https://github.com/OpenLMIS/openlmis-contract-tests/blob/master/src/cucumber/resources/org/openlmis/contract_tests/referencedata_tests/IdealStockAmountTests.feature#L7).
 
 ### End-to-End Tests <a name="e2e"></a>
 
-* Who: QA / developer with input from BA.
+* Who: Tester/developer with input from the BA.
 * What: Typical/core business scenarios.
-* When: Ran in CI.
-* Where: Resides in separate repository.
-* Why: Ensures all the pieces are working together to carry-out a business scenario.  Helps ensure end-users can achieve their goals.
+* When: Run on the CI.
+* Where: Reside in separate repository.
+* Why: Ensure that all the pieces work together to carry-out a business scenario. Help ensure that end-users can achieve their goals.
 
-**Single feature should cover only one (related) UI screen.**
+**A single feature should cover only one (related) UI screen.**
 
 End-to-end tests should follow the convention below:
-* the scenario should be like _<user_name> should be able to <action_description>_
-* the feature's name should consist of infinitive + noun in plural e.g. _Adding reasons_ for testing reason adding screen/endpoint.
+* The scenario should be like _<user_name> should be able to <action_description>_;
+* The feature’s name should consist of infinitive + noun in plural, e.g. _Adding reasons_ for testing the reason adding screen/endpoint.
 
 ```
 Feature: Adding reasons
@@ -622,25 +620,25 @@ Feature: Adding reasons
 ```
 
 E2E tests should:
-* cover workflow's happy paths
-  * basic requisition workflow
-  * basic ordering workflow
-  * sending stock events
-* not cover edge cases which require multiple steps from different microservices
-  * sending data from requisition to stockmanagement service
-* cover checking functionalities depending on user’s rights
-  * presence of elements in navigation bar
-  * visibility of action buttons
-  * editable fields in forms
-* check UI differences depending on choosing given options
-  * how requisition product grid screen behaves for emergency and regular requisitions
-  * differences between stock based and non-stock based requisitions
-  * differences between working with home and supervised facility
-* not check any specific UI details
-  * order of the columns in table
-  * exact label naming
-  * the exact placement of inputs
-  * color of elements if it is not significant
+* Cover workflow happy paths:
+  * Basic requisition workflow;
+  * Basic order workflow;
+  * Sending stock events.
+* Not cover edge cases which require multiple steps from different microservices:
+  * Sending data from the requisition to the stockmanagement service.
+* Cover checking functionalities dependent on user rights:
+  * The presence of elements on the navigation bar;
+  * The visibility of action buttons;
+  * Editable fields in forms.
+* Check UI differences dependent on choosing specific options:
+  * How the requisition product grid screen behaves for emergency and regular requisitions;
+  * Differences between stock-based and non-stock-based requisitions;
+  * Differences between working with home and supervised facility.
+* Not check any specific UI details:
+  * The order of columns in tables;
+  * Exact label names;
+  * Exact placement of inputs;
+  * Colors of elements if they are not significant.
 
 ## Testing services dependent on external APIs
 OpenLMIS is using WireMock for mocking web services. An example integration test can be found here:
