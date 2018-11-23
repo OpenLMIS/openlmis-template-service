@@ -316,25 +316,25 @@ While OpenLMIS 3.0 supports a robust multi-lingual tool set, English is the only
 Apart from the usual manual testing, each ticket with the “NeedsPerformanceCheck” label has to undergo performance testing. The instructions on how to perform this kind of tests are available in the “How do I record more test runs?” and “Release testing for 3.3” sections on the ["Performance Metrics"](https://openlmis.atlassian.net/wiki/spaces/OP/pages/116949318/Performance+Metrics) page, only one has to use the UAT server and the credentials of users available at that instance. One has to pay attention especially to the CPU throttling (**6x slowdown**) and Network (**Slow 3G**) settings, as they are vital in this kind of testing and render the results of different users comparable.
 
 ## Types of Automated Tests
-The following test categories have been identified for use in OpenLMIS.  As illustrated in this great [slide deck](http://martinfowler.com/articles/microservice-testing/), we expect the effort/number of tests in each category to reflect the [test pyramid](http://martinfowler.com/articles/microservice-testing/#conclusion-test-pyramid):
+The following test categories have been identified for use in OpenLMIS. As illustrated in this [slide deck](http://martinfowler.com/articles/microservice-testing/), we expect the effort/number of tests in each category to reflect the [test pyramid](http://martinfowler.com/articles/microservice-testing/#conclusion-test-pyramid):
 
-1. [Unit](#unit)
-2. [Integration](#integration)
-3. [Component](#component)
-4. [Contract](#contract)
-5. [End-to-End](#e2e)
+1. [Unit](#unit);
+2. [Integration](#integration);
+3. [Component](#component);
+4. [Contract](#contract);
+5. [End-to-End](#e2e).
 
 ### Unit Tests <a name="unit"></a>
 
-* Who:  written by code-author during implementation
-* What: the smallest unit (e.g. one piece of a model's behavior, a function, etc)
-* When: at build time, should be /fast/ and targeted - I can run just a portion of the test suite
-* Where: Reside inside a service, next to unit under test. Generally able to access package-private scope
-* Why: to test fundamental pieces/functionality, helps guide and document design and refactors, protects against regression
+* Who: Written by the code’s author during the implementation.
+* What: The smallest unit (e.g. one piece of a model’s behavior, a function, etc.).
+* When: At build time, should be fast and targeted, it should be possible to run only a part of the test suite.
+* Where: Reside inside a service, next to the unit under test. Generally able to access package-private scope.
+* Why: To test fundamental pieces/functionality, help guide and document design and refactors, protect against regression.
 
 #### Unit Test Examples
 
-* __Every single test should be independent and isolated. Unit test shouldn't depend on another unit test.__
+* __Every single test should be independent and isolated. The unit test shouldn’t depend on another unit test.__
 
   DO NOT:
   ```java
@@ -385,7 +385,7 @@ The following test categories have been identified for use in OpenLMIS.  As illu
     assertFalse(isAbleToRunForPresident);
   }
   ```
-* __Every unit test should have at least one assertion.__
+* __Every unit test should contain at least one assertion.__
 
   DO NOT:
   ```java
@@ -405,7 +405,7 @@ The following test categories have been identified for use in OpenLMIS.  As illu
     assertFalse(isAdult);
   }
   ```
-* __Don't make unnecessary assertions. Don't assert mocked behavior, avoid assertions that check the exact same thing as another unit test.__
+* __Don’t make unnecessary assertions. Don’t assert mocked behavior, avoid assertions that check the exact same thing as another unit test.__
 
   DO NOT:
  ```java
@@ -418,7 +418,7 @@ The following test categories have been identified for use in OpenLMIS.  As illu
     assertFalse(isAdult);
   }
   ```
-* __Unit test has to be independent from external resources (i.e. don't connect with databases or servers)__
+* __The unit test has to be independent from external resources (i.e. don’t connect with databases or servers).__
 
   DO NOT:
  ```java
@@ -430,7 +430,7 @@ The following test categories have been identified for use in OpenLMIS.  As illu
     assertEquals(HttpStatus.ORDINAL_200_OK, response.getStatusLine().getStatusCode());
   }
   ```
-* __Unit test shouldn't test Spring Contexts. Integration tests are better for this purpose.__
+* __The unit test shouldn’t test Spring contexts. Integration tests are better for this purpose.__
 
   DO NOT:
  ```java
@@ -449,7 +449,7 @@ The following test categories have been identified for use in OpenLMIS.  As illu
       }
   }
   ```
-* __Test method name should clearly indicate what is being tested and what is the expected output and condition. The "should - when" pattern should be used in the name.__
+* __The test method’s name should clearly indicate what is being tested and what is the expected output and condition. The “should - when” pattern should be used in the name.__
 
   DO:
   ```java
@@ -471,7 +471,7 @@ The following test categories have been identified for use in OpenLMIS.  As illu
     ...
   }
   ```
-* __Unit test should be repeatable - each run should yield the same result.__
+* __The unit test should be repeatable: Each run should yield the same result.__
 
   DO NOT:
   ```java
@@ -482,7 +482,7 @@ The following test categories have been identified for use in OpenLMIS.  As illu
     assertFalse(isAdult);
   }
   ```
-* __You should remember about intializing and cleaning each global state between test runs.__
+* __You should remember about initializing and cleaning each global state between test runs.__
 
   DO:
   ```java
@@ -502,7 +502,7 @@ The following test categories have been identified for use in OpenLMIS.  As illu
     assertTrue(isAdult);
   }
   ```
-* __Test should run fast. When we have hundreds of tests we just don't want to wait several minutes till all tests pass.__
+* __The test should execute fast. When we have hundreds of tests, we don’t want to wait several minutes until all tests pass.__
 
   DO NOT:
  ```java
