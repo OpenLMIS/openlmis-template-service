@@ -1,21 +1,21 @@
 # Testing Guide
-This guide is intended to layout the general automated test strategy for OpenLMIS.
+This guide is intended to layout the general test strategy for OpenLMIS.
 
-## Test Strategy
-OpenLMIS, like many software projects, relies on testing to guide development and prevent regressions.  To effect this we've adopted a standard set of tools to write and execute our tests, and categorize them to understand what types of tests we have, who writes them, when they're written, run, and where they live.
+OpenLMIS, like many software projects, relies on testing to guide development and prevent regressions. To effect this, we’ve adopted a standard set of tools to write and execute our tests, and categorize them to understand what types of tests we have, who writes them, when they’re written, run, and where they live.
 
-The objective of manual and automatic tests are to catch bugs as quickly as possible after code is committed to make it less time-consuming to fix. We plan to automate tests as much as possible to ensure better control of product quality.
-All tickets should be tested manual by QA Team, selected tests will be automated at API level (by Cucumber) and UI level (ie. by Selenium).
+The objective of manual and automatic tests is to catch bugs as quickly as possible after code is committed to make it less time-consuming to fix. We plan to automate tests as much as possible to ensure better control of product quality. All tickets should be tested manually by the QA Team. Selected tests will be automated at the API level (by Cucumber) and the UI level (i.e. by Selenium).
 
-Test Strategy document describes the following issues: 
-* UI testing – include list of types of devices/browsers are supported and which are prioritize for manual testing
-* QA responsibility
-* Tools – which tools QA Team use for testing OpenLMIS
-* Testing Standards - UI style guide compatibility, translations, performance standards
-* Testing workflow – describe workflow for manual testing, automated testing and regression, describe the way of reporting bugs, includes bug report pattern and acceptance criteria workflow
-* Testing environments and updating test data
-* Regression Testing
-* Requirements traceability - describe how to use labels and test cycles to support Zephyr traceability reports
+The document describes the following issues:
+* Manual tests;
+* Manual testing standards: The UI style guide compatibility, translations and e.g. performance standards;
+* UI testing: Includes a list of types of supported devices/browsers prioritized for manual testing, and the strategy for testing the UI;
+* Responsibility;
+* Testing workflow: Describes the workflow for manual, automated testing and regression testing, and contains guidance on how to report bugs;
+* Regression testing;
+* Test environments and updating test data;
+* Performance tests;
+* Automated tests;
+* Tools: What tools are used for testing OpenLMIS.
 
 ## Manual Testing vs Automated Testing
 
