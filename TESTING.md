@@ -100,29 +100,25 @@ We asked different OpenLMIS implementations to share their Google analytics so t
 
 ### Supported Devices
 
-OpenLMIS 3.0 is only officially supporting desktop browsers with use of a pointer (mouse, trackpad, etc). The UI will not necessarily support touch interfaces without a mouse pointer, such as iPad or other tablets. For now, we do not need to conduct testing or file bugs for tablets, smart watches, or other devices.
+OpenLMIS 3.0 only officially supports desktop browsers with a pointer (mouse, trackpad, etc.). The UI will not necessarily support touch interfaces without a mouse pointer, such as iPad or other tablets. For now, we do not need to conduct tests or file bugs for tablets, smart watches or other devices.
 
 ### Screen Size
 
 We suggest testing with the most popular screen sizes:
-1. 1000 x 600 (this is a popular resolution for older desktop screen sizes; it is the 16:9 equivalent of the age-old 1024x768 size)
-2. 1300 x 975 (this is a popular resolution for newer laptop or desktop screens)
+1. 1000 x 600 (this is a popular resolution for older desktop screen sizes; it is the 16:9 equivalent of the age-old 1024x768 size);
+2. 1300 x 975 (this is a popular resolution for newer laptop or desktop screens).
 
-The UI should work on screens within that range of sizes. Screen size can be simulated in any browser by changing the size of the browser window or using Chrome developer tools.
-
-### Bandwidth
-
-OpenLMIS version 3 is tested using a bandwidth of 384 Kbps, which is equivalent to a 3G (WCDMA standard) connection. We recommend end users using either this speed or higher for optimal usability.
+The UI should work on screens within that range of sizes. The screen size can be simulated in any browser by changing the size of the browser window or with the use of the Chrome developer tools.
 
 ## Responsibility
 
 Developers (all teams):
-* Write unit tests for all code (we want test coverage of 80%-100%; currently it is 25%-40%, perhaps because some tests are disabled currently; see [Sonar](sonar.openlmis.org).
-* Write integration tests and components tests as assigned in tickets or as part of acceptance criteria.
+* Writing unit tests for all code (we want test coverage to reach 80%-100%);
+* Writing integration and component tests as assigned in tickets or as a part of the acceptance criteria.
 
 ### Communication
 
-Weekly meetings are scheduled to discuss QA topics and the daily communication is completed in the #QA slack channel for OpenLMIS. The weekly meeting notes are maintained in [QA Weekly meeting notes](https://openlmis.atlassian.net/wiki/spaces/OP/pages/114170699/QA+Weekly+meeting+notes).
+QA meetings are scheduled to discuss testing-related topics, and the daily communication is held on the #QA slack channel for OpenLMIS. The meeting notes are maintained on the [QA Weekly meeting notes](https://openlmis.atlassian.net/wiki/spaces/OP/pages/114170699/QA+Weekly+meeting+notes) page.
 
 ## QA Testing Workflow within a Sprint
 
