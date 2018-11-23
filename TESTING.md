@@ -245,68 +245,59 @@ The bug triage meeting is held twice every sprint, i.e. once a week. Before the 
 
 ### Manual Testing Workflow
 
-When the Dev finishes implementing a ticket, he/ she should change status from In Progress to QA. QA should check if all acceptance criteria are correct and actual.
+When the developer finishes implementing the ticket, he/she should change its status from “In Progress” to “QA”. The tester should then check whether all acceptance criteria are correct and up-to-date.
 
-Main QA Manual Workflow consist of following points:
-1. QA starts testing when ticket is moved to QA column in Jira sprint board, or when the ticket status has changed to QA. There is no automatic notification for this until the ticket is assigned, so QA must manually check or the Dev must notify the QA.
-(Notification to QA must be via QA Slack channel, or directly, and in the General slack channel referencing the ticket that needs to be tested.)
-2. QA deploys changes to test environment (uat.openlmis.org).
-3. QA creates test case, or executes existing test case that is linked to ticket. QA should test all acceptance criteria in ticket. The test case must be associated with the current sprint test cycle.
-4. If bugs are found, QA should change status for In Progress and assigned ticket to proper developer.
-    * When a bug is created it must be linked to the ticket.
-    * QA notifies developer that ticket has been moved back to In Progress (mention in ticket or mention in QA slack channel).
-5. When all works properly QA should change status for Done and assigned ticket to proper team leader.
+The main manual testing workflow consist of the following steps:
+1. The tester starts testing when the ticket is moved to the “QA” column on the Jira sprint board, or when the ticket’s status changes to “QA”. There is no automatic notification for this until the ticket is assigned, so the tester has to check manually or the developer has to notify the tester.
+2. The tester deploys changes to the test environment (uat.openlmis.org).
+3. The tester creates a test case, or executes an existing one that is linked to the ticket. The tester should test all acceptance criteria in the ticket. The test case has to be associated with the current sprint test cycle.
+4. If bugs are found, the tester should change the ticket’s status to “In Progress” and assign it to a proper developer.
+    * When a bug is created, it has to be linked to the ticket;
+    * The tester notifies the developer that the ticket was moved back to “In Progress”.
+5. When everything works properly, the tester should change the status to “Done” and assign the ticket to the developer who worked on it.
 
-During the testing process, QA should write comments in the ticket about testing features and add print screens of testing features.
+During the testing process, the tester should write comments in the ticket about the tested features and add the screenshots depicting the noticed issues.
 
-### Workflow Between QA Teams
+### Workflow Between the QA Teams
 
-To improve testing process testers should help each other:
-* If one of the team members doesn't have anything to do in their own team they will assist other team with testing
-* If any tester needs help testing they can report it on the QA Slack channel
+To improve the testing process, testers should help each other:
+* If one of the team members doesn’t have anything to do in their own team, they should assist other teams in testing;
+* If any tester needs help with testing, they can report it on the QA Slack channel.
 
-### Ticket Workflow and Prioritize
+### Ticket Workflow and Prioritization
 
-In the OpenLMIS project tickets may have the following statuses:
-* To Do - tickets intended for implementation
-* In Progress - tickets during implementation or returned to the developer to fix bugs
-* In Review - tickets in code review
-* QA - tickets which should be tested
-* Done - tickets which work correctly, they are ready to close
+In the OpenLMIS project, tickets may have the following statuses:
+* “Roadmap”: Tickets intended for implementation but not ready for it; e.g. for which the acceptance criteria or other details still need to be defined;
+* “To Do”: Tickets ready for implementation;
+* “In Progress”: Tickets currently being implemented or returned to the developer in order to fix bugs;
+* “In Review”: Tickets in code review;
+* “QA”: Tickets which should be tested;
+* “Done”: Tickets which work correctly and are finished.
 
-Ticket priorities are described in the [Prioritizing Bugs](https://openlmis.readthedocs.io/en/latest/contribute/contributionGuide.html#prioritizing-bugs).
+Ticket priorities are described in ["Prioritizing Bugs"](https://openlmis.readthedocs.io/en/latest/contribute/contributionGuide.html#prioritizing-bugs).
 
-It is very important to start testing tickets with Blocker and Critical priority. When QA is in the middle of testing process for task with a lower priority (ie. Major, Minor or Trivial), and task with higher priority (ie. Blocker or Critical)
-returns with changes to QA, as soon as possible QA should complete testing task with lower priority and begin testing task with higher priority.
+It is very important to start testing tickets with the “Blocker” and “Critical” priority first. When the tester is in the middle of the testing process for a task with lower priority (i.e. “Major”, “Minor” or “Trivial”), and a task with higher priority (i.e. “Blocker” or “Critical”) returns with changes to the “QA” column, the tester should complete testing the task with lower priority as soon as possible and begin testing the task with higher priority.
 
-Additionally tickets in the [Sprint table]( https://openlmis.atlassian.net/secure/RapidBoard.jspa?rapidView=46 ) in QA column should be prioritized. Tickets with high priority (ie. Blocker or Critical) should be located on top of the QA column.
-Every morning QA Lead should set task in QA column in the correct order.
+Additionally, tickets on the [Sprint dashboard]( https://openlmis.atlassian.net/secure/RapidBoard.jspa?rapidView=46 ) in the “QA” column should be prioritized. Tickets with high priority (i.e. “Blocker” or “Critical”) should be located at the top of the “QA” column. Every morning, the QA lead should set the tasks in the “QA” column in correct order.
 
-### QA Regression Testing Workflow
+### Regression Testing Workflow
 
-Regression Testing for OpenLMIS is organized by each of the features (Requisition, Stock Management, Fulfillment, CCE, Administration etc.) and the test cases are labeled with the feature name for planning regression testing cycles.
-Regression tests are managed by creating a Regression Test Cycle and assigning the cycle to a scheduled sprint. The test cases that are labeled with the feature should only include workflow scenarios for that feature,
-and any edge cases that have been identified as required for the regression test. 
+Regression testing for OpenLMIS is organized by each of the features (Requisition, Stock Management, Fulfillment, CCE, Administration, etc.) and the test cases are labeled with the feature’s name in order to facilitate the planning of regression testing cycles. The tests are managed via the creation of a regression test cycle and assigning it to the sprint. The test cases that are labeled with the feature should include workflow scenarios for the feature, as well as any edge cases that have been identified as required for regression testing.
 
-When creating the regression test cycle, the QA lead will search for the feature label and assign all tests to the regression test cycle.
+When creating the regression test cycle, the QA lead will search for test cases with the feature label and assign all of them to the regression test cycle.
 
 ![Add Tests to Test Cycle](https://raw.githubusercontent.com/OpenLMIS/openlmis-template-service/master/src/main/resources/static/template/images/add-tests-to-cycle.png)
 
-Regular manual regression should be executed every second sprint (i.e. once a month). This kind of regression testing is focused on specific services, it doesn't entail testing the entire system.
-QAs decide what services the regular, focused regression testing is to cover during the QA meetings, and their decision is based on the most-recent changes in the system. For instance, if many changes had been recently introduced in requisitions,
-the regression testing will consist in the execution of all test cases concerning the requisition service.
+Regular manual regression should be executed every second sprint (i.e. once a month). This kind of regression testing is focused on specific services, it doesn’t entail testing the entire system. Testers decide what services the regular, focused regression testing is to cover during the QA meetings, and their decision is based on the most-recent changes in the system. For instance, if many changes had been recently introduced in requisitions, the regression testing will consist in the execution of all test cases concerning the requisition service.
 
 Big, full manual regression, consisting in manual tests of the whole system and the execution of all valid test cases, is held one or two weeks before the Release Candidate process. The latter is further described in the
-[Versioning and Releasing](http://docs.openlmis.org/en/latest/conventions/versioningReleasing.html#release-process) document.
+["Versioning and Releasing"](http://docs.openlmis.org/en/latest/conventions/versioningReleasing.html#release-process) document.
 
-When bugs are found during regression testing they are labeled with the Regression label. Regression testing related bugs are considered either Critical or Blocker priorities that must be resolved within the next sprint.
-These bugs are also reviewed in the weekly bug triage meeting for completeness and to ensure communication of any concerns to stakeholders.
+When bugs are found during regression testing, they are labeled with the “Regression” label. The regression-testing-related bugs are usually considered either “Critical” or “Blocker” ones that must be resolved in the current or in the next sprint. These bugs are also reviewed on the weekly bug triage meeting for completeness, and in order to ensure communication of any concerns to stakeholders.
 
 ### Workflow for Blocked Tickets
 
-During testing there is a problem of blocked tickets. This is the situation when, because of external faults (not related to the content of the task), the tester can not assess a particular task.
-In that case, change ticket status to In Progress and assign to appropriate component leader, whose team is able to solve this external problem. It is important to accurately describe the problem in ticket's comment part.
-In case of doubt, which component leader to choose, QA should assign ticket to the team leader with a request to identify the right person.
+Sometimes during testing, one might come across blocked tickets. This is a situation in which, because of external faults (not related to the content of the task), the tester cannot test a particular ticket. In such a case, one has to change the ticket’s status to “In Progress” and assign it to the developer who implemented the ticket. It is important to describe the problem accurately in a comment.
 
 ## Testing Environments
 
