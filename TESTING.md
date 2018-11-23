@@ -53,25 +53,25 @@ Testing Standards:
 
 ### UI Testing
 
-This section includes list of types of devices/browsers are supported and which are prioritize for manual testing.
+This section includes a list of types of supported devices/browsers prioritized for manual testing.
 
-Past versions of OpenLMIS have officially supported Firefox. For OpenLMIS 3.0, we are prioritizing support of Chrome because of global trends (eg see Mozambique Stats) along with its developer tools and its auto-updating nature.
+Past versions of OpenLMIS have officially supported Firefox. For OpenLMIS 3.0, we are prioritizing the support of Chrome because of global trends (e.g. see Mozambique Stats), its developer tools and auto-updating nature.
 
-For QA testing of OpenLMIS our browser version priorities are:
-1. Chrome 52+ (test on Chrome 52 and Chrome latest)
-2. Firefox 48+ (test on Firefox 48 and Firefox latest)
+For the testing of OpenLMIS, our browser version priorities are:
+1. Chrome: The newest version;
+2. Firefox: The newest version.
 
-The next most widely-used browser version is IE 11, but we don't recommend testing and bug fixes specifically for any Internet Explorer compatibility in OpenLMIS.
+The next most widely-used browser version is IE 11 but we don’t recommend testing and bug fixes specifically for any Internet Explorer compatibility in OpenLMIS.
 
-The operating systems on which we should test in are:
-1. Windows 7 (by far the most widely used in Mozambique, Zambia and Benin data AND globally)
-2. Windows 10
+The operating systems on which we should test are:
+1. Windows 7 (by far the most-widely-used in Mozambique, Zambia, Benin and globally);
+2. Windows 10.
 
-Note: The QA team is doing some testing using Linux (Ubuntu) workstations. That is fine for testing the API, but Linux is not a priority environment for testing the UI and for final testing of OpenLMIS. It's important to test the UI using Chrome and Firefox in Windows 7 and Windows 10.
+Note: The QA team performs some tests with the use of Linux (Ubuntu) workstations. This is fine for API tests but Linux is not a priority environment for UI testing and for final testing of OpenLMIS. It’s important to test the UI using Chrome and Firefox on Windows 7 and Windows 10.
 
-In other words, OpenLMIS developers and team members may be using Mac and Linux environments. It is fine to report bugs happening in supported browsers (Chrome and Firefox) on those platforms, but we won't invest QA time in extensive manual testing on Mac or Linux.
+In other words, OpenLMIS developers and team members may be using Mac and Linux environments. It is fine to report bugs happening on the supported browsers (Chrome and Firefox) on those platforms, but we won’t invest QA time in extensive manual testing on Mac or Linux.
 
-We have asked for different OpenLMIS implementations to share their google analytics to better inform how we prioritize and invest in browser and device support going forward.
+We asked different OpenLMIS implementations to share their Google analytics so that we can prioritize browser and device support in the future.
 
 #### Strategy for testing UI specific elements
 
