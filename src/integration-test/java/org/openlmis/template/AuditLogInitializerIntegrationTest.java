@@ -43,7 +43,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-@ActiveProfiles({"test", "refresh-db"})
+@ActiveProfiles({"test", "init-audit-log"})
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class AuditLogInitializerIntegrationTest {
