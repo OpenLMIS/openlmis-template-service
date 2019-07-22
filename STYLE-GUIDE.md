@@ -133,6 +133,10 @@ as empty.
 * Resource's which only ever return a single identified item are _not_ paginated.
 * For Java Service's the query parameters should be defined by a [Pageable](http://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/domain/Pageable.html)
 and the response should be a [Page](http://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/domain/Page.html).
+* Before executing any endpoint, parameters are validated. Currently checked parameters are `page` and `size`. 
+Validator is called by interceptor which is registered with `InterceptorRegistry` by using `CustomWebMvcConfigurerAdapter`. 
+The endpoint return bad request error with an error message when `page` parameter is defined and `size` parameter is not 
+specified or `size` parameter is not greater than zero.
 
 Example Request (note that page is zero-based):
 ```
