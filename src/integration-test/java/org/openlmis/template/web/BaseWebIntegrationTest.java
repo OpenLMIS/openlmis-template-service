@@ -41,10 +41,10 @@ import org.openlmis.template.repository.WidgetRepository;
 import org.openlmis.template.util.Pagination;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
@@ -93,7 +93,7 @@ public abstract class BaseWebIntegrationTest {
       + "  \"client_id\": \"trusted-client\"\n"
       + "}";
 
-  Pageable pageable = new PageRequest(Pagination.DEFAULT_PAGE_NUMBER, 2000);
+  Pageable pageable = PageRequest.of(Pagination.DEFAULT_PAGE_NUMBER, 2000);
 
   @Value("${service.url}")
   private String baseUri;

@@ -15,13 +15,17 @@
 
 package org.openlmis.template;
 
+import static org.flywaydb.core.api.callback.Event.AFTER_MIGRATE;
+import static org.flywaydb.core.api.callback.Event.BEFORE_MIGRATE;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Connection;
+import java.nio.charset.StandardCharsets;
 import org.apache.commons.io.IOUtils;
+import org.flywaydb.core.api.callback.Context;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,7 +39,7 @@ public class ExportSchemaFlywayCallbackTest {
   private ExportSchemaFlywayCallback callback;
 
   @Mock
-  private Connection mockConnection;
+  private Context mockContext;
 
   @Mock
   private Runtime mockRuntime;
@@ -49,7 +53,7 @@ public class ExportSchemaFlywayCallbackTest {
     PowerMockito.mockStatic(Runtime.class);
     when(Runtime.getRuntime()).thenReturn(mockRuntime);
     when(mockRuntime.exec(anyString())).thenReturn(proc);
-    InputStream stubStdOut = IOUtils.toInputStream("Out test line", "UTF-8");
+    InputStream stubStdOut = IOUtils.toInputStream("Out test line", StandardCharsets.UTF_8);
     when(proc.getInputStream()).thenReturn(stubStdOut);
     when(proc.waitFor()).thenReturn(0);
   }
@@ -57,6 +61,13 @@ public class ExportSchemaFlywayCallbackTest {
   @Test
   public void afterMigrateShouldProcessStreams() {
 
-    callback.afterMigrate(mockConnection);
+    callback.handle(AFTER_MIGRATE, mockContext);
+  }
+
+  @Test
+  public void shouldNotProcessStreamsWithEventDifferentThanAfterMigrate() {
+
+    callback.handle(BEFORE_MIGRATE, mockContext);
+    verifyNoInteractions(proc);
   }
 }

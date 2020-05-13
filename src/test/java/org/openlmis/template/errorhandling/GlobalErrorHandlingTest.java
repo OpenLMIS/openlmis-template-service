@@ -26,7 +26,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.openlmis.template.exception.NotFoundException;
 import org.openlmis.template.exception.ValidationMessageException;
 import org.openlmis.template.i18n.MessageKeys;
@@ -55,7 +55,7 @@ public class GlobalErrorHandlingTest {
   public void setUp() {
     when(messageService.localize(any(Message.class)))
         .thenAnswer(invocation -> {
-          Message message = invocation.getArgumentAt(0, Message.class);
+          Message message = invocation.getArgument(0, Message.class);
           return message.localMessage(messageSource, ENGLISH_LOCALE);
         });
   }

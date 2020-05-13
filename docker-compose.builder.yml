@@ -1,7 +1,7 @@
 version: "2"
 services:
   builder:
-    image: openlmis/dev:5.2
+    image: openlmis/dev:6
     links:
       - db
       - log
@@ -15,7 +15,7 @@ services:
       JAVA_OPTS: '-Dlogging.config=/logback.xml'
     env_file: .env
   sonar:
-    image: openlmis/dev:5.2
+    image: openlmis/dev:6
     links:
       - db
       - log
@@ -32,7 +32,7 @@ services:
     build: .
     image: openlmis/template-service
   db:
-    image: openlmis/postgres:9.6
+    image: openlmis/postgres:9.6-debezium
     env_file: .env
   log:
     image: openlmis/rsyslog:1

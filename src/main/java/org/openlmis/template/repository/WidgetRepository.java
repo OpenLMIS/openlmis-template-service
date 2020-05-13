@@ -40,8 +40,7 @@ public interface WidgetRepository extends PagingAndSortingRepository<Widget, UUI
       + "            INNER JOIN template.jv_global_id g "
       + "ON CAST(w.id AS varchar) = SUBSTRING(g.local_id, 2, 36)\n"
       + "            INNER JOIN template.jv_snapshot s  ON g.global_id_pk = s.global_id_fk\n"
-      + "    )\n"
-      + " ORDER BY ?#{#pageable}",
+      + "    )\n",
       nativeQuery = true)
   Page<Widget> findAllWithoutSnapshots(Pageable pageable);
 }

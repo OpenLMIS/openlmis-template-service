@@ -94,6 +94,11 @@ pipeline {
                         notifyAfterFailure()
                     }
                 }
+                cleanup {
+                    script {
+                        sh "sudo rm -rf ${WORKSPACE}/{*,.*} || true"
+                    }
+                }
             }
         }
         stage('Sonar analysis') {
@@ -131,6 +136,11 @@ pipeline {
                 failure {
                     script {
                         notifyAfterFailure()
+                    }
+                }
+                cleanup {
+                    script {
+                        sh "sudo rm -rf ${WORKSPACE}/{*,.*} || true"
                     }
                 }
             }

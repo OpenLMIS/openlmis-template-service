@@ -28,6 +28,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import guru.nidi.ramltester.junit.RamlMatchers;
 import java.util.Collections;
+import java.util.Optional;
 import java.util.UUID;
 import org.apache.http.HttpStatus;
 import org.javers.core.commit.CommitId;
@@ -139,7 +140,7 @@ public class WidgetControllerIntegrationTest extends BaseWebIntegrationTest {
 
   @Test
   public void shouldReturnGivenWidget() {
-    given(widgetRepository.findOne(widgetDto.getId())).willReturn(widget);
+    given(widgetRepository.findById(widgetDto.getId())).willReturn(Optional.of(widget));
 
     restAssured
         .given()
@@ -157,7 +158,7 @@ public class WidgetControllerIntegrationTest extends BaseWebIntegrationTest {
 
   @Test
   public void shouldReturnNotFoundMessageIfWidgetDoesNotExistForGivenWidgetEndpoint() {
-    given(widgetRepository.findOne(widgetDto.getId())).willReturn(null);
+    given(widgetRepository.findById(widgetDto.getId())).willReturn(Optional.empty());
 
     restAssured
         .given()
@@ -187,7 +188,7 @@ public class WidgetControllerIntegrationTest extends BaseWebIntegrationTest {
 
   @Test
   public void shouldUpdateWidget() {
-    given(widgetRepository.findOne(widgetDto.getId())).willReturn(widget);
+    given(widgetRepository.findById(widgetDto.getId())).willReturn(Optional.of(widget));
 
     restAssured
         .given()
@@ -207,7 +208,7 @@ public class WidgetControllerIntegrationTest extends BaseWebIntegrationTest {
 
   @Test
   public void shouldReturnNotFoundMessageIfWidgetDoesNotExistForUpdateWidgetEndpoint() {
-    given(widgetRepository.findOne(widgetDto.getId())).willReturn(null);
+    given(widgetRepository.findById(widgetDto.getId())).willReturn(Optional.empty());
 
     restAssured
         .given()
@@ -258,7 +259,7 @@ public class WidgetControllerIntegrationTest extends BaseWebIntegrationTest {
 
   @Test
   public void shouldDeleteWidget() {
-    given(widgetRepository.exists(widgetDto.getId())).willReturn(true);
+    given(widgetRepository.existsById(widgetDto.getId())).willReturn(true);
 
     restAssured
         .given()
@@ -274,7 +275,7 @@ public class WidgetControllerIntegrationTest extends BaseWebIntegrationTest {
 
   @Test
   public void shouldReturnNotFoundMessageIfWidgetDoesNotExistForDeleteWidgetEndpoint() {
-    given(widgetRepository.exists(widgetDto.getId())).willReturn(false);
+    given(widgetRepository.existsById(widgetDto.getId())).willReturn(false);
 
     restAssured
         .given()
@@ -304,7 +305,7 @@ public class WidgetControllerIntegrationTest extends BaseWebIntegrationTest {
 
   @Test
   public void shouldRetrieveAuditLogs() {
-    given(widgetRepository.exists(widgetDto.getId())).willReturn(true);
+    given(widgetRepository.existsById(widgetDto.getId())).willReturn(true);
     willReturn(Lists.newArrayList(change)).given(javers).findChanges(any(JqlQuery.class));
 
     restAssured
@@ -331,7 +332,7 @@ public class WidgetControllerIntegrationTest extends BaseWebIntegrationTest {
 
   @Test
   public void shouldRetrieveAuditLogsWithParameters() {
-    given(widgetRepository.exists(widgetDto.getId())).willReturn(true);
+    given(widgetRepository.existsById(widgetDto.getId())).willReturn(true);
     willReturn(Lists.newArrayList(change)).given(javers).findChanges(any(JqlQuery.class));
 
     restAssured
@@ -360,7 +361,7 @@ public class WidgetControllerIntegrationTest extends BaseWebIntegrationTest {
 
   @Test
   public void shouldReturnNotFoundMessageIfWidgetDoesNotExistForAuditLogEndpoint() {
-    given(widgetRepository.exists(widgetDto.getId())).willReturn(false);
+    given(widgetRepository.existsById(widgetDto.getId())).willReturn(false);
 
     restAssured
         .given()

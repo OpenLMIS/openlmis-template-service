@@ -43,7 +43,7 @@ public class CustomUserAuthenticationConverter implements UserAuthenticationConv
    */
   public Authentication extractAuthentication(Map<String, ?> map) {
     if (map.containsKey(REFERENCE_DATA_USER_ID)) {
-      UUID principal = UUID.fromString((String)map.get(REFERENCE_DATA_USER_ID));
+      UUID principal = UUID.fromString((String) map.get(REFERENCE_DATA_USER_ID));
       Collection<? extends GrantedAuthority> authorities = getAuthorities(map);
       return new UsernamePasswordAuthenticationToken(principal, "N/A", authorities);
     }

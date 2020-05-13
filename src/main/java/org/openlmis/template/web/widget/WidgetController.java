@@ -89,11 +89,8 @@ public class WidgetController extends BaseController {
 
     LOGGER.debug("Updating widget");
 
-    Widget db = widgetRepository.findOne(id);
-
-    if (null == db) {
-      throw new NotFoundException(MessageKeys.ERROR_WIDGET_NOT_FOUND);
-    }
+    Widget db = widgetRepository.findById(id)
+        .orElseThrow(() -> new NotFoundException(MessageKeys.ERROR_WIDGET_NOT_FOUND));
 
     db.updateFrom(widget);
 
@@ -108,11 +105,11 @@ public class WidgetController extends BaseController {
   @DeleteMapping(value = "/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void deleteWidget(@PathVariable("id") UUID id) {
-    if (!widgetRepository.exists(id)) {
+    if (!widgetRepository.existsById(id)) {
       throw new NotFoundException(MessageKeys.ERROR_WIDGET_NOT_FOUND);
     }
 
-    widgetRepository.delete(id);
+    widgetRepository.deleteById(id);
   }
 
   /**
@@ -139,11 +136,8 @@ public class WidgetController extends BaseController {
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
   public WidgetDto getSpecifiedWidget(@PathVariable("id") UUID id) {
-    Widget widget = widgetRepository.findOne(id);
-
-    if (widget == null) {
-      throw new NotFoundException(MessageKeys.ERROR_WIDGET_NOT_FOUND);
-    }
+    Widget widget = widgetRepository.findById(id)
+        .orElseThrow(() -> new NotFoundException(MessageKeys.ERROR_WIDGET_NOT_FOUND));
 
     return WidgetDto.newInstance(widget);
   }
@@ -167,7 +161,7 @@ public class WidgetController extends BaseController {
           String changedPropertyName, Pageable page) {
 
     //Return a 404 if the specified instance can't be found
-    if (!widgetRepository.exists(id)) {
+    if (!widgetRepository.existsById(id)) {
       throw new NotFoundException(MessageKeys.ERROR_WIDGET_NOT_FOUND);
     }
 

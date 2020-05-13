@@ -86,6 +86,8 @@ resourceTypes:
           repeat: false
       responses:
         200:
+          headers:
+            Keep-Alive:
           body:
             application/json:
               schema: auditLogEntryArray
@@ -110,10 +112,14 @@ resourceTypes:
                 ]
         404:
           description: The specified <<resourcePathName|!singularize>> does not exist.
+          headers:
+            Keep-Alive:
           body:
             application/json:
               schema: localizedErrorResponse
         401:
+          headers:
+            Keep-Alive:
           body:
             application/json:
 
@@ -145,10 +151,14 @@ resourceTypes:
       description: Get all widgets that match the given parameters.
       responses:
         200:
+          headers:
+            Keep-Alive:
           body:
             application/json:
               schema: widgetPage
         401:
+          headers:
+            Keep-Alive:
           body:
             application/json:
     post:
@@ -159,10 +169,14 @@ resourceTypes:
           schema: widget
       responses:
         201:
+          headers:
+            Keep-Alive:
           body:
             application/json:
               schema: widget
         401:
+          headers:
+            Keep-Alive:
           body:
             application/json:
     /{id}:
@@ -177,14 +191,20 @@ resourceTypes:
         description: Get chosen widget.
         responses:
           200:
+            headers:
+              Keep-Alive:
             body:
               application/json:
                 schema: widget
           404:
+            headers:
+              Keep-Alive:
             body:
               application/json:
                 schema: localizedErrorResponse
           401:
+            headers:
+              Keep-Alive:
             body:
               application/json:
       put:
@@ -195,6 +215,8 @@ resourceTypes:
             schema: widget
         responses:
           200:
+            headers:
+              Keep-Alive:
             body:
               application/json:
                 schema: widget
@@ -203,10 +225,14 @@ resourceTypes:
               application/json:
                 schema: localizedErrorResponse
           404:
+            headers:
+              Keep-Alive:
             body:
               application/json:
                 schema: localizedErrorResponse
           401:
+            headers:
+              Keep-Alive:
             body:
               application/json:
       delete:
@@ -214,11 +240,17 @@ resourceTypes:
         description: "[AVOID USING] Completely removes widget. This action is not recoverable."
         responses:
           204:
+            headers:
+              Keep-Alive:
           404:
+            headers:
+              Keep-Alive:
             body:
               application/json:
                 schema: localizedErrorResponse
           401:
+            headers:
+              Keep-Alive:
             body:
               application/json:
     /{id}/auditLog:

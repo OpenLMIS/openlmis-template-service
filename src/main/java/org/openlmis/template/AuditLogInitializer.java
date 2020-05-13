@@ -66,7 +66,7 @@ public class AuditLogInitializer implements CommandLineRunner {
    */
   public void run(String... args) {
     //Get all JaVers repositories.
-    Map<String,Object> repositoryMap =
+    Map<String, Object> repositoryMap =
             applicationContext.getBeansWithAnnotation(JaversSpringDataAuditable.class);
 
     //For each one...
@@ -81,7 +81,7 @@ public class AuditLogInitializer implements CommandLineRunner {
   }
 
   private void createSnapshots(BaseAuditableRepository<?, ?> repository) {
-    Pageable pageable = new PageRequest(DEFAULT_PAGE_NUMBER, 2000);
+    Pageable pageable = PageRequest.of(DEFAULT_PAGE_NUMBER, 2000);
 
     while (true) {
       Page<?> page = repository.findAllWithoutSnapshots(pageable);

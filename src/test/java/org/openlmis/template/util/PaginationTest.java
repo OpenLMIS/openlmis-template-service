@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
@@ -33,7 +33,7 @@ public class PaginationTest {
   public void getPageReturnsTheCorrectPage() {
     int page = 1;
     int size = 3;
-    PageRequest pageRequest = new PageRequest(page, size);
+    PageRequest pageRequest = PageRequest.of(page, size);
 
     Page<Integer> pagedList = Pagination.getPage(getList(), pageRequest);
 
@@ -51,7 +51,7 @@ public class PaginationTest {
   public void getPageReturnsEmptyResultIfSpecifiedPageNumberIsOutOfBounds() {
     int page = Integer.MAX_VALUE;
     int size = 5;
-    PageRequest pageRequest = new PageRequest(page, size);
+    PageRequest pageRequest = PageRequest.of(page, size);
 
     Page<Integer> pagedList = Pagination.getPage(getList(), pageRequest);
 
@@ -64,7 +64,7 @@ public class PaginationTest {
   public void getPageReturnsAllValuesEvenWhenSizeIsOutOfBounds() {
     int page = 0;
     int size = Integer.MAX_VALUE;
-    PageRequest pageRequest = new PageRequest(page, size);
+    PageRequest pageRequest = PageRequest.of(page, size);
 
     Page<Integer> pagedList = Pagination.getPage(getList(), pageRequest);
 
@@ -76,7 +76,7 @@ public class PaginationTest {
   public void getPageReturnsSomeValuesEvenWhenSizeIsOutOfBounds() {
     int page = 1;
     int size = 7;
-    PageRequest pageRequest = new PageRequest(page, size);
+    PageRequest pageRequest = PageRequest.of(page, size);
 
     Page<Integer> pagedList = Pagination.getPage(getList(), pageRequest);
 
