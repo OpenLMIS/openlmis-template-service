@@ -17,6 +17,7 @@ package org.openlmis.template.web.widget;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import org.openlmis.template.domain.Widget;
@@ -88,11 +89,15 @@ public class WidgetController extends BaseController {
     }
 
     LOGGER.debug("Updating widget");
-
-    Widget db = widgetRepository.findById(id)
-        .orElseThrow(() -> new NotFoundException(MessageKeys.ERROR_WIDGET_NOT_FOUND));
-
-    db.updateFrom(widget);
+    Widget db;
+    Optional<Widget> widgetOptional = widgetRepository.findById(id);
+    if (widgetOptional.isPresent()) {
+      db = widgetOptional.get();
+      db.updateFrom(widget);
+    } else {
+      db = Widget.newInstance(widget);
+      db.setId(id);
+    }
 
     widgetRepository.saveAndFlush(db);
 

@@ -24,10 +24,14 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willReturn;
 import static org.mockito.Matchers.any;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import guru.nidi.ramltester.junit.RamlMatchers;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import org.apache.http.HttpStatus;
@@ -207,20 +211,27 @@ public class WidgetControllerIntegrationTest extends BaseWebIntegrationTest {
   }
 
   @Test
-  public void shouldReturnNotFoundMessageIfWidgetDoesNotExistForUpdateWidgetEndpoint() {
-    given(widgetRepository.findById(widgetDto.getId())).willReturn(Optional.empty());
+  public void shouldCreateWidgetIfWidgetDoesNotExistForUpdateWidgetEndpoint()
+      throws JsonProcessingException {
+    String widgetJson = "{\"code\":\"" + widgetDto.getCode() + "\",\"name\":\""
+        + widgetDto.getName() + "\"}";
+    Map<String, String> widgetMap = new ObjectMapper().readValue(widgetJson,
+        new TypeReference<Map<String, String>>() {});
+    UUID pathId = UUID.randomUUID();
+    given(widgetRepository.findById(pathId)).willReturn(Optional.empty());
 
     restAssured
         .given()
         .header(HttpHeaders.AUTHORIZATION, getTokenHeader())
         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-        .pathParam(ID, widgetDto.getId().toString())
-        .body(widgetDto)
+        .pathParam(ID, pathId)
+        .body(widgetMap)
         .when()
         .put(ID_URL)
         .then()
-        .statusCode(HttpStatus.SC_NOT_FOUND)
-        .body(MESSAGE_KEY, is(MessageKeys.ERROR_WIDGET_NOT_FOUND));
+        .statusCode(HttpStatus.SC_OK)
+        .body(ID, is(pathId.toString()))
+        .body(NAME, is(widgetDto.getName()));
 
     assertThat(RAML_ASSERT_MESSAGE, restAssured.getLastReport(), RamlMatchers.hasNoViolations());
   }

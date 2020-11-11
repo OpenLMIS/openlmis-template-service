@@ -224,12 +224,6 @@ resourceTypes:
             body:
               application/json:
                 schema: localizedErrorResponse
-          404:
-            headers:
-              Keep-Alive:
-            body:
-              application/json:
-                schema: localizedErrorResponse
           401:
             headers:
               Keep-Alive:
