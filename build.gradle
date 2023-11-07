@@ -170,31 +170,14 @@ checkstyle {
     toolVersion = "8.32"
 }
 
-//Usage: gradle sonarqube
+//NOTE: This plugin requires that this task be named 'sonarqube'. In fact, it is performing SonarCloud analysis.
 sonarqube {
     properties {
-        def branch = System.getenv("SONAR_BRANCH")
-        if (branch && branch != 'master') {
-            property "sonar.branch", branch
-        }
-        property "sonar.projectName", "OpenLMIS Template Service"
-        property "sonar.projectKey", "org.sonarqube:$rootProject.name"
-        property "sonar.host.url", "http://sonar.openlmis.org"
-        property "sonar.login", System.getenv("SONAR_LOGIN")
-        property "sonar.password", System.getenv("SONAR_PASSWORD")
-        property "sonar.projectVersion", version
-        property "sonar.java.coveragePlugin", "jacoco"
-        //Tells SonarQube where the unit tests execution reports are
-        property "sonar.junit.reportsPath", "build/test-results/test"
-        //Tells SonarQube where the unit tests code coverage report is
-        property "sonar.jacoco.reportPath", "build/jacoco/test.exec"
-        //Tells SonarQube where the integration tests code coverage report is
-        property "sonar.jacoco.itReportPath", "build/jacoco/integrationTest.exec"
-        properties["sonar.tests"] += sourceSets.integrationTest.java
+        property "sonar.projectKey", "OpenLMIS_openlmis-template-service"
+        property "sonar.organization", "openlmis"
+        property "sonar.host.url", "https://sonarcloud.io"
     }
 }
-
-project.tasks["sonarqube"].dependsOn integrationTest
 
 pmd {
     toolVersion = '5.8.1'
