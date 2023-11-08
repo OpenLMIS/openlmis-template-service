@@ -30,8 +30,18 @@ jobs:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
+      - name: Build with Docker Compose
+        continue-on-error: true
+        run: |
+          curl -o .env -L https://raw.githubusercontent.com/OpenLMIS/openlmis-ref-distro/master/settings-sample.env
+          docker-compose -f docker-compose.builder.yml run builder
+          sudo chown -R $(whoami) ./
+          cp ./build/reports/jacoco/test/jacocoTestReport.xml report.xml
+          rm -rf ./build
       - name: Analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew sonarqube --info
+        run: |
+          sudo chown -R $(whoami) ./
+          ./gradlew sonarqube --info

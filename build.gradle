@@ -180,6 +180,7 @@ sonarqube {
         property "sonar.organization", "openlmis"
         property "sonar.host.url", "https://sonarcloud.io"
         property "sonar.java.source", "11"
+        property "sonar.coverage.jacoco.xmlReportPaths", "./report.xml"
     }
 }
 
