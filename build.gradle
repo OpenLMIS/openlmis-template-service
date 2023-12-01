@@ -49,6 +49,7 @@ dependencies {
     compile 'org.javers:javers-spring-boot-starter-sql:2.8.1'
     compile 'org.openlmis:openlmis-service-util:3.1.0'
     compile 'org.webjars.npm:api-console:3.0.17'
+    compile 'org.codehaus.groovy:groovy:3.0.7'
 
     compile "org.projectlombok:lombok"
     annotationProcessor "org.projectlombok:lombok:1.18.22"
