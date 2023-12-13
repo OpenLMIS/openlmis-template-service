@@ -38,7 +38,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-@ActiveProfiles("test")
+@ActiveProfiles({"test", "test-run"})
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class JaVersIntegrationTest {
