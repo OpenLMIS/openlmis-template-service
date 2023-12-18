@@ -2,7 +2,7 @@ name: SonarCloud OpenLMIS-template-service Pipeline
 on:
   push:
     branches:
-      - '*'
+      - master
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:

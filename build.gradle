@@ -186,7 +186,7 @@ sonarqube {
 }
 
 pmd {
-    toolVersion = '5.4.0'
+    toolVersion = '5.8.1'
     consoleOutput = true
     ignoreFailures = false
     ruleSetFiles = files("config/pmd/ruleset.xml")
