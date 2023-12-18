@@ -191,7 +191,7 @@ pmd {
     ignoreFailures = false
     ruleSetFiles = files("config/pmd/ruleset.xml")
     reportsDir = file("build/reports/pmd")
-    incrementalAnalysis = false
+    //    incrementalAnalysis = false
 }
 
 tasks.withType(Pmd){
