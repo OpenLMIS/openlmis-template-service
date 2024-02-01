@@ -52,7 +52,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("test")
+@ActiveProfiles({"test", "test-run"})
 @SuppressWarnings({"PMD.TooManyMethods"})
 public abstract class BaseWebIntegrationTest {
 
